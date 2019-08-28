@@ -1,5 +1,7 @@
+import firebase from 'firebase';
+
 // Firebase configuration
-const config = {
+const firebaseConfig = {
     apiKey: "AIzaSyAQoI9ZDJFUvvfzgs33imhdQZjDPbC1R6M",
     authDomain: "comp30022app.firebaseapp.com",
     databaseURL: "https://comp30022app.firebaseio.com",
