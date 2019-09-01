@@ -9,9 +9,11 @@ The intention of this web application is to allow an individual to effectively c
 ## Usage
 
 After you clone the repository, run `npm i` to install all the dependencies.
-Next run `node server.js` or if you have it installed, `nodemon` to fire up
-the express.js server. The application, when run locally, will run on
-`localhost:3000`.
+Currently only the backend functionality has been configured (ie. express +
+firebase). Basic functionality testing can be done by running `firebase deploy`
+and then verifying the the response using Postman.
+
+## Build Status - *Incomplete*
 
 ### Development Team
 
