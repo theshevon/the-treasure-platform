@@ -32,7 +32,7 @@ exports.registerNewUser =
                                 });
                 } else {
                     return firebase
-                            .auth
+                            .auth()
                             .createUserWithEmailAndPassword(newUser.email, newUser.password);
                 }
             })
@@ -88,4 +88,3 @@ exports.logInUser =
                 return res.status(500).json({ error: err.code });
             })
     }
-
