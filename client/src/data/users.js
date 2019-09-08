@@ -18,7 +18,7 @@ var users = [
                     lname = "Bolton",
                     email = "troy@gmail.com",
                     utype = "pri",
-                    createdat = "September 1, 2019 at 12:10:00 AM UTC+10"
+                    createdon = "September 1, 2019 at 12:10:00 AM UTC+10"
                 },
                 {
                     uid = "HZgmlBZtKNNWYIq0bcnPdBz2DSh1",
@@ -26,6 +26,6 @@ var users = [
                     lname = "Chiggins",
                     email = "dandy@t.com",
                     utype = "sec",
-                    createdat = "September 4, 2019 at 12:00:00 AM UTC+10"
+                    createdon = "September 4, 2019 at 12:00:00 AM UTC+10"
                 }
 ]
