@@ -15,7 +15,7 @@ var items = [
     {
         id: 1,
         name: "item1",
-        desc: "Was owned by my grandpa, 'Buffalo Bill'",
+        desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
         img_src: "https://images.unsplash.com/photo-1511253819057-5408d4d70465?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80",
         val: null,
         createdon: "September 1, 2019 at 12:10:00 AM UTC+10",
@@ -28,7 +28,7 @@ var items = [
     {
         id: 2,
         name: "item2",
-        desc: "item2 desc",
+        desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
         img_src: "https://images.unsplash.com/photo-1511253819057-5408d4d70465?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80",
         val: null,
         createdon: "September 1, 2019 at 12:10:00 AM UTC+10",
@@ -41,7 +41,7 @@ var items = [
     {
         id: 3,
         name: "item3",
-        desc: "item3 desc",
+        desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
         img_src: "https://images.unsplash.com/photo-1511253819057-5408d4d70465?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80",
         val: null,
         createdon: "September 1, 2019 at 12:10:00 AM UTC+10",
@@ -54,7 +54,7 @@ var items = [
     {
         id: 4,
         name: "item4",
-        desc: "item4 desc",
+        desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
         img_src: "https://images.unsplash.com/photo-1511253819057-5408d4d70465?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80",
         val: null,
         createdon: "September 1, 2019 at 12:10:00 AM UTC+10",

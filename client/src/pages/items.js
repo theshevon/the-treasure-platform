@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
 import axios from "axios";
-import Grid from "@material-ui/core/Grid";
+import GridList from "@material-ui/core/GridList";
+import GridTile from '@material-ui/core/GridListTile'
 import Item from "../components/Item";
 import itemsData from "../data/items";
+import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
 
 export class Items extends Component {
 
@@ -27,21 +29,32 @@ export class Items extends Component {
 
     render() {
 
-        let itemMarkup = this.state.items ? (
-            this.state.items.map(item =>
-                <Item item={ item }/>
+        let itemListContent;
+
+        if (this.state.items){
+            itemListContent = (
+                <GridList cols={3}>
+                    { this.state.items.map(item => (
+                        <GridTile
+                            key={item.id}
+                            rows='2'
+                        >
+                            <Item item={ item }/>
+                        </GridTile>
+                    ))}
+                </GridList>
             )
-        ) : <p> Loading... </p>
+        } else {
+            itemListContent = null;
+        }
+
 
         return (
             <div>
-                <h1>Item Catalague Page</h1>
-                <Grid container spacing= { 16 }>
-                    <Grid item sm={ 12 } xs = { 12 }>
-                        { itemMarkup }
-                    </Grid>
-                </Grid>
+                <h1>Item Catalogue</h1>
+                { itemListContent }
             </div>
+
         )
     }
 }
