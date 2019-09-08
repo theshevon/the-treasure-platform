@@ -29,3 +29,5 @@ var users = [
                     createdon = "September 4, 2019 at 12:00:00 AM UTC+10"
                 }
 ]
+
+export default users;
