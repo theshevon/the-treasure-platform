@@ -2,30 +2,14 @@ import React, { Component } from 'react'
 import axios from "axios";
 import Grid from "@material-ui/core/Grid";
 import Item from "../components/Item";
+import itemsData from "../data/items";
 
 export class Items extends Component {
 
     // this just stores stub data for now
     // -- will be updated when backend is ready
     state = {
-        items: [
-            {
-                name: "Dragoon G Beyblade",
-                description: "Was owned by my grandpa, 'Buffalo Bill'"
-            },
-            {
-                name: "item2",
-                description: "item2 desc"
-            },
-            {
-                name: "item3",
-                description: "item3 desc"
-            },
-            {
-                name: "item4",
-                description: "item4 desc"
-            }
-        ]
+        items: itemsData
     }
 
     // fetch item data from database
