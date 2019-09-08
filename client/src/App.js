@@ -11,6 +11,7 @@ import dashboard from "./pages/dashboard";
 import login from "./pages/login";
 import register from "./pages/register";
 import items from "./pages/items";
+import loginscreen from "./pages/loginscreen";
 
 class App extends Component {
   render() {
@@ -25,6 +26,7 @@ class App extends Component {
               <Route exact path="/items" component={ items }/>
               <Route exact path="/login" component={ login }/>
               <Route exact path="/register" component={ register }/>
+              <Route exact path="/loginscreen" component={ loginscreen }/>
             </Switch>
           </div>
         </Router>
