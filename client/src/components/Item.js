@@ -7,6 +7,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import Link from "react-router-dom/Link";
 
 const styles = {
   card: {
@@ -41,12 +42,16 @@ export class Item extends Component {
                             {item.name}
                         </Typography>
                         <Typography variant="body2" color="textSecondary" component="p" className={classes.text}>
-                            {item.desc.length > 100 ? item.desc + "..." : item.desc}
+                            {item.desc.length > 50 ? item.desc + "..." : item.desc}
                         </Typography>
                     </CardContent>
                 </CardActionArea>
                 <CardActions className={classes.actions}>
-                    <Button size="small" color="primary">
+                    <Button
+                      size="small"
+                      color="primary"
+                      component={ Link }
+                      to={ "/items/" + item.id}>
                     View
                     </Button>
                 </CardActions>
