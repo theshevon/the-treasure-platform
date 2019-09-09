@@ -12,22 +12,20 @@
  */
 
 var users = [
-                {
-                    uid = "HZgmlBZtKNNWYIq0IHnbdBz2DSh1",
-                    fname = "Troy",
-                    lname = "Bolton",
-                    email = "troy@gmail.com",
-                    utype = "pri",
-                    createdon = "September 1, 2019 at 12:10:00 AM UTC+10"
-                },
-                {
-                    uid = "HZgmlBZtKNNWYIq0bcnPdBz2DSh1",
-                    fname = "Dandy",
-                    lname = "Chiggins",
-                    email = "dandy@t.com",
-                    utype = "sec",
-                    createdon = "September 4, 2019 at 12:00:00 AM UTC+10"
-                }
+    {
+        uid = "HZgmlBZtKNNWYIq0IHnbdBz2DSh1",
+        fname = "Troy",
+        lname = "Bolton",
+        email = "troy@gmail.com",
+        utype = "pri",
+        createdon = "September 1, 2019 at 12:10:00 AM UTC+10"
+    },
+    {
+        uid = "HZgmlBZtKNNWYIq0bcnPdBz2DSh1",
+        fname = "Dandy",
+        lname = "Chiggins",
+        email = "dandy@t.com",
+        utype = "sec",
+        createdon = "September 4, 2019 at 12:00:00 AM UTC+10"
+    }
 ]
-
-export default users;
