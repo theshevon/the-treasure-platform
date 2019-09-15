@@ -13,8 +13,7 @@ UI) and `server` represents the Node.js (Express.js) back-end that has been inte
 
 After you clone the repository, you may have to run `npm i` to install all the dependencies in the `client` folder, as well as in the `functions` sub-folder within `server`.
 
-To deploy the React application, simply navigate into the `client` folder and run `npm start`. Currently, this is purely the boiler-plate
-code provided by Facebook.
+To deploy the React application, simply navigate into the `client` folder and run `npm start`. This should fire up a local instance of the application on `localhost:3000` on your default web-browser.
 
 To deploy the express.js server locally, navigate into the `functions` sub-folder within `server` and run `firebase serve`. A sequence of logs should appear on the CLI along with an access URL (http://localhost:5000/comp30022app/us-central1/api/ `route`).
 
