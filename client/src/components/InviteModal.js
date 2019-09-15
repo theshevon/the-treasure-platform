@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import InviteFrom from './InviteForm'
+import './InviteModal.css'
 
 
 class InviteModal extends Component {
@@ -13,6 +14,7 @@ class InviteModal extends Component {
     handleClose = () => this.setState({ show : false });
     handleShow = () => this.setState({ show : true });
 
+
     render() {
 
         return (
@@ -22,20 +24,18 @@ class InviteModal extends Component {
                     + Users
                 </Button>
 
-                <Modal show={this.state.show} onHide={this.handleClose}>
+                <Modal size="lg" scrollable="true" show={this.state.show} onHide={this.handleClose}>
                     <Modal.Header closeButton>
-                    <Modal.Title>Invite Users</Modal.Title>
+                        <Modal.Title>Invite Users</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <InviteFrom type="email"/>
+                        <p> Add another </p>
                     </Modal.Body>
                     <Modal.Footer>
-                    <Button variant="secondary" onClick={this.handleClose}>
-                        Close
-                    </Button>
-                    <Button variant="primary" onClick={this.handleClose}>
-                        Save Changes
-                    </Button>
+                        <Button variant="dark" onClick={this.handleClose}>
+                            Send Invitations
+                        </Button>
                     </Modal.Footer>
                 </Modal>
 

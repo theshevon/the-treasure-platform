@@ -9,13 +9,13 @@ export class InviteForm extends Component {
         var formRow = (
             <Row className="my-2">
                 <Col>
-                    <Form.Control placeholder="First name" />
+                    <Form.Control placeholder="muhammed" />
                 </Col>
                 <Col>
-                    <Form.Control placeholder="Last name" />
+                    <Form.Control placeholder="wong"/>
                 </Col>
                 <Col>
-                    <Form.Control placeholder="Email" />
+                    <Form.Control placeholder="name@example.com" />
                 </Col>
             </Row>
         )
@@ -23,6 +23,17 @@ export class InviteForm extends Component {
         return (
             <div>
                 <Form>
+                    <Row>
+                        <Col style={{"fontWeight" : "bold"}}>
+                            First Name
+                        </Col>
+                        <Col style={{"fontWeight" : "bold"}}>
+                            Last Name
+                        </Col>
+                        <Col style={{"fontWeight" : "bold"}}>
+                            Email Address
+                        </Col>
+                    </Row>
                     {formRow}
                     {formRow}
                     {formRow}
