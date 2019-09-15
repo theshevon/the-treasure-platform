@@ -32,10 +32,10 @@ export class Items extends Component {
 
         if (this.state.items){
             itemListContent = (
-                <Row>
+                <Row className="my-3">
                     { this.state.items.map(item => (
                         <Col xs={12} md={6} lg={4}>
-                            <Item item={ item }/>
+                            <Item className="my-5" item={ item }/>
                         </Col>
                     ))}
                 </Row>
@@ -46,9 +46,9 @@ export class Items extends Component {
 
         return (
             <div>
+                <h1> ITEMS </h1>
                 { itemListContent }
             </div>
-
         )
     }
 }
