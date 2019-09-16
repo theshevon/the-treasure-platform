@@ -5,12 +5,16 @@ const app       = express();
 
 // mount controllers
 const { registerNewUser, logInUser } = require("./controllers/users");
+const { getItems } = require("./controllers/items");
 
 /*=================================ROUTING====================================*/
 
 // -- admin routes
 app.post("/register", registerNewUser); // registration route
 app.post("/login", logInUser); // login route
+
+// -- item routes
+app.get("/items", getItems);
 
 /*============================================================================*/
 
