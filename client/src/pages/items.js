@@ -1,10 +1,9 @@
 import React, { Component } from 'react'
 import axios from "axios";
-import GridList from "@material-ui/core/GridList";
-import GridTile from '@material-ui/core/GridListTile'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
 import Item from "../components/Item";
 import itemsData from "../data/items";
-import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
 
 export class Items extends Component {
 
@@ -33,28 +32,23 @@ export class Items extends Component {
 
         if (this.state.items){
             itemListContent = (
-                <GridList cols={3}>
+                <Row className="my-3">
                     { this.state.items.map(item => (
-                        <GridTile
-                            key={item.id}
-                            rows='2'
-                        >
-                            <Item item={ item }/>
-                        </GridTile>
+                        <Col xs={12} md={6} lg={4}>
+                            <Item className="my-5" item={ item }/>
+                        </Col>
                     ))}
-                </GridList>
+                </Row>
             )
         } else {
             itemListContent = null;
         }
 
-
         return (
             <div>
-                <h1>Item Catalogue</h1>
+                <h1> ITEMS </h1>
                 { itemListContent }
             </div>
-
         )
     }
 }
