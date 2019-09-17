@@ -24,7 +24,7 @@ class InviteModal extends Component {
                     + Users
                 </Button>
 
-                <Modal size="lg" scrollable="true" show={this.state.show} onHide={this.handleClose}>
+                <Modal size="lg" scrollable show={this.state.show} onHide={this.handleClose}>
                     <Modal.Header closeButton>
                         <Modal.Title>Invite Users</Modal.Title>
                     </Modal.Header>
