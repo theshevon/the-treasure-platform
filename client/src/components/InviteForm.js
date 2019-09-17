@@ -46,11 +46,11 @@ export class InviteForm extends Component {
                             </Row>
                         </Col>
                     </Row>
-                    {formRow}
-                    {formRow}
-                    {formRow}
-                    {formRow}
-                    {formRow}
+                    { formRow }
+                    { formRow }
+                    { formRow }
+                    { formRow }
+                    { formRow }
                 </Form>
             </div>
         )
