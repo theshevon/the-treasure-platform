@@ -11,9 +11,8 @@ import Navbar from "./components/Navbar";
 import home from "./pages/home";
 import dashboard from "./pages/dashboard";
 import login from "./pages/login";
-import register from "./pages/register";
 import items from "./pages/items";
-import loginscreen from "./pages/loginscreen";
+
 
 const theme = createMuiTheme({
   palette: {
@@ -48,7 +47,6 @@ class App extends Component {
                 <Route exact path="/dashboard" component={ dashboard }/>
                 <Route exact path="/items" component={ items }/>
                 <Route exact path="/login" component={ login }/>
-                <Route exact path="/register" component={ register }/>
               </Switch>
             </div>
           </Router>
