@@ -30,7 +30,6 @@ class InviteModal extends Component {
                     </Modal.Header>
                     <Modal.Body>
                         <InviteFrom type="email"/>
-                        <p> Add another </p>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="dark" onClick={this.handleClose}>
