@@ -5,7 +5,6 @@ const config = require('../util/config');
 exports.getItems =
 
     (req, res) => {
-        console.log(req);
         db.collection('items')
             .get()
             .then((data) => {
