@@ -55,7 +55,7 @@ export class Item extends Component {
 						<Modal.Title>{item.name}</Modal.Title>
                     </Modal.Header>
                     <Modal.Body className='px-5 pb-5 pt-0'>
-						<Carousel>
+						<Carousel controls={false}>
 							<Carousel.Item>
 								<img
 								className="d-block w-100 img-fluid"
