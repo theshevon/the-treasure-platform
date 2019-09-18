@@ -13,8 +13,26 @@ export class Item extends Component {
         show : false
     }
 
-    handleClose = () => this.setState({ show : false });
-    handleShow = () => this.setState({ show : true });
+    handleClose = () => {
+		this.setState({ show : false })
+	};
+
+	handleShow = () => {
+		this.setState({ show : true })
+	};
+
+	handleScroll = () => {
+
+		// .scrolled-nav{
+		// 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.05), 0 6px 20px 0 rgba(0, 0, 0, 0.045);
+		// 	background-color: white;
+		// 	transition: 500ms;
+		// }
+	}
+
+	componentDidMount(){
+		window.addEventListener('scroll', this.handleScroll);
+	}
 
     render() {
 
@@ -36,7 +54,7 @@ export class Item extends Component {
                     <Modal.Header closeButton>
 						<Modal.Title>{item.name}</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body className='p-5'>
+                    <Modal.Body className='px-5 pb-5 pt-0'>
 						<Carousel>
 							<Carousel.Item>
 								<img
@@ -60,7 +78,7 @@ export class Item extends Component {
 								/>
 							</Carousel.Item>
 						</Carousel>
-						<p className="my-5">{item.desc}</p>
+						<p className="my-5 text-justify">{item.desc}</p>
 						<Row>
 							<Col xs="6">
 								<Button className="btn" variant="light">Edit</Button>
