@@ -1,17 +1,24 @@
 import React, { Component } from 'react'
 import axios from "axios";
+
+// boostrap imports
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
+import Modal from 'react-bootstrap/Modal'
+
+// custom css
 import Item from "../components/Item"
+import "../components/Item.css"
+
+// stub data
 import itemsData from "../data/items"
 
-export class Items extends Component {
+class Items extends Component {
 
-    // this just stores stub data for now
-    // -- will be updated when backend is ready
     state = {
-        items: itemsData
+        items: itemsData,
+        showAddModal: false
     }
 
     // fetch item data from database
@@ -26,6 +33,14 @@ export class Items extends Component {
     //             err => console.log(err)
     //         );
     // };
+
+    handleClose = () => {
+		this.setState({ showAddModal : false })
+	};
+
+	handleShow = () => {
+		this.setState({ showAddModal : true })
+	};
 
     render() {
 
@@ -48,7 +63,18 @@ export class Items extends Component {
         return (
             <div>
                 <h1> ITEMS </h1>
-                <Button className="btn" variant="light">Add Item</Button>
+                <Button className="btn" variant="light" onClick={this.handleShow}>Add Item</Button>
+                <Modal show={this.state.showAddModal} size="lg" onHide={this.handleClose}>
+                    <Modal.Header closeButton>
+                    <Modal.Title>Add A New Item</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+                    <Modal.Footer>
+                    <Button variant="light" onClick={this.handleClose}>
+                        Next
+                    </Button>
+                    </Modal.Footer>
+                </Modal>
                 { itemListContent }
             </div>
         )
