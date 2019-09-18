@@ -1,48 +1,56 @@
-//from: https://medium.com/technoetics/create-basic-login-forms-using-create-react-app-module-in-reactjs-511b9790dede
+import React, { Component } from "react";
+import { Form, Col, Button } from "react-bootstrap";
 
-import React, { Component } from 'react';
-import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
-import AppBar from "@material-ui/core/AppBar";
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
 
-class Login extends Component {
-constructor(props){
-  super(props);
-  this.state={
-  username:'',
-  password:''
+
+export default class Login extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      email: "",
+      password: ""
+    };
   }
- }
-render() {
+
+  validateForm() {
+    return this.state.email.length > 0 && this.state.password.length > 0;
+  }
+
+  handleChange = event => {
+    this.setState({
+      [event.target.id]: event.target.value
+    });
+  }
+
+  handleSubmit = event => {
+    event.preventDefault();
+  }
+
+  render() {
     return (
-      <div>
-        <MuiThemeProvider>
-          <div>
-          <h1>
-             Login
-          </h1>
-           <TextField
-             hintText="Enter your Username"
-             floatingLabelText="Username"
-             onChange = {(event,newValue) => this.setState({username:newValue})}
-             />
-           <br/>
-             <TextField
-               type="password"
-               hintText="Enter your Password"
-               floatingLabelText="Password"
-               onChange = {(event,newValue) => this.setState({password:newValue})}
-               />
-             <br/>
-             <Button label="Submit" primary={true} style={style} onClick={(event) => this.handleClick(event)}/>
-         </div>
-         </MuiThemeProvider>
-      </div>
+        <Form>
+        <Form.Group controlId="formBasicEmail" onSubmit={this.gotEmail}>
+          <Form.Label>Email address</Form.Label>
+          <Col md={{ span: 6, offset: 3 }}>
+            <Form.Control type="email" placeholder="Enter email" />
+          </Col>
+          <Form.Text className="text-muted">
+            We'll never share your email with anyone else.
+          </Form.Text>
+        </Form.Group>
+
+        <Form.Group controlId="formBasicPassword">
+          <Form.Label>Password</Form.Label>
+          <Col md={{ span: 6, offset: 3 }}>
+            <Form.Control type="password" placeholder="Password" />
+          </Col>
+        </Form.Group>
+
+        <Button variant="primary" type="submit">
+          Submit
+        </Button>
+      </Form>
     );
   }
 }
-const style = {
- margin: 15,
-};
-export default Login;
