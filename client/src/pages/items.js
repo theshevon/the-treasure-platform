@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import axios from "axios";
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import Item from "../components/Item";
-import itemsData from "../data/items";
+import Item from '../components/Item'
+import itemsData from '../data/items'
 
 export class Items extends Component {
 

@@ -52,3 +52,29 @@
     background: #a8a8a8;
     border-color: #a8a8a8!important;
 }
+
+.modal-title.h4{
+    margin-left: 50% !important;
+    transform: translateX(-50%) !important;
+}
+
+.modal-content{
+    border-radius: 0 !important;
+    border: none !important;
+}
+
+.modal-header{
+    border-bottom: none !important;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.05), 0 6px 20px 0 rgba(0, 0, 0, 0.045);
+    background: rgba(0,0,0,0) !important;
+    border-radius: 0px !important;
+}
+
+.carousel-item img{
+    height: 700px !important;
+    object-fit: cover;
+}
+
+.modal-body::-webkit-scrollbar{
+    width: 0 !important;
+}
