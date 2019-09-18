@@ -5,7 +5,7 @@ const app       = express();
 
 // mount controllers
 const { registerNewUser, logInUser } = require("./controllers/users");
-const { getItems } = require("./controllers/items");
+const { getItems, getSpecificItem, createNewItem } = require("./controllers/items");
 
 /*=================================ROUTING====================================*/
 
@@ -15,6 +15,8 @@ app.post("/login", logInUser); // login route
 
 // -- item routes
 app.get("/items", getItems);
+app.get("/item/:id", getSpecificItem)
+//app.get("newitem", createNewItem)
 
 /*============================================================================*/
 
