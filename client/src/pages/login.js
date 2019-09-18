@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import axios from 'axios'
 
 // bootstrap imports
 import Form from 'react-bootstrap/Form'
@@ -10,12 +11,15 @@ import Button from 'react-bootstrap/Button'
 import '../stylesheets/login.css'
 
 class Login extends Component {
+
   constructor(props) {
     super(props);
 
     this.state = {
       email: "",
-      password: ""
+	  password: "",
+	  loading: false,
+	  errors: {}
     };
   }
 
@@ -25,12 +29,38 @@ class Login extends Component {
 
   handleChange = event => {
     this.setState({
-      [event.target.id]: event.target.value
+      [event.target.name]: event.target.value
     });
   }
 
   handleSubmit = event => {
-    event.preventDefault();
+	event.preventDefault();
+	this.setState({
+		loading: true
+	});
+
+	const userData = {
+		email: this.state.email,
+		password: this.state.password
+	}
+
+	axios({
+		method: 'post',
+		url: 'http://localhost:5000/comp30022app/us-central1/api/login',
+		data: userData
+		})
+		.then(res => {
+			console.log(res.data);
+			this.setState({loading:false});
+			this.props.history.push('/items');
+		})
+		.catch(err => {
+			// this.setState({
+			// 	errors: err.response.data,
+			// 	loading: false
+			// })
+			console.log(err);
+		})
   }
 
   render() {
@@ -41,12 +71,29 @@ class Login extends Component {
 					<h1 className="login-form-title mb-4">Welcome</h1>
 					<Form>
 						<Row className="my-1">
-							<Form.Control type="email" placeholder="email"/>
+							<Form.Control
+								name="email"
+								type="email"
+								placeholder="email"
+								value={this.state.email}
+								onChange={this.handleChange}
+								required/>
 						</Row>
 						<Row className="my-1">
-							<Form.Control type="password" placeholder="password"/>
+							<Form.Control
+								name="password"
+								type="password"
+								placeholder="password"
+								value={this.state.password}
+								onChange={this.handleChange}
+								required/>
 						</Row>
-						<Button className="login-btn btn mt-3" type="submit" variant="light">Log In</Button>
+						<Button
+							className="login-btn btn mt-3"
+							type="submit"
+							variant="light"
+							onClick={this.handleSubmit}
+						>Log In</Button>
 					</Form>
 				</Col>
 			</Row>
