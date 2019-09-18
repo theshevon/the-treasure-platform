@@ -35,23 +35,21 @@ class Login extends Component {
 
   render() {
     return (
-		<div>
-			<h1 className="form-title">Welcome</h1>
-			<div className="form">
-				<Row className="d-flex justify-content-center">
-					<Col xs="12" md="4">
-						<Form>
-							<Row className="my-1">
-								<Form.Control type="email" placeholder="email"/>
-							</Row>
-							<Row className="my-1">
-								<Form.Control type="password" placeholder="password"/>
-							</Row>
-							<Button className="btn mt-2" type="submit" variant="light">Log In</Button>
-						</Form>
-					</Col>
-				</Row>
-			</div>
+		<div className="main-container" style={{width:"100vw", height:"100vh"}}>
+			<Row className="login-form-container d-flex justify-content-center">
+				<Col className="login-form-body p-5" xs="12" md="3">
+					<h1 className="login-form-title mb-4">Welcome</h1>
+					<Form>
+						<Row className="my-1">
+							<Form.Control type="email" placeholder="email"/>
+						</Row>
+						<Row className="my-1">
+							<Form.Control type="password" placeholder="password"/>
+						</Row>
+						<Button className="login-btn btn mt-3" type="submit" variant="light">Log In</Button>
+					</Form>
+				</Col>
+			</Row>
 		</div>
     );
   }
