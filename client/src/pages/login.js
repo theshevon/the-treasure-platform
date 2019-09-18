@@ -1,9 +1,15 @@
-import React, { Component } from "react";
-import { Form, Col, Button } from "react-bootstrap";
+import React, { Component } from 'react'
 
+// bootstrap imports
+import Form from 'react-bootstrap/Form'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
+import Button from 'react-bootstrap/Button'
 
+// custom css
+import '../stylesheets/login.css'
 
-export default class Login extends Component {
+class Login extends Component {
   constructor(props) {
     super(props);
 
@@ -29,28 +35,26 @@ export default class Login extends Component {
 
   render() {
     return (
-        <Form>
-        <Form.Group controlId="formBasicEmail" onSubmit={this.gotEmail}>
-          <Form.Label>Email address</Form.Label>
-          <Col md={{ span: 6, offset: 3 }}>
-            <Form.Control type="email" placeholder="Enter email" />
-          </Col>
-          <Form.Text className="text-muted">
-            We'll never share your email with anyone else.
-          </Form.Text>
-        </Form.Group>
-
-        <Form.Group controlId="formBasicPassword">
-          <Form.Label>Password</Form.Label>
-          <Col md={{ span: 6, offset: 3 }}>
-            <Form.Control type="password" placeholder="Password" />
-          </Col>
-        </Form.Group>
-
-        <Button variant="primary" type="submit">
-          Submit
-        </Button>
-      </Form>
+		<div>
+			<h1 className="form-title">Welcome</h1>
+			<div className="form">
+				<Row className="d-flex justify-content-center">
+					<Col xs="12" md="4">
+						<Form>
+							<Row className="my-1">
+								<Form.Control type="email" placeholder="email"/>
+							</Row>
+							<Row className="my-1">
+								<Form.Control type="password" placeholder="password"/>
+							</Row>
+							<Button className="btn mt-2" type="submit" variant="light">Log In</Button>
+						</Form>
+					</Col>
+				</Row>
+			</div>
+		</div>
     );
   }
 }
+
+export default Login;
