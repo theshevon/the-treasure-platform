@@ -2,11 +2,11 @@ import React, { Component } from 'react'
 import axios from 'axios'
 
 // bootstrap imports
+import Spinner from 'react-bootstrap/Spinner'
+import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import Button from 'react-bootstrap/Button'
-import Spinner from 'react-bootstrap/Spinner'
 
 // custom css
 import '../stylesheets/login.css'
@@ -69,7 +69,7 @@ class Login extends Component {
 		// check for email errors
 		if (this.state.errors && (this.state.errors.email || this.state.errors.general)){
 			if (this.state.errors.email){
-				emailError = (this.state.errors.email)
+				emailError = (this.state.errors.email);
 			} else {
 				emailError = ("");
 			}
