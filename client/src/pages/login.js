@@ -6,6 +6,7 @@ import Form from 'react-bootstrap/Form'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
+import Spinner from 'react-bootstrap/Spinner'
 
 // custom css
 import '../stylesheets/login.css'
@@ -30,17 +31,6 @@ class Login extends Component {
 
 	handleSubmit = event => {
 
-		// -- validate the form data
-		// const form = event.currentTarget;
-
-		// if (form.checkValidity() === false) {
-		//   event.preventDefault();
-		//   event.stopPropagation();
-		// }
-
-		this.setState({validated:true});
-
-		// -- send the data to the server
 		event.preventDefault();
 
 		this.setState({
@@ -66,18 +56,15 @@ class Login extends Component {
 					email: "",
 					password: "",
 					errors: err.response.data,
-					loading: false
+					loading: false,
+					validated: true
 				})
 			})
 	}
 
-	clearData = () => {
-		this.setState({email: "", password: ""});
-	}
-
 	render() {
 
-		let emailError, pwError;
+		let emailError, pwError, loginBtnContent;
 
 		// check for email errors
 		if (this.state.errors && (this.state.errors.email || this.state.errors.general)){
@@ -99,6 +86,13 @@ class Login extends Component {
 			}
 		} else {
 			pwError = ("Please enter a password.");
+		}
+
+		// if loading, replace button text with spinner
+		if (this.state.loading){
+			loginBtnContent = (<Spinner animation="border" size="sm"/>);
+		} else {
+			loginBtnContent = ("Log In");
 		}
 
 		return (
@@ -150,9 +144,9 @@ class Login extends Component {
 							<Button
 								className="login-btn btn mt-3"
 								type="submit"
-								variant="light"
 								onClick={this.handleSubmit}
-							>Log In</Button>
+								disabled={this.state.loading}
+							>{loginBtnContent}</Button>
 						</Form>
 					</Col>
 				</Row>
