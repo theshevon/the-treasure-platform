@@ -31,12 +31,12 @@ class Login extends Component {
 	handleSubmit = event => {
 
 		// -- validate the form data
-		const form = event.currentTarget;
+		// const form = event.currentTarget;
 
-		if (form.checkValidity() === false) {
-		  event.preventDefault();
-		  event.stopPropagation();
-		}
+		// if (form.checkValidity() === false) {
+		//   event.preventDefault();
+		//   event.stopPropagation();
+		// }
 
 		this.setState({validated:true});
 
@@ -63,10 +63,16 @@ class Login extends Component {
 			})
 			.catch(err => {
 				this.setState({
+					email: "",
+					password: "",
 					errors: err.response.data,
 					loading: false
 				})
 			})
+	}
+
+	clearData = () => {
+		this.setState({email: "", password: ""});
 	}
 
 	render() {
@@ -78,7 +84,7 @@ class Login extends Component {
 			if (this.state.errors.email){
 				emailError = (this.state.errors.email)
 			} else {
-				emailError = (this.state.errors.general);
+				emailError = ("");
 			}
 		} else{
 			emailError = ("Please enter a valid email address.");
@@ -94,7 +100,6 @@ class Login extends Component {
 		} else {
 			pwError = ("Please enter a password.");
 		}
-
 
 		return (
 			<div
