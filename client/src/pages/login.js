@@ -12,94 +12,148 @@ import '../stylesheets/login.css'
 
 class Login extends Component {
 
-  constructor(props) {
-    super(props);
+	constructor(props) {
+		super(props);
 
-    this.state = {
-      email: "",
-	  password: "",
-	  loading: false,
-	  errors: {}
-    };
-  }
-
-  validateForm() {
-    return this.state.email.length > 0 && this.state.password.length > 0;
-  }
-
-  handleChange = event => {
-    this.setState({
-      [event.target.name]: event.target.value
-    });
-  }
-
-  handleSubmit = event => {
-	event.preventDefault();
-	this.setState({
-		loading: true
-	});
-
-	const userData = {
-		email: this.state.email,
-		password: this.state.password
+		this.state = {
+			email: "",
+			password: "",
+			loading: false,
+			errors: {},
+			validated: false
+		};
 	}
 
-	axios({
-		method: 'post',
-		url: 'http://localhost:5000/comp30022app/us-central1/api/login',
-		data: userData
-		})
-		.then(res => {
-			console.log(res.data);
-			this.setState({loading:false});
-			this.props.history.push('/items');
-		})
-		.catch(err => {
-			// this.setState({
-			// 	errors: err.response.data,
-			// 	loading: false
-			// })
-			console.log(err);
-		})
-  }
+	handleChange = event => {
+		this.setState({ [event.target.name] : event.target.value });
+	}
 
-  render() {
-    return (
-		<div className="main-container" style={{width:"100vw", height:"100vh"}}>
-			<Row className="login-form-container d-flex justify-content-center">
-				<Col className="login-form-body p-5" xs="12" md="3">
-					<h1 className="login-form-title mb-4">Welcome</h1>
-					<Form>
-						<Row className="my-1">
-							<Form.Control
-								name="email"
-								type="email"
-								placeholder="email"
-								value={this.state.email}
-								onChange={this.handleChange}
-								required/>
-						</Row>
-						<Row className="my-1">
-							<Form.Control
-								name="password"
-								type="password"
-								placeholder="password"
-								value={this.state.password}
-								onChange={this.handleChange}
-								required/>
-						</Row>
-						<Button
-							className="login-btn btn mt-3"
-							type="submit"
-							variant="light"
-							onClick={this.handleSubmit}
-						>Log In</Button>
-					</Form>
-				</Col>
-			</Row>
-		</div>
-    );
-  }
+	handleSubmit = event => {
+
+		// -- validate the form data
+		const form = event.currentTarget;
+
+		if (form.checkValidity() === false) {
+		  event.preventDefault();
+		  event.stopPropagation();
+		}
+
+		this.setState({validated:true});
+
+		// -- send the data to the server
+		event.preventDefault();
+
+		this.setState({
+			loading: true
+		});
+
+		const userData = {
+			email: this.state.email,
+			password: this.state.password
+		}
+
+		axios({
+				method: 'post',
+				url: 'http://localhost:5000/comp30022app/us-central1/api/login',
+				data: userData
+			})
+			.then(res => {
+				this.setState({loading:false});
+				this.props.history.push('/items');
+			})
+			.catch(err => {
+				this.setState({
+					errors: err.response.data,
+					loading: false
+				})
+			})
+	}
+
+	render() {
+
+		let emailError, pwError;
+
+		// check for email errors
+		if (this.state.errors && (this.state.errors.email || this.state.errors.general)){
+			if (this.state.errors.email){
+				emailError = (this.state.errors.email)
+			} else {
+				emailError = (this.state.errors.general);
+			}
+		} else{
+			emailError = ("Please enter a valid email address.");
+		}
+
+		// check for password errors
+		if (this.state.errors && (this.state.errors.password || this.state.errors.general)){
+			if (this.state.errors.password){
+				pwError = (this.state.errors.password);
+			} else {
+				pwError = (this.state.errors.general);
+			}
+		} else {
+			pwError = ("Please enter a password.");
+		}
+
+
+		return (
+			<div
+				className="main-container"
+				style={{width:"100vw", height:"100vh"}}>
+				<Row
+					className="login-form-container d-flex justify-content-center">
+					<Col
+						className="login-form-body p-5"
+						xs="10"
+						sm="6"
+						md="3">
+						<h1
+							className="login-form-title mb-4"
+						>Welcome</h1>
+						<Form
+							noValidate
+							validated={this.state.validated}
+							onSubmit={this.handleSubmit}>
+							<Row
+								className="my-1">
+								<Form.Control
+									name="email"
+									type="email"
+									placeholder="email"
+									value={this.state.email}
+									onChange={this.handleChange}
+									required/>
+								<Form.Control.Feedback
+									type="invalid">
+									{emailError}
+            					</Form.Control.Feedback>
+							</Row>
+							<Row
+								className="my-1">
+								<Form.Control
+									name="password"
+									type="password"
+									placeholder="password"
+									value={this.state.password}
+									onChange={this.handleChange}
+									required/>
+								<Form.Control.Feedback
+									type="invalid">
+              						{pwError}
+            					</Form.Control.Feedback>
+							</Row>
+							<Button
+								className="login-btn btn mt-3"
+								type="submit"
+								variant="light"
+								onClick={this.handleSubmit}
+							>Log In</Button>
+						</Form>
+					</Col>
+				</Row>
+			</div>
+		);
+	}
 }
 
 export default Login;
