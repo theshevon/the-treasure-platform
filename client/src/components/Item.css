@@ -40,14 +40,14 @@
     padding-right: 0 !important;
 }
 
-.btn{
+.item-btn{
     color: #a8a8a8 !important;
     background: none !important;
     border: 1px solid #a8a8a8 ;
     transition: 500ms !important;
 }
 
-.btn:hover{
+.item-btn:hover{
     color: black !important;
     background: #a8a8a8;
     border-color: #a8a8a8!important;

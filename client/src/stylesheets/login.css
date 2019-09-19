@@ -1,0 +1,44 @@
+.main-container{
+    background: #87e3e5;
+}
+
+.login-form-container{
+    padding-top: 50vh !important;
+    transform: translateY(-25%);
+}
+
+.login-form-title{
+    font-weight: 200;
+    text-align: center;
+}
+
+.login-btn{
+    margin-left: 50%;
+    transform: translateX(-50%);
+    border: 2px solid #87e3e5 !important;
+    background: white !important;
+    color: gray !important;
+    transition: 250ms !important;
+}
+
+.login-btn:hover{
+    background: #87e3e5 !important;
+    color: white!important;
+}
+
+.login-form-body{
+    background: white;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.2);
+}
+
+.was-validated .form-control:valid {
+    background-image: none !important;
+}
+
+input{
+    text-align: center;
+}
+
+body{
+    overflow-x: hidden;
+}
