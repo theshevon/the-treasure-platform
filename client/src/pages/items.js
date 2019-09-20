@@ -2,44 +2,54 @@ import React, { Component } from 'react'
 import axios from "axios";
 
 // boostrap imports
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
+
+// custom components
+import AddItemForm from '../components/AddItemForm'
+import Navbar from '../components/Navbar'
+import Item from '../components/Item'
 
 // custom css
-import Item from "../components/Item"
-import "../components/Item.css"
+import '../components/items.css'
+import '../components/item.css'
 
 // stub data
-import itemsData from "../data/items"
+import itemsData from '../data/items'
 
 class Items extends Component {
 
     state = {
         items: itemsData,
-        showAddModal: false
+        showAddItemModal: false
     }
 
     // fetch item data from database
     // componentDidMount(){
-    //     axios.get("/items")
-    //         .then(res => {
-    //             this.setState({
-    //                 items: res.data
+    //     axios.get({
+    //                 method: 'get',
+    //                 url: 'http://localhost:5000/comp30022app/us-central1/api/items'
     //             })
-    //         })
-    //         .catch(
-    //             err => console.log(err)
-    //         );
+    //             .then(res => {
+    //                 this.setState({
+    //                     items: res.data
+    //                 })
+    //             })
+    //             .catch(
+    //                 err => console.log(err)
+    //             );
     // };
 
+    // handle modal close
     handleClose = () => {
-		this.setState({ showAddModal : false })
+		this.setState({ showAddItemModal : false })
 	};
 
+    // handle modal show
 	handleShow = () => {
-		this.setState({ showAddModal : true })
+		this.setState({ showAddItemModal : true })
 	};
 
     render() {
@@ -49,8 +59,8 @@ class Items extends Component {
         if (this.state.items){
             itemListContent = (
                 <Row className="my-3">
-                    { this.state.items.map(item => (
-                        <Col xs={12} md={6} lg={4}>
+                    { this.state.items.map((item, index) => (
+                        <Col key={index} className='item-col' xs={12} md={6} lg={4}>
                             <Item className="my-5" item={ item }/>
                         </Col>
                     ))}
@@ -62,20 +72,27 @@ class Items extends Component {
 
         return (
             <div>
-                <h1> ITEMS </h1>
-                <Button className="btn" variant="light" onClick={this.handleShow}>Add Item</Button>
-                <Modal show={this.state.showAddModal} size="lg" onHide={this.handleClose}>
-                    <Modal.Header closeButton>
-                    <Modal.Title>Add A New Item</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
-                    <Modal.Footer>
-                    <Button variant="light" onClick={this.handleClose}>
-                        Next
-                    </Button>
-                    </Modal.Footer>
-                </Modal>
-                { itemListContent }
+
+                <Navbar />
+
+                <div id="content" className="container">
+
+                    <h1 className="page-title"> ITEMS </h1>
+
+                    <Button className="mt-2 add-btn btn" variant="light" onClick={this.handleShow}>Add Item</Button>
+
+                    <Modal show={this.state.showAddItemModal} size="lg" onHide={this.handleClose}>
+                        <Modal.Header closeButton>
+                            <Modal.Title>Add A New Item</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <AddItemForm />
+                        </Modal.Body>
+                    </Modal>
+
+                    { itemListContent }
+
+                </div>
             </div>
         )
     }

@@ -1,0 +1,17 @@
+#content{
+    margin-top: 10vh;
+}
+
+.page-title{
+    font-weight: 200;
+    text-align: center;
+}
+
+.add-btn{
+    margin-left: 50%;
+    transform: translateX(-50%);
+}
+
+.item-col{
+    padding-right: 0px;
+}

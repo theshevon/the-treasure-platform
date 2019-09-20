@@ -1,22 +1,17 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto+Mono&display=swap');
-
-/* body{
-    font-family: 'Roboto', !important;
-} */
-
-.card-title{
+.item-card-title{
     font-weight: bold !important;
     font-size: 1.25rem !important;
+    text-align: center !important;
 }
 
-.card-img-top {
+.item-card-img-top {
     width: 100%;
     height: 25vh;
     object-fit: cover;
     border-radius: 0px !important;
 }
 
-.card {
+.item-card {
     padding: 15px;
     transition: 500ms;
     border-width: 0.5px !important;
@@ -25,29 +20,31 @@
     margin-bottom: 20px;
 }
 
-.card:hover{
+.item-card:hover{
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.05), 0 6px 20px 0 rgba(0, 0, 0, 0.045);
     border: none !important;
 }
 
-.card-text{
+.item-card-text{
     font-size: 0.9rem;
     text-align: justify;
 }
 
-.card-body{
+.item-card-body{
     padding-left: 0 !important;
     padding-right: 0 !important;
 }
 
-.btn{
+.item-view-btn{
     color: #a8a8a8 !important;
     background: none !important;
     border: 1px solid #a8a8a8 ;
     transition: 500ms !important;
+    margin-left: 50%;
+    transform: translateX(-50%);
 }
 
-.btn:hover{
+.item-view-btn:hover{
     color: black !important;
     background: #a8a8a8;
     border-color: #a8a8a8!important;

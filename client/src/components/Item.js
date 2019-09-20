@@ -5,7 +5,7 @@ import Modal from 'react-bootstrap/Modal'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Carousel from 'react-bootstrap/Carousel'
-import './Item.css'
+import './item.css'
 
 export class Item extends Component {
 
@@ -40,14 +40,14 @@ export class Item extends Component {
 
         return (
 
-            	<Card className="card">
-				    <Card.Title className="class-title">{item.name}</Card.Title>
-                <Card.Img className="card-img-top" variant="top" src={item.img_src} />
-                <Card.Body className="card-body">
-                	<Card.Text className="card-text">
+            	<Card className="item-card">
+				    <Card.Title className="item-card-title">{item.name}</Card.Title>
+                <Card.Img className="item-card-img-top" variant="top" src={item.img_src} />
+                <Card.Body className="item-card-body">
+                	<Card.Text className="item-card-text">
                     	{item.desc.length > 25 ? item.desc + "..." : item.desc}
                     </Card.Text>
-                    <Button className="btn" variant="light" onClick={this.handleShow}>more info</Button>
+                    <Button className="item-view-btn btn" variant="light" onClick={this.handleShow}>more info</Button>
                 </Card.Body>
 
 				<Modal size="xl" scrollable show={this.state.show} onHide={this.handleClose}>
