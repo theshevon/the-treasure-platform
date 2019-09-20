@@ -9,6 +9,9 @@ const { getItems, getSpecificItem, createNewItem } = require("./controllers/item
 
 /*=================================ROUTING====================================*/
 
+// -- landing route
+app.get("/", getItems);
+
 // -- admin routes
 app.post("/register", registerNewUser); // registration route
 app.post("/login", logInUser); // login route
