@@ -12,7 +12,14 @@ exports.getItems =
                 data.forEach((doc) => {
                     items.push({
                         itemId: doc.id,
-                        name: doc.data().name
+                        name: doc.data().name,
+                        desc: doc.data().desc,
+                        item_src: doc.data().item_src,
+                        val: doc.data().val,
+                        createdOn: doc.data().createdOn,
+                        visibleTo: doc.data().visibleTo,
+                        intUsers: doc.data().intUsers,
+                        assignedTo: doc.data().assignedTo
                     });
                 });
                 return res.json(items);
@@ -30,11 +37,17 @@ exports.getSpecificItem =
             .get()
             .then((data) => {
                 data.forEach((doc) => {
-                    //console.log(req.substring("/item/".length));       //DELETE
                     if (req.params.id == doc.id) {
                         return res.json({
                             itemId: doc.id,
-                            name: doc.data().name
+                            name: doc.data().name,
+                            desc: doc.data().desc,
+                            item_src: doc.data().item_src,
+                            val: doc.data().val,
+                            createdOn: doc.data().createdOn,
+                            visibleTo: doc.data().visibleTo,
+                            intUsers: doc.data().intUsers,
+                            assignedTo: doc.data().assignedTo
                         });
                     }
                 });
