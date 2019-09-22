@@ -8,7 +8,7 @@ import axios from 'axios'
 import Form from 'react-bootstrap/Form'
 
 // custom css
-import './item-form.css'
+import './add-item-form.css'
 
 class AddItemForm extends Component {
 
@@ -27,32 +27,54 @@ class AddItemForm extends Component {
             <div>
                 <Form>
 
-                    <Form.Group as={Row} controlId="formPlaintextPassword">
+                    <Form.Group as={Row}>
                         <Form.Label column sm="3">
                         Name
                         </Form.Label>
                         <Col sm="9">
-                            <Form.Control type="text" required />
+                            <Form.Control name="name" type="text" required />
                         </Col>
                     </Form.Group>
 
-                    <Form.Group as={Row} controlId="exampleForm.ControlTextarea1">
+                    <Form.Group as={Row}>
                         <Form.Label column sm="3">
                         Description
                         </Form.Label>
                         <Col sm="9">
-                            <Form.Control as="textarea" rows="5" required />
+                            <Form.Control as="textarea" name="desc" rows="5" required />
                         </Col>
                     </Form.Group>
 
-                    <Form.Group as={Row} controlId="formPlaintextPassword">
+                    <Form.Group as={Row}>
                         <Form.Label column sm="3">
                         Value (Optional)
                         </Form.Label>
                         <Col sm="9">
-                            <Form.Control type="text" required />
+                            <Form.Control type="text" name="val" required />
                         </Col>
                     </Form.Group>
+
+                    <Form.Group as={Row}>
+                        <Form.Label column sm="3">
+                        Visible to
+                        </Form.Label>
+                        <Col sm="9">
+                            <Form.Control type="text" name="visibleto" required />
+                        </Col>
+                        <Form.Text className="text-muted">
+                            If left blank, this item will be visible to all users, except
+                        </Form.Text>
+                    </Form.Group>
+
+                    <Form.Group as={Row}>
+                        <Form.Label column sm="3">
+                        Assign to (Optional)
+                        </Form.Label>
+                        <Col sm="9">
+                            <Form.Control type="text" name="assignedto" required />
+                        </Col>
+                    </Form.Group>
+
 
                     <Button className="btn" variant="light" type="submit" onClick={this.handleSubmit}>Add Item</Button>
 

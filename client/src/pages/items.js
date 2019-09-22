@@ -81,7 +81,7 @@ class Items extends Component {
 
                     <Button className="mt-2 add-btn btn" variant="light" onClick={this.handleShow}>Add Item</Button>
 
-                    <Modal show={this.state.showAddItemModal} size="lg" onHide={this.handleClose}>
+                    <Modal className="add-item-modal" show={this.state.showAddItemModal} size="lg" onHide={this.handleClose} centered>
                         <Modal.Header closeButton>
                             <Modal.Title>Add A New Item</Modal.Title>
                         </Modal.Header>

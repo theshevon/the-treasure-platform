@@ -23,7 +23,11 @@ var items = [
                         "user1",
                         "user2"
                    ],
-        intusers:  ["user1"]
+        hiddenfrom: [
+                        "user3"
+                    ],
+        intusers:  ["user1"],
+        assignedto: null
     },
     {
         id: 2,
@@ -36,7 +40,11 @@ var items = [
                         "user1",
                         "user2"
                    ],
-        intusers:  ["user1"]
+        hiddenfrom: [
+                        "user3"
+                    ],
+        intusers:  ["user1"],
+        assignedto: null
     },
     {
         id: 3,
@@ -49,7 +57,11 @@ var items = [
                         "user1",
                         "user2"
                    ],
-        intusers:  ["user1"]
+        hiddenfrom: [
+                        "user3"
+                    ],
+        intusers:  ["user1"],
+        assignedto: null
     },
     {
         id: 4,
@@ -62,7 +74,11 @@ var items = [
                         "user1",
                         "user2"
                    ],
-        intusers:  ["user1"]
+        hiddenfrom: [
+                        "user3"
+                    ],
+        intusers:  ["user1"],
+        assignedto: null
     }
 ]
 
