@@ -116,6 +116,7 @@ class Login extends Component {
 							<Row
 								className="my-1">
 								<Form.Control
+									className="login-field"
 									name="email"
 									type="email"
 									placeholder="email"
@@ -130,6 +131,7 @@ class Login extends Component {
 							<Row
 								className="my-1">
 								<Form.Control
+									className="login-field"
 									name="password"
 									type="password"
 									placeholder="password"

@@ -79,7 +79,7 @@ class Items extends Component {
 
                     <h1 className="page-title"> ITEMS </h1>
 
-                    <Button className="mt-2 add-btn btn" variant="light" onClick={this.handleShow}>Add Item</Button>
+                    <Button className="mt-2 mb-3 add-btn btn" variant="light" onClick={this.handleShow}>Add Item</Button>
 
                     <Modal className="add-item-modal" show={this.state.showAddItemModal} size="lg" onHide={this.handleClose} centered scrollable>
                         <Modal.Header closeButton>

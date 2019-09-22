@@ -25,10 +25,6 @@ body{
     padding-right: 0px;
 }
 
-.modal-header{
-    border-bottom: none !important;
-}
-
 .modal-content{
     border-radius: 0px !important;
     border: none !important;
