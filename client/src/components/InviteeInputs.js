@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Col, Row, Form } from 'react-bootstrap';
-import './InviteModal.css'
+import '../stylesheets/invite-modal.css'
 
 
 // Stores input data in arrays

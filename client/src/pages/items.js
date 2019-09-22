@@ -13,8 +13,8 @@ import Navbar from '../components/Navbar'
 import Item from '../components/Item'
 
 // custom css
-import '../components/items.css'
-import '../components/item.css'
+import '../stylesheets/items.css'
+import '../stylesheets/item.css'
 
 // stub data
 import itemsData from '../data/items'

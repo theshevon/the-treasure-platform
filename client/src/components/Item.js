@@ -5,7 +5,7 @@ import Modal from 'react-bootstrap/Modal'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Carousel from 'react-bootstrap/Carousel'
-import './item.css'
+import '../stylesheets/item.css'
 
 export class Item extends Component {
 

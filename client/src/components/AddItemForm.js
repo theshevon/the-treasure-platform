@@ -8,7 +8,7 @@ import axios from 'axios'
 import Form from 'react-bootstrap/Form'
 
 // custom css
-import './add-item-form.css'
+import '../stylesheets/add-item-form.css'
 
 class AddItemForm extends Component {
 
