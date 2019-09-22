@@ -60,10 +60,10 @@ class AddItemForm extends Component {
                         </Form.Label>
                         <Col sm="9">
                             <Form.Control type="text" name="visibleto" required />
+                            <Form.Text className="text-muted">
+                                If left blank, this item will be visible to all users.
+                            </Form.Text>
                         </Col>
-                        <Form.Text className="text-muted">
-                            If left blank, this item will be visible to all users, except
-                        </Form.Text>
                     </Form.Group>
 
                     <Form.Group as={Row}>
@@ -75,6 +75,14 @@ class AddItemForm extends Component {
                         </Col>
                     </Form.Group>
 
+                    <Form.Group as={Row}>
+                        <Form.Label column sm="3">
+                        Photos
+                        </Form.Label>
+                        <Col sm="9">
+                            <Form.Control type="text" name="assignedto" required />
+                        </Col>
+                    </Form.Group>
 
                     <Button className="btn" variant="light" type="submit" onClick={this.handleSubmit}>Add Item</Button>
 

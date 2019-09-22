@@ -60,7 +60,7 @@ class Items extends Component {
             itemListContent = (
                 <Row className="my-3">
                     { this.state.items.map((item, index) => (
-                        <Col key={index} className='item-col' xs={12} md={6} lg={4}>
+                        <Col key={index} className='item-col' xs={12} md={6}>
                             <Item className="my-5" item={ item }/>
                         </Col>
                     ))}
@@ -81,7 +81,7 @@ class Items extends Component {
 
                     <Button className="mt-2 add-btn btn" variant="light" onClick={this.handleShow}>Add Item</Button>
 
-                    <Modal className="add-item-modal" show={this.state.showAddItemModal} size="lg" onHide={this.handleClose} centered>
+                    <Modal className="add-item-modal" show={this.state.showAddItemModal} size="lg" onHide={this.handleClose} centered scrollable>
                         <Modal.Header closeButton>
                             <Modal.Title>Add A New Item</Modal.Title>
                         </Modal.Header>
