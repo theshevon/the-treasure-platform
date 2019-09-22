@@ -10,10 +10,8 @@ exports.getItems =
             .then((data) => {
                 let items = [];
                 data.forEach((doc) => {
-                    items.push({
-                        itemId: doc.id,
-                        name: doc.data().name
-                    });
+                    let item = {id : doc.id};
+                    items.push(Object.assign(item, doc.data()));
                 });
                 return res.json(items);
             })
