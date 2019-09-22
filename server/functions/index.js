@@ -1,25 +1,27 @@
 const functions = require('firebase-functions'),
-      express   = require('express');
-
-const app       = express();
+      express   = require('express'),
+      app       = express();
 
 // mount controllers
 const { registerNewUser, logInUser } = require("./controllers/users");
-const { getItems, getSpecificItem, createNewItem } = require("./controllers/items");
+const ItemsController   = require("./controllers/items");
 
 /*=================================ROUTING====================================*/
 
-// -- landing route
-app.get("/", getItems);
+// landing route
+app.get("/", ItemsController.getItems);
 
-// -- admin routes
+// admin routes
 app.post("/register", registerNewUser); // registration route
 app.post("/login", logInUser); // login route
 
-// -- item routes
-app.get("/items", getItems);
-app.get("/item/:id", getSpecificItem)
-//app.get("newitem", createNewItem)
+// item get routes
+app.get("/items", ItemsController.getItems);
+app.get("/item/:id", ItemsController.getSpecificItem);
+//app.get("/item/create", getCreateItemPage);
+
+// item post routes
+app.post("/item/create", ItemsController.createItem);
 
 /*============================================================================*/
 
