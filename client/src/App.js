@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import "./stylesheets/App.css"
 
 // pages
 import dashboard from "./pages/dashboard";

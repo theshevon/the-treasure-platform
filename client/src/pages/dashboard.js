@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+
+// custom components
 import InviteModal from "../components/InviteModal";
 
 export class Dashboard extends Component {

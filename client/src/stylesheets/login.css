@@ -1,6 +1,10 @@
-.main-container{
-    /* background: #87e3e5; */
+body{
+    overflow-x: hidden;
 }
+
+/* .main-container{
+    background: #87e3e5;
+} */
 
 .login-form-container{
     padding-top: 50vh !important;
@@ -9,6 +13,10 @@
 
 .login-form-title{
     font-weight: 200;
+    text-align: center;
+}
+
+.login-field{
     text-align: center;
 }
 
@@ -36,12 +44,4 @@
 
 .was-validated .form-control:valid {
     background-image: none !important;
-}
-
-input{
-    text-align: center;
-}
-
-body{
-    overflow-x: hidden;
 }
