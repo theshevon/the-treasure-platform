@@ -26,8 +26,8 @@ exports.validateLoginData =
     user => {
 
         let errors = {};
-        if (isEmpty(user.email)) errors.email = "Must not be empty";
-        if (isEmpty(user.password)) errors.password = "Must not be empty";
+        if (isEmpty(user.email)) errors.email = "Please enter a valid email address.";
+        if (isEmpty(user.password)) errors.password = "Please enter a password.";
 
         return  {
             errors,
