@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 
-// Bootstrap imports
+// bootstrap imports
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
 
 // custom css
 import '../stylesheets/navbar.css'
-
-
 
 class NavbarComponent extends Component {
 
@@ -24,7 +22,6 @@ class NavbarComponent extends Component {
         });
     }
 
-
     render() {
 
         let navbarClass;
@@ -39,17 +36,35 @@ class NavbarComponent extends Component {
         }
 
         return (
-            <Navbar className={navbarClass} expand="sm" fixed="top">
-                <Navbar.Brand href="/" className={brandClass}>
+            <Navbar
+                className={navbarClass}
+                expand="sm"
+                fixed="top">
+
+                <Navbar.Brand
+                    href="/"
+                    className={brandClass}>
                     {'Wildcats'}
                 </Navbar.Brand>
-                <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                <Navbar.Collapse id="basic-navbar-nav">
-					<Nav className="mr-auto">
-                        <Nav.Link href="/login">Login</Nav.Link>
-                        <Nav.Link href="/items">Items</Nav.Link>
+
+                <Navbar.Toggle
+                    aria-controls="basic-navbar-nav" />
+
+                <Navbar.Collapse
+                    id="basic-navbar-nav">
+                    <Nav
+                        className="mr-auto">
+                        <Nav.Link
+                            href="/login">
+                            Login
+                        </Nav.Link>
+                        <Nav.Link
+                            href="/items">
+                            Items
+                        </Nav.Link>
                     </Nav>
                 </Navbar.Collapse>
+
             </Navbar>
         )
     }
