@@ -17,30 +17,31 @@ import '../stylesheets/items.css'
 import '../stylesheets/item.css'
 
 // stub data
-import itemsData from '../data/items'
+// import itemsData from '../data/items'
 
 class Items extends Component {
 
     state = {
-        items: itemsData,
+        items: null,
         showAddItemModal: false
     }
 
     // fetch item data from database
-    // componentDidMount(){
-    //     axios.get({
-    //                 method: 'get',
-    //                 url: 'http://localhost:5000/comp30022app/us-central1/api/items'
-    //             })
-    //             .then(res => {
-    //                 this.setState({
-    //                     items: res.data
-    //                 })
-    //             })
-    //             .catch(
-    //                 err => console.log(err)
-    //             );
-    // };
+    componentDidMount(){
+        axios({
+                method: 'get',
+                url: 'http://localhost:5000/comp30022app/us-central1/api/items'
+            })
+            .then(res => {
+                console.log(res);
+                this.setState({
+                    items: res.data
+                })
+            })
+            .catch(
+                err => console.log(err)
+            );
+    };
 
     // handle modal close
     handleClose = () => {
@@ -58,7 +59,7 @@ class Items extends Component {
 
         if (this.state.items){
             itemListContent = (
-                <Row className="my-3">
+                <Row className="my-3 justify-content-center">
                     { this.state.items.map((item, index) => (
                         <Col key={index} className='item-col' xs={12} md={6}>
                             <Item className="my-5" item={ item }/>

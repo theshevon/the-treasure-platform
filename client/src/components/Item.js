@@ -44,7 +44,7 @@ export class Item extends Component {
 
     render() {
 
-        const { item } = this.props;
+		const { item } = this.props;
 
         return (
 
@@ -104,27 +104,14 @@ export class Item extends Component {
 
 							<Carousel
 								controls={false}>
-								<Carousel.Item>
-									<img
-									className="d-block w-100 img-fluid"
-									src={item.cover}
-									alt="First slide"
-									/>
-								</Carousel.Item>
-								<Carousel.Item>
-									<img
-									className="d-block w-100 img-fluid"
-									src={item.cover}
-									alt="Third slide"
-									/>
-								</Carousel.Item>
-								<Carousel.Item>
-									<img
-									className="d-block w-100 img-fluid"
-									src={item.cover}
-									alt="Third slide"
-									/>
-								</Carousel.Item>
+								{ item.photos.map((photo, index) => (
+									<Carousel.Item>
+										<img
+										className="d-block w-100 img-fluid"
+										src={photo}
+										/>
+									</Carousel.Item>
+								))}
 							</Carousel>
 
 							<div
