@@ -14,7 +14,9 @@ exports.registerNewUser =
             email: req.body.email,
             password: req.body.password,
             confirmPassword: req.body.confirmPassword,
-            handle: req.body.handle
+            handle: req.body.handle,
+            firstName: req.body.firstName,
+            lastName: req.body.lastName
         }
 
         // carry out validation
@@ -84,4 +86,26 @@ exports.logInUser =
                 console.log("Error: " + err);
                 return res.status(403).json({ general: "Sorry, the email address or password you entered is incorrect." });
             })
+    }
+
+exports.getUsers =
+
+    (req, res) => {
+        db.collection('users')
+            .get()
+            .then((data) => {
+                //extract all userIDs
+                let users = [];
+                data.forEach((doc) => {
+                    let user = {id : doc.id,
+                                fname : doc.data().fname,
+                                lname : doc.data().lname};
+                    users.push(user);
+                });
+                return res.json(users);
+            })
+            .catch((err) => {
+                console.error(err);
+                res.status(500).json({ error: err.code });
+            });
     }
