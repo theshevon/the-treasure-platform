@@ -26,7 +26,7 @@ To commit changes and deploy the server globally, do the same as mentioned above
 
 Currently, the login and items page have been implemented.
 
-To test login, run start the server, then run React app. Currently, we have one user, whose credentials are `userx@email.com` and `123456` that leads to a succefully login.
+To test login, start the server, then run the React app. Currently, we have one user, whose credentials are `userx@email.com` and `123456` that leads to a succefully login.
 
 The item page can be used to retrieve and view information about artefacts that have been cataloged.
 
