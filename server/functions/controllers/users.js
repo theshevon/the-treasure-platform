@@ -92,6 +92,7 @@ exports.getUsers =
         db.collection('users')
             .get()
             .then((data) => {
+                //extract all userIDs
                 let users = [];
                 data.forEach((doc) => {
                     let user = {userID : doc.data().userID};
