@@ -85,3 +85,22 @@ exports.logInUser =
                 return res.status(403).json({ general: "Sorry, the email address or password you entered is incorrect." });
             })
     }
+
+exports.getUsers =
+
+    (req, res) => {
+        db.collection('users')
+            .get()
+            .then((data) => {
+                let users = [];
+                data.forEach((doc) => {
+                    let user = {userID : doc.data().userID};
+                    users.push(user);
+                });
+                return res.json(users);
+            })
+            .catch((err) => {
+                console.error(err);
+                res.status(500).json({ error: err.code });
+            });
+    }
