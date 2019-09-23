@@ -14,7 +14,9 @@ exports.registerNewUser =
             email: req.body.email,
             password: req.body.password,
             confirmPassword: req.body.confirmPassword,
-            handle: req.body.handle
+            handle: req.body.handle,
+            firstName: req.body.firstName,
+            lastName: req.body.lastName
         }
 
         // carry out validation
@@ -95,7 +97,9 @@ exports.getUsers =
                 //extract all userIDs
                 let users = [];
                 data.forEach((doc) => {
-                    let user = {userID : doc.data().userID};
+                    let user = {userID : doc.data().userID,
+                                firstName : doc.data().firstName,
+                                lastName : doc.data().lastName};
                     users.push(user);
                 });
                 return res.json(users);
