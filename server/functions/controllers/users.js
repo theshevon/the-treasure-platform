@@ -97,9 +97,9 @@ exports.getUsers =
                 //extract all userIDs
                 let users = [];
                 data.forEach((doc) => {
-                    let user = {userID : doc.data().userID,
-                                firstName : doc.data().firstName,
-                                lastName : doc.data().lastName};
+                    let user = {id : doc.id,
+                                fname : doc.data().fname,
+                                lname : doc.data().lname};
                     users.push(user);
                 });
                 return res.json(users);
