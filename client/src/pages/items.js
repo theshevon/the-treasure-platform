@@ -8,6 +8,7 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
 // custom components
+import ItemSkeleton from '../components/ItemSkeleton'
 import AddItemForm from '../components/AddItemForm'
 import Navbar from '../components/Navbar'
 import Item from '../components/Item'
@@ -23,7 +24,8 @@ class Items extends Component {
 
     state = {
         items: null,
-        showAddItemModal: false
+        showAddItemModal: false,
+        loading: true
     }
 
     // fetch item data from database
@@ -35,7 +37,8 @@ class Items extends Component {
             .then(res => {
                 console.log(res);
                 this.setState({
-                    items: res.data
+                    items: res.data,
+                    loading: false
                 })
             })
             .catch(
@@ -55,9 +58,9 @@ class Items extends Component {
 
     render() {
 
-        let itemListContent;
+        let itemListContent = (<ItemSkeleton/>);
 
-        if (this.state.items){
+        if (!this.state.loading){
             itemListContent = (
                 <Row className="my-3 justify-content-center">
                     { this.state.items.map((item, index) => (
@@ -67,8 +70,6 @@ class Items extends Component {
                     ))}
                 </Row>
             )
-        } else {
-            itemListContent = null;
         }
 
         return (
