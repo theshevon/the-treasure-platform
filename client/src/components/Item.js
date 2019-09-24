@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import ReactDOM from 'react-dom'
+// import ReactDOM from 'react-dom'
 
 // bootstrap imports
 import Carousel from 'react-bootstrap/Carousel'
@@ -109,6 +109,7 @@ export class Item extends Component {
 										<img
 										className="d-block w-100 img-fluid"
 										src={photo}
+										alt={item.name + "-img-" + index}
 										/>
 									</Carousel.Item>
 								))}

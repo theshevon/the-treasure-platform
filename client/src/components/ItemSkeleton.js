@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import NoImg from '../images/no-img.png'
 
 // boostrap imports
 import Card from 'react-bootstrap/Card'
@@ -22,10 +21,6 @@ class ItemSkeleton extends Component {
                         <Col
                             sm={6}
                             className="pb-0">
-                            {/* <Card.Img
-                                className="item-card-img-top"
-                                variant="top"
-                                src={ NoImg } /> */}
                             <div className="empty-img"></div>
                         </Col>
                         <Col
