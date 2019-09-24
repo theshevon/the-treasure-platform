@@ -1,11 +1,14 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 
-// bootstrap import
+// bootstrap imports
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+
+// custom components
+import ImageSelector from './ImageSelector'
 
 // custom css
 import '../stylesheets/add-item-form.css'
@@ -13,23 +16,25 @@ import '../stylesheets/add-item-form.css'
 class AddItemForm extends Component {
 
     state = {
-        selectedFile: null,
-        selectingWatchers: true
-    }
-
-    handleNext = () => {
-        if (this.state.stage < 5){
-            this.setState({stage : this.state.stage + 1});
-        }
+        selectedFiles: null,
+        selectingWatchers: true,
+        stage: 0,
+        coverImgIndex: 0
     }
 
     handleSubmit = () => {
         // use axios to send the data to the backend
-        console.log("Handle submit");
+        // console.log("Handle submit");
+        this.setState({ stage: 1 });
     }
 
     handleFileSelect = (event) => {
-        this.setState({selectedFile: event.target.files[0]})
+        let selectedFiles = [];
+        let uploadedFiles = Array.from(event.target.files);
+        uploadedFiles.forEach(file => {
+            selectedFiles.push(URL.createObjectURL(file));
+        })
+        this.setState({selectedFiles: selectedFiles})
     }
 
     handleOptionChange = () => {
@@ -41,10 +46,19 @@ class AddItemForm extends Component {
         }
     }
 
+    validateFrom = () => {
+
+    }
+
+    handleImgSelect = (index) => {
+        this.setState({ coverImgIndex : index });
+    }
+
     render() {
 
         let visibilityLabel;
         let visibilityField;
+        let form;
 
         if (this.state.selectingWatchers){
             visibilityLabel = "Visible to";
@@ -64,7 +78,9 @@ class AddItemForm extends Component {
             );
         }
 
-        return (
+        if (this.state.stage == 0){
+            form = (
+
             <div>
                 <Form>
 
@@ -177,7 +193,8 @@ class AddItemForm extends Component {
                                 accept="image/*"
                                 multiple
                                 ref={fileInput => this.fileInput = fileInput}
-                                style={{ "display" : "none" }}/>
+                                style={{ "display" : "none" }}
+                                required/>
                             <Button
                                 type="button"
                                 className="btn"
@@ -193,13 +210,46 @@ class AddItemForm extends Component {
                         className="float-right btn"
                         variant="light"
                         type="submit"
-                        onClick={this.handleSubmit}>
-                            Add Item
+                        onClick={this.handleSubmit}
+                        disabled={this.state.selectedFiles ? false : true}>
+                            {console.log("selected?: " + this.state.selectedFiles)}
+                            Next
                     </Button>
 
                 </Form>
             </div>
         )
+        } else {
+
+            form = (
+                <Form>
+                    <Row>
+
+                        { this.state.selectedFiles.map((imgSrc, index) => (
+                            <Col
+                                key={index}
+                                xs={12} md={4}
+                                onClick={this.handleImgSelect}>
+                                <img
+                                    src={imgSrc}
+                                    className={ index === this.state.coverImgIndex ? "img-fluid cover-img" : "img-fluid" }
+                                ></img>
+                            </Col>
+                        ))}
+                    </Row>
+
+                    <Button
+                        className="float-right btn"
+                        variant="light"
+                        type="submit"
+                        onClick={this.handleSubmit(index)}>
+                            Add Item
+                    </Button>
+                </Form>
+            );
+        }
+
+        return form;
     }
 }
 
