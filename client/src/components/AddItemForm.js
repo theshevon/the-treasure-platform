@@ -3,6 +3,7 @@ import axios from 'axios'
 import Multiselect from 'react-bootstrap-multiselect'
 
 // bootstrap imports
+import Spinner from 'react-bootstrap/Spinner'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import Row from 'react-bootstrap/Row'
@@ -11,46 +12,103 @@ import Col from 'react-bootstrap/Col'
 // custom css
 import '../stylesheets/add-item-form.css'
 
+// stub data
 import users from '../data/users'
 
 class AddItemForm extends Component {
 
     state = {
-        selectedFiles: [],
-        selectingWatchers: true,
-        stage: 0,
-        coverImgIndex: 0,
-        validated: [false, false],
-        loading: false,
-        users: users,
-        visibleto: []
+        name              : null,
+        desc              : null,
+        coverImgIndex     : 0,
+        uploadedFiles     : [],
+        val               : null,
+        visibleto         : [],
+        assignedto        : null,
+        stage             : 0,
+        allUsers          : users,
+        selectingWatchers : true,
+        loading           : false,
+        validated         : false
     }
 
-    handleSubmit = (event) => {
+    componentDidMount(){
+        axios.get({
+                        method: 'get',
+                        url: 'http://localhost:5000/comp30022app/us-central1/api/users'
+                    })
+                    .then(res => {
+                        this.setState({
+                            allUsers: res.data
+                        })
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    });
+    }
+
+    handleValidation = event => {
 
         const form = event.currentTarget;
 
-        if (this.state.stage === 0){
-            console.log(form.checkValidity());
-            if (form.checkValidity()) {
-                this.setState({ stage: 1 });
-            } else {
-                event.preventDefault();
-                event.stopPropagation();
-            }
+        if (form.checkValidity()) {
+            this.setState({ stage : 1 });
+        } else {
+            this.setState({ validated : true });
+            event.preventDefault();
+            event.stopPropagation();
         }
     }
 
-    handleFileSelect = (event) => {
-        if (this.state.selectedFiles.length === 0){
-            let selectedFiles = [];
-            let uploadedFiles = Array.from(event.target.files);
-            uploadedFiles.forEach(file => {
-                selectedFiles.push(URL.createObjectURL(file));
-            })
-            this.setState({selectedFiles: selectedFiles})
+    // handles changes made to input fields
+    // when the value of an input field changes, its corresponding entry
+    // in the state changes too
+    handleChange = event => {
+		this.setState({ [event.target.name] : event.target.value });
+	}
+
+    handleSubmit = event => {
+
+		event.preventDefault();
+
+		this.setState({
+			loading: true
+		});
+
+		const itemData = {
+            name       : this.state.name,
+            desc       : this.state.desc,
+            cover      : this.state.coverImgIndex,
+            photos     : this.state.uploadedFiles,
+            val        : this.state.val,
+            visibleto  : this.state.selectedUsers,
+            assignedto : this.state.assignedto
+		}
+
+		axios({
+				method: 'post',
+				url: 'http://localhost:5000/comp30022app/us-central1/api/items',
+				data: itemData
+			})
+			.then(res => {
+				this.setState({ loading : false });
+				this.props.history.push('/items');
+			})
+			.catch(err => {
+				this.setState({
+                    errors    : err.response.data,
+                    stage     : 0,
+					loading   : false,
+					validated : true
+				})
+			})
+	}
+
+    handleFileSelect = event => {
+        if (this.state.uploadedFiles.length === 0){
+            this.setState({ uploadedFiles : Array.from(event.target.files) });
         } else {
-            this.setState({selectedFiles: []})
+            this.setState({ uploadedFiles : [] });
         }
     }
 
@@ -76,26 +134,12 @@ class AddItemForm extends Component {
 
     }
 
-    // componentDidMount(){
-    //     axios.get({
-    //                     method: 'get',
-    //                     url: 'http://localhost:5000/comp30022app/us-central1/api/users'
-    //                 })
-    //                 .then(res => {
-    //                     this.setState({
-    //                         users: res.data
-    //                     })
-    //                 })
-    //                 .catch(err => {
-    //                     console.log(err);
-    //                 });
-    // }
-
     render() {
 
         let visibilityLabel;
         let visibilityField;
         let form;
+        let photoSelectText;
 
         if (this.state.selectingWatchers){
             visibilityLabel = "Visible to";
@@ -115,189 +159,214 @@ class AddItemForm extends Component {
             );
         }
 
-        if (this.state.stage === 0){
-            form = (
+        let noUploaded = this.state.uploadedFiles.length;
+        if (noUploaded == 0){
+            photoSelectText = "Select Photos";
+        } else {
+            photoSelectText = noUploaded + " photos selected";
+        }
 
-                <div>
-                    <Form
-                        noValidate
-                        validated={this.state.validated[0]}
-                        onSubmit={this.handleSubmit}>
+        // if loading, replace button text with spinner
+        let loginBtnContent;
+		if (this.state.loading){
+			loginBtnContent = (<Spinner animation="border" size="sm"/>);
+		} else {
+			loginBtnContent = ("Log In");
+		}
 
-                        <Form.Group
-                            as={Row}>
-                            <Form.Label
-                                column
-                                sm="3">
-                                Name
-                            </Form.Label>
-                            <Col
-                                sm="9">
-                                <Form.Control
-                                    name="name"
-                                    type="text"
-                                    required />
-                                <Form.Control.Feedback type="invalid">
-                                    Please enter an item name.
-                                </Form.Control.Feedback>
-                            </Col>
-                        </Form.Group>
+        return (
+            <div>
 
-                        <Form.Group
-                            as={Row}>
-                            <Form.Label
-                                column
-                                sm="3">
-                                Description
-                            </Form.Label>
-                            <Col
-                                sm="9">
-                                <Form.Control
-                                    as="textarea"
-                                    name="desc"
-                                    rows="5"
-                                    required />
-                                <Form.Control.Feedback type="invalid">
-                                    Please enter a description of the item.
-                                </Form.Control.Feedback>
-                            </Col>
-                        </Form.Group>
+                <Form
+                    noValidate
+                    validated={this.state.validated}
+                    onSubmit={this.handleValidation}>
+                    {/* Item name input field */}
+                    <Form.Group
+                        as={Row}
+                        className={this.state.stage ===  0 ? "" : "hidden-field"}>
+                        <Form.Label
+                            column
+                            sm="3">
+                            Name
+                        </Form.Label>
+                        <Col
+                            sm="9">
+                            <Form.Control
+                                name="name"
+                                type="text"
+                                required
+                                onChange={this.handleChange}/>
+                            <Form.Control.Feedback type="invalid">
+                                Please enter a name for the item.
+                            </Form.Control.Feedback>
+                        </Col>
+                    </Form.Group>
 
-                        <Form.Group
-                            as={Row}>
-                            <Form.Label
-                                column
-                                sm="3">
-                                Value{" "}
-                                    <span
-                                        className="text-muted">
-                                        (Optional)
-                                    </span>
-                            </Form.Label>
-                            <Col
-                                sm="9">
-                                <Form.Control
-                                    type="text"
-                                    name="val"
-                                    required />
-                            </Col>
-                        </Form.Group>
+                    {/* Item description field */}
+                    <Form.Group
+                        as={Row}
+                        className={this.state.stage ===  0 ? "" : "hidden-field"}>
+                        <Form.Label
+                            column
+                            sm="3">
+                            Description
+                        </Form.Label>
+                        <Col
+                            sm="9">
+                            <Form.Control
+                                as="textarea"
+                                name="desc"
+                                rows="5"
+                                required
+                                onChange={this.handleChange}/>
+                            <Form.Control.Feedback type="invalid">
+                                Please enter a description of the item.
+                            </Form.Control.Feedback>
+                        </Col>
+                    </Form.Group>
 
-                        <Form.Group
-                            as={Row}>
-                            <Col
-                                sm="3">
-                                <Form.Control
-                                    className="visibility-select"
-                                    as="select"
-                                    val={visibilityLabel}
-                                    onChange={this.handleVisibilityOptionChange}>
-                                    <option>Visible to</option>
-                                    <option>Hidden from</option>
-                                </Form.Control>
-                            </Col>
-                            <Col
-                                sm="9">
-                                {/* {visibilityField} */}
-                                <Form.Control
-                                    className="user-select"
-                                    as="select"
-                                    val={visibilityLabel}
-                                    onChange={this.handleVisibilityOptionChange}>
-                                    <option>Visible to</option>
-                                    <option>Hidden from</option>
-                                </Form.Control>
-                                {/* <Form.Text
-                                    className="text-muted">
-                                    If left blank, this item will be visible to all users.
-                                </Form.Text> */}
-                            </Col>
-                        </Form.Group>
-
-                        <Form.Group
-                            as={Row}>
-                            <Form.Label
-                                column
-                                sm="3">
-                                Assign to{" "}
+                    {/* Item value field */}
+                    <Form.Group
+                        as={Row}
+                        className={this.state.stage ===  0 ? "" : "hidden-field"}>
+                        <Form.Label
+                            column
+                            sm="3">
+                            Value{" "}
                                 <span
                                     className="text-muted">
                                     (Optional)
                                 </span>
-                            </Form.Label>
-                            <Col
-                                sm="9">
-                                <Form.Control
-                                    type="text"
-                                    name="assignedto"
-                                    as="select"
-                                    required>
-                                    <option
-                                        selected
-                                        disabled
-                                        hideen
-                                    >Select User</option>
-                                    { this.state.users.map(user => (
-                                        <option>{user.name}</option>
-                                    ))}
-                                </Form.Control>
-                            </Col>
-                        </Form.Group>
+                        </Form.Label>
+                        <Col
+                            sm="9">
+                            <Form.Control
+                                type="text"
+                                name="val"
+                                onChange={this.handleChange}
+                                className="optional-field"/>
+                            <Form.Control.Feedback type="invalid">
+                                {/* Error message for item value */}
+                            </Form.Control.Feedback>
+                        </Col>
+                    </Form.Group>
 
-                        <Form.Group
-                            as={Row}>
-                            <Form.Label
-                                column
-                                sm="3">
-                                Photos
-                            </Form.Label>
-                            <Col
-                                sm="9">
-                                <input
-                                    type="file"
-                                    onChange={this.handleFileSelect}
-                                    accept="image/*"
-                                    multiple
-                                    ref={fileInput => this.fileInput = fileInput}
-                                    style={{ "display" : "none" }}
-                                    required/>
-                                <Button
-                                    type="button"
-                                    className="btn"
-                                    variant="light"
-                                    onClick={() => this.fileInput.click()}>
-                                        Select Photos
-                                </Button>
+                    {/* Item visibility field */}
+                    <Form.Group
+                        as={Row}
+                        className={this.state.stage ===  0 ? "" : "hidden-field"}>
+                        <Col
+                            sm="3">
+                            <Form.Control
+                                id="visibility-toggler"
+                                className="visibility-select"
+                                as="select"
+                                val={visibilityLabel}
+                                onChange={this.handleVisibilityOptionChange}>
+                                <option>Visible to</option>
+                                <option>Hidden from</option>
+                            </Form.Control>
+                        </Col>
+                        <Col
+                            sm="9">
+                            <Form.Control
+                                className="user-select optional-field"
+                                as="select"
+                                val={visibilityLabel}
+                                onChange={this.handleVisibilityOptionChange}>
+                                { this.state.allUsers.map(user => (
+                                    <option>{user.name}</option>
+                                ))}
+                            </Form.Control>
+                            <Form.Text
+                                className="text-muted">
+                                If no users are selected, this item will be visible to everyone.
+                            </Form.Text>
+                        </Col>
+                    </Form.Group>
 
-                            </Col>
-                        </Form.Group>
+                    <Form.Group
+                        as={Row}
+                        className={this.state.stage ===  0 ? "" : "hidden-field"}>
+                        <Form.Label
+                            column
+                            sm="3">
+                            Assign to{" "}
+                            <span
+                                className="text-muted">
+                                (Optional)
+                            </span>
+                        </Form.Label>
+                        <Col
+                            sm="9">
+                            <Form.Control
+                                type="text"
+                                name="assignedto"
+                                as="select"
+                                className="optional-field">
+                                <option
+                                    selected
+                                    disabled
+                                    hidden
+                                >Select User</option>
+                                { this.state.allUsers.map(user => (
+                                    <option>{user.name}</option>
+                                ))}
+                            </Form.Control>
+                        </Col>
+                    </Form.Group>
 
-                        <Button
-                            className="float-right btn"
-                            variant="light"
-                            type="submit"
-                            onClick={this.handleSubmit}
-                            disabled={this.state.selectedFiles ? false : true}>
-                                Next
-                        </Button>
+                    <Form.Group
+                        as={Row}
+                        className={this.state.stage ===  0 ? "" : "hidden-field"}>
+                        <Form.Label
+                            column
+                            sm="3">
+                            Photos
+                        </Form.Label>
+                        <Col
+                            sm="9">
+                            <Form.Control
+                                type="file"
+                                onChange={this.handleFileSelect}
+                                accept="image/*"
+                                multiple
+                                ref={fileInput => this.fileInput = fileInput}
+                                style={{ "display" : "none" }}
+                                required/>
+                            <Button
+                                type="button"
+                                className="btn"
+                                variant="light"
+                                onClick={() => this.fileInput.click()}>
+                                    {photoSelectText}
+                            </Button>
+                            <Form.Control.Feedback type="invalid">
+                                Please upload at least one photo.
+                            </Form.Control.Feedback>
 
-                    </Form>
-                </div>
-            )
-        } else {
+                        </Col>
+                    </Form.Group>
 
-            form = (
-                <Form>
-                    <Row>
+                    <Button
+                        variant="light"
+                        type="submit"
+                        className={this.state.stage ===  0 ? "float-right btn" : "hidden-field"}>
+                        Next
+                    </Button>
 
-                        { this.state.selectedFiles.map((imgSrc, index) => (
+                    <Row
+                        className={this.state.stage ===  1 ? "" : "hidden-field"}>
+
+                        { this.state.uploadedFiles.map((file, index) => (
                             <Col
                                 key={index}
                                 xs={12} md={4}
                                 onClick={this.handleImgSelect.bind(this, index)}
                                 className={ index === this.state.coverImgIndex? "selected-img m-1" : "non-selected-img m-1"}>
                                 <img
-                                    src={imgSrc}
+                                    src={URL.createObjectURL(file)}
                                     className={ "img-fluid" }
                                 ></img>
                             </Col>
@@ -308,22 +377,20 @@ class AddItemForm extends Component {
                         type="button"
                         variant="light"
                         onClick={this.handleReturn}
-                    >
+                        className={this.state.stage ===  1 ? "" : "hidden-field"}>
                         Back
                     </Button>
 
                     <Button
-                        className="float-right btn"
                         variant="light"
                         type="submit"
-                        onClick={this.handleSubmit}>
-                            Add Item
+                        onClick={this.handleSubmit}
+                        className={this.state.stage ===  1 ? "float-right btn" : "hidden-field"}>
+                        {loginBtnContent}
                     </Button>
                 </Form>
-            )
-        }
-
-        return form;
+            </div>
+        )
     }
 }
 
