@@ -4,15 +4,26 @@ exports.validateRegistrationData =
 
         let errors = {};
 
-        if (isEmpty(newUser.email)){
-            errors.email = "Must not be empty";
-        } else if (!isEmail(newUser.email)){
-            errors.email = "Must be a valid email address";
+        // validate first name
+        if (isEmpty(newUser.fname)){
+            errors.fname = "Please enter your first name!";
         }
 
-        if (isEmpty(newUser.password)) errors.password = "Must not be empty";
-        if (newUser.password !== newUser.confirmPassword) errors.confirmPassword = "Passwords must match";
-        if (isEmpty(newUser.handle)) errors.handle = "Must not be empty";
+        // validate last name
+        if (isEmpty(newUser.lname)){
+            errors.lname = "Please enter your last name!";
+        }
+
+        // validate email address
+        if (isEmpty(newUser.email)){
+            errors.email = "Please enter your email address!";
+        } else if (!isEmail(newUser.email)){
+            errors.email = "Please enter a valid email address!";
+        }
+
+        // validate entered passwords
+        if (isEmpty(newUser.password)) errors.pw = "Please enter a password!";
+        if (newUser.password !== newUser.confirmPassword) errors.pw_c = "Passwords must match";
 
         return  {
                     errors,
@@ -38,7 +49,7 @@ exports.validateLoginData =
 /*=============================HELPER FUNCTIONS===============================*/
 
 const isEmpty = (string) => {
-    return (string.trim() === "");
+    return (!string || string.trim() === "");
 }
 
 const isEmail = (email) => {
