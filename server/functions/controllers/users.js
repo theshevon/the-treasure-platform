@@ -1,9 +1,9 @@
-const { db } = require('../util/admin');
-const firebase = require('firebase');
-const config = require('../util/config');
-firebase.initializeApp(config);
-
+const { admin, db } = require('../util/admin');
+const firebase      = require('firebase');
+const config        = require('../util/config');
 const { validateRegistrationData, validateLoginData } = require("../util/validators");
+
+firebase.initializeApp(config);
 
 exports.registerNewUser =
 
@@ -11,52 +11,52 @@ exports.registerNewUser =
 
         // extract user data from the form
         const newUser = {
+            fname: req.body.fname,
+            lname: req.body.lname,
             email: req.body.email,
-            password: req.body.password,
-            confirmPassword: req.body.confirmPassword,
-            handle: req.body.handle,
-            firstName: req.body.firstName,
-            lastName: req.body.lastName
+            password: req.body.pw,
+            confirmPassword: req.body.pw_c
         }
 
         // carry out validation
         const { valid, errors } = validateRegistrationData(newUser);
         if (!valid) return res.status(400).json(errors);
 
-        db.doc(`/users/${ newUser.handle }`)
-            .get()
-            .then(doc => {
-                if (doc.exists){
-                    return res
-                            .status(400)
-                            .json({
-                                    handle: "this handle is already taken"
-                                });
-                } else {
-                    return firebase
-                            .auth()
-                            .createUserWithEmailAndPassword(newUser.email, newUser.password);
-                }
-            })
-
-            // the new user has been created so return an access/ auth token so that
-            // the user will be able to use it to request more data
+        // create new firebase user
+        firebase
+            .auth()
+            .createUserWithEmailAndPassword(newUser.email, newUser.password)
             .then(data => {
-                return data.user.getIdToken();
-            })
 
-            .then(token => {
-                return res.status(201).json({ token });
-            })
+                let uid = data.user.uid;
 
+                // make a database entry to store the users info
+                // by default, assumes that the user is a secondary user
+                let userData = {
+                    fname: newUser.fname,
+                    lname: newUser.lname,
+                    email: newUser.email,
+                    utype: 1,
+                    createdon: admin.firestore.FieldValue.serverTimestamp(),
+                    intitems: null
+                }
+
+                newUserDoc = db
+                                .collection("users")
+                                .doc(uid)
+                                .set(userData)
+
+                return res.status(200).json(" success: new user created.");
+            })
             .catch(err => {
-                console.error(err);
                 if (err.code === "auth/email-already-in-use"){
                     return res.status(400).json({ email: "Email is already in use" });
                 } else {
                     return res.status(500).json({ error: err.code });
                 }
-            })
+            });
+
+        return res.status(200).json(" success: new user created.");
     }
 
 exports.logInUser =
@@ -88,6 +88,12 @@ exports.logInUser =
             })
     }
 
+// exports.logOutUser =
+
+//     (req, res) => {
+//         return true
+//     }
+
 exports.getUsers =
 
     (req, res) => {
@@ -97,7 +103,7 @@ exports.getUsers =
                 //extract all userIDs
                 let users = [];
                 data.forEach((doc) => {
-                    let user = {id : doc.id,
+                    let user = {uid : doc.id,
                                 fname : doc.data().fname,
                                 lname : doc.data().lname};
                     users.push(user);
@@ -105,7 +111,6 @@ exports.getUsers =
                 return res.json(users);
             })
             .catch((err) => {
-                console.error(err);
                 res.status(500).json({ error: err.code });
             });
     }

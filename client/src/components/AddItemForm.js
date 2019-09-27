@@ -16,11 +16,24 @@ class AddItemForm extends Component {
         selectedFiles: null,
         selectingWatchers: true,
         stage: 0,
-        coverImgIndex: 0
+        coverImgIndex: 0,
+        validated: [false, false],
+        loading: false
     }
 
-    handleSubmit = () => {
-        this.setState({ stage: 1 });
+    handleSubmit = (event) => {
+
+        const form = event.currentTarget;
+
+        if (this.state.stage === 0){
+            console.log(form.checkValidity());
+            if (form.checkValidity()) {
+                this.setState({ stage: 1 });
+            } else {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+        }
     }
 
     handleFileSelect = (event) => {
@@ -77,9 +90,13 @@ class AddItemForm extends Component {
             form = (
 
                 <div>
-                    <Form>
+                    <Form
+                        noValidate
+                        validated={this.state.validated[0]}
+                        onSubmit={this.handleSubmit}>
 
-                        <Form.Group as={Row}>
+                        <Form.Group
+                            as={Row}>
                             <Form.Label
                                 column
                                 sm="3">
@@ -91,10 +108,14 @@ class AddItemForm extends Component {
                                     name="name"
                                     type="text"
                                     required />
+                                <Form.Control.Feedback type="invalid">
+                                    Please enter an item name.
+                                </Form.Control.Feedback>
                             </Col>
                         </Form.Group>
 
-                        <Form.Group as={Row}>
+                        <Form.Group
+                            as={Row}>
                             <Form.Label
                                 column
                                 sm="3">
@@ -107,6 +128,9 @@ class AddItemForm extends Component {
                                     name="desc"
                                     rows="5"
                                     required />
+                                <Form.Control.Feedback type="invalid">
+                                    Please enter a description of the item.
+                                </Form.Control.Feedback>
                             </Col>
                         </Form.Group>
 
@@ -145,11 +169,19 @@ class AddItemForm extends Component {
                             </Col>
                             <Col
                                 sm="9">
-                                {visibilityField}
-                                <Form.Text
+                                {/* {visibilityField} */}
+                                <Form.Control
+                                    className="user-select"
+                                    as="select"
+                                    val={visibilityLabel}
+                                    onChange={this.handleOptionChange}>
+                                    <option>Visible to</option>
+                                    <option>Hidden from</option>
+                                </Form.Control>
+                                {/* <Form.Text
                                     className="text-muted">
                                     If left blank, this item will be visible to all users.
-                                </Form.Text>
+                                </Form.Text> */}
                             </Col>
                         </Form.Group>
 
@@ -158,7 +190,7 @@ class AddItemForm extends Component {
                             <Form.Label
                                 column
                                 sm="3">
-                                Assign{" "}
+                                Assigned to{" "}
                                 <span
                                     className="text-muted">
                                     (Optional)
