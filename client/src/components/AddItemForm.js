@@ -99,12 +99,13 @@ class AddItemForm extends Component {
         }
 
         let assignedTo;
-        this.state.allUsers.forEach(user => {
-            if (user.name === this.state.assignedto){
+        for (var i=0; i<this.state.assignedto.length; i++){
+            let user = this.state.assignedto[i];
+            if (user.name === user.name){
                 assignedTo = user.uid;
                 break;
             }
-        });
+        }
 
 		const itemData = {
             name       : this.state.name,
