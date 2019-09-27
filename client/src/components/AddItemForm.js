@@ -31,6 +31,7 @@ class AddItemForm extends Component {
         stage             : 0,
         allUsers          : users,
         selectingWatchers : true,
+        selectedUsers     : [],
         loading           : false,
         validated         : false
     }
@@ -69,6 +70,10 @@ class AddItemForm extends Component {
     handleChange = event => {
 		this.setState({ [event.target.name] : event.target.value });
 	}
+
+    handleMultiSelect = (event, { values }) => {
+        this.setState({ selectedUsers : values })
+    }
 
     handleSubmit = event => {
 
@@ -122,7 +127,10 @@ class AddItemForm extends Component {
         } else {
             this.setState({selectingWatchers : true});
         }
-        this.setState({ visiblto : [] });
+    }
+
+    handleAssignment = (event, { value }) => {
+        this.setState({ assignedto: value });
     }
 
     handleImgSelect = (index) => {
@@ -139,30 +147,7 @@ class AddItemForm extends Component {
 
     render() {
 
-        let visibilityLabel;
-        let visibilityField;
-        let form;
         let photoSelectText;
-        let options = [];
-
-        if (this.state.selectingWatchers){
-            visibilityLabel = "Visible to";
-            visibilityField = (
-                    <Form.Control
-                        type="text"
-                        name="visibleto"
-                        required />
-            );
-        } else {
-            visibilityLabel = "Hidden from";
-            visibilityField = (
-                <Form.Control
-                    type="text"
-                    name="hiddenfrom"
-                    required />
-            );
-        }
-
         let noUploaded = this.state.uploadedFiles.length;
         if (noUploaded == 0){
             photoSelectText = "Select Photos";
@@ -178,13 +163,21 @@ class AddItemForm extends Component {
 			loginBtnContent = ("Log In");
         }
 
-        this.state.allUsers.map((user, index) => {
-            options.push({
+        let userOptions = [];
+        this.state.allUsers.forEach(user => {
+            userOptions.push({
                 key: user.uid,
                 text: user.name,
                 value: user.name
             })
         })
+
+        let opts = ["Visible to", "Hidden from"];
+        let visibilityOptions = opts.map(item => ({
+                                                    key: item,
+                                                    text: item,
+                                                    value: item
+                                                }));
 
         return (
             <div>
@@ -269,20 +262,22 @@ class AddItemForm extends Component {
                         as={Row}
                         className={this.state.stage ===  0 ? "" : "hidden-field"}>
                         <Col
-                            sm="3">
-                            <Form.Control
-                                id="visibility-toggler"
-                                className="visibility-select"
-                                as="select"
-                                val={visibilityLabel}
-                                onChange={this.handleVisibilityOptionChange}>
-                                <option>Visible to</option>
-                                <option>Hidden from</option>
-                            </Form.Control>
+                            sm="3"
+                            className="px-1">
+                            <Dropdown
+                                selection
+                                options={visibilityOptions}
+                                onChange={this.handleVisibilityOptionChange}/>
                         </Col>
                         <Col
                             sm="9">
-                            <Dropdown placeholder='Select User(s)' fluid multiple selection options={options} />
+                            <Dropdown
+                                onChange={this.handleMultiSelect}
+                                placeholder='Select User(s)'
+                                fluid
+                                multiple
+                                selection
+                                options={userOptions} />
                             <Form.Text
                                 className="text-muted">
                                 If no users are selected, this item will be visible to everyone.
@@ -304,20 +299,13 @@ class AddItemForm extends Component {
                         </Form.Label>
                         <Col
                             sm="9">
-                            <Form.Control
-                                type="text"
+                            <Dropdown
                                 name="assignedto"
-                                as="select"
-                                className="optional-field">
-                                <option
-                                    selected
-                                    disabled
-                                    hidden
-                                >Select User</option>
-                                { this.state.allUsers.map(user => (
-                                    <option>{user.name}</option>
-                                ))}
-                            </Form.Control>
+                                placeholder='Select User(s)'
+                                search
+                                selection
+                                options={userOptions}
+                                onChange={this.handleAssignment}/>
                         </Col>
                     </Form.Group>
 
@@ -370,7 +358,7 @@ class AddItemForm extends Component {
                                 onClick={this.handleImgSelect.bind(this, index)}
                                 className={ index === this.state.coverImgIndex? "selected-img m-1" : "non-selected-img m-1"}>
                                 <img
-                                    src={URL.createObjectURL(file)}
+                                    src={ URL.createObjectURL(file) }
                                     className={ "img-fluid" }
                                 ></img>
                             </Col>

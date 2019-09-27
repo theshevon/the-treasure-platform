@@ -35,8 +35,16 @@
 }
 
 .ui.label{
-    background: rgb(218, 255, 243);
+    /* background: rgb(218, 255, 243); */
     border-radius: 12px;
     color: black !important;
     font-weight: 400;
+}
+
+#visibility-toggler{
+    margin-right: 100px !important
+}
+
+.selector{
+    padding-right: 100px !important;
 }
