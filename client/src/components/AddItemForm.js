@@ -58,9 +58,10 @@ class AddItemForm extends Component {
             this.setState({ stage : 1 });
         } else {
             this.setState({ validated : true });
-            event.preventDefault();
-            event.stopPropagation();
         }
+
+        event.preventDefault();
+        event.stopPropagation();
     }
 
     // handles changes made to input fields
@@ -99,9 +100,9 @@ class AddItemForm extends Component {
         }
 
         let assignedTo;
-        for (var i=0; i<this.state.assignedto.length; i++){
-            let user = this.state.assignedto[i];
-            if (user.name === user.name){
+        for (var i=0; i<this.state.allUsers.length; i++){
+            let user = this.state.allUsers[i];
+            if (user.name === this.state.assignedto){
                 assignedTo = user.uid;
                 break;
             }
@@ -167,7 +168,7 @@ class AddItemForm extends Component {
     handleReturn = () => {
         this.setState({
                         stage: 0,
-                        validated: [false, false]
+                        validated: false
                       });
 
     }
@@ -176,8 +177,10 @@ class AddItemForm extends Component {
 
         let photoSelectText;
         let noUploaded = this.state.uploadedFiles.length;
-        if (noUploaded == 0){
+        if (noUploaded === 0){
             photoSelectText = "Select Photos";
+        } else if (noUploaded === 1){
+            photoSelectText = noUploaded + " photo selected";
         } else {
             photoSelectText = noUploaded + " photos selected";
         }
@@ -187,7 +190,7 @@ class AddItemForm extends Component {
 		if (this.state.loading){
 			loginBtnContent = (<Spinner animation="border" size="sm"/>);
 		} else {
-			loginBtnContent = ("Log In");
+			loginBtnContent = ("Add Item");
         }
 
         let userOptions = [];
@@ -206,6 +209,7 @@ class AddItemForm extends Component {
                                                     value: item
                                                 }));
 
+        console.log("state: " + this.state.stage);
         return (
             <div>
 
@@ -380,41 +384,41 @@ class AddItemForm extends Component {
                         className={this.state.stage ===  0 ? "float-right btn" : "hidden-field"}>
                         Next
                     </Button>
-
-                    {/* Uploaded image preview */}
-                    <Row
-                        className={this.state.stage ===  1 ? "" : "hidden-field"}>
-
-                        { this.state.uploadedFiles.map((file, index) => (
-                            <Col
-                                key={index}
-                                xs={12} md={4}
-                                onClick={this.handleImgSelect.bind(this, index)}
-                                className={ index === this.state.coverImgIndex? "selected-img m-1" : "non-selected-img m-1"}>
-                                <img
-                                    src={ URL.createObjectURL(file) }
-                                    className={ "img-fluid" }
-                                ></img>
-                            </Col>
-                        ))}
-                    </Row>
-
-                    <Button
-                        type="button"
-                        variant="light"
-                        onClick={this.handleReturn}
-                        className={this.state.stage ===  1 ? "" : "hidden-field"}>
-                        Back
-                    </Button>
-
-                    <Button
-                        variant="light"
-                        type="submit"
-                        onClick={this.handleSubmit}
-                        className={this.state.stage ===  1 ? "float-right btn" : "hidden-field"}>
-                        {loginBtnContent}
-                    </Button>
                 </Form>
+
+                {/* Uploaded image preview */}
+                <Row
+                    className={this.state.stage ===  1 ? "" : "hidden-field"}>
+
+                    { this.state.uploadedFiles.map((file, index) => (
+                        <Col
+                            key={index}
+                            xs={12} md={4}
+                            onClick={this.handleImgSelect.bind(this, index)}
+                            className={ index === this.state.coverImgIndex? "selected-img m-1" : "non-selected-img m-1"}>
+                            <img
+                                src={ URL.createObjectURL(file) }
+                                className={ "img-fluid" }
+                            ></img>
+                        </Col>
+                    ))}
+                </Row>
+
+                <Button
+                    type="button"
+                    variant="light"
+                    onClick={this.handleReturn}
+                    className={this.state.stage ===  1 ? "" : "hidden-field"}>
+                    Back
+                </Button>
+
+                <Button
+                    variant="light"
+                    onClick={this.handleSubmit}
+                    className={this.state.stage ===  1 ? "float-right btn" : "hidden-field"}>
+                    {loginBtnContent}
+                </Button>
+
             </div>
         )
     }
