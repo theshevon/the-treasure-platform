@@ -29,6 +29,14 @@
 #visibility-toggler, .optional-field {
     border-color: #CED4DA !important;
 }
-.selected-user{
 
+.add-item-modal .modal-body{
+    overflow-x: hidden !important;
+}
+
+.ui.label{
+    background: rgb(218, 255, 243);
+    border-radius: 12px;
+    color: black !important;
+    font-weight: 400;
 }

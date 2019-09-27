@@ -9,6 +9,9 @@ import Form from 'react-bootstrap/Form'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
+// semantic-ui imports
+import { Dropdown } from 'semantic-ui-react'
+
 // custom css
 import '../stylesheets/add-item-form.css'
 
@@ -140,6 +143,7 @@ class AddItemForm extends Component {
         let visibilityField;
         let form;
         let photoSelectText;
+        let options = [];
 
         if (this.state.selectingWatchers){
             visibilityLabel = "Visible to";
@@ -172,7 +176,15 @@ class AddItemForm extends Component {
 			loginBtnContent = (<Spinner animation="border" size="sm"/>);
 		} else {
 			loginBtnContent = ("Log In");
-		}
+        }
+
+        this.state.allUsers.map((user, index) => {
+            options.push({
+                key: user.uid,
+                text: user.name,
+                value: user.name
+            })
+        })
 
         return (
             <div>
@@ -270,15 +282,7 @@ class AddItemForm extends Component {
                         </Col>
                         <Col
                             sm="9">
-                            <Form.Control
-                                className="user-select optional-field"
-                                as="select"
-                                val={visibilityLabel}
-                                onChange={this.handleVisibilityOptionChange}>
-                                { this.state.allUsers.map(user => (
-                                    <option>{user.name}</option>
-                                ))}
-                            </Form.Control>
+                            <Dropdown placeholder='Select User(s)' fluid multiple selection options={options} />
                             <Form.Text
                                 className="text-muted">
                                 If no users are selected, this item will be visible to everyone.
