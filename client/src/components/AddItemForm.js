@@ -26,7 +26,6 @@ class AddItemForm extends Component {
         coverImgIndex     : 0,
         uploadedFiles     : [],
         val               : null,
-        visibleto         : [],
         assignedto        : null,
         stage             : 0,
         allUsers          : users,
@@ -81,7 +80,31 @@ class AddItemForm extends Component {
 
 		this.setState({
 			loading: true
-		});
+        });
+
+        // adjust selectedUsers
+        let visibleTo = [];
+        if (this.state.selectingWatchers){
+            this.state.allUsers.forEach(user => {
+                if (this.state.selectedUsers.includes(user.name)){
+                    visibleTo.push(user.uid);
+                }
+            });
+        } else {
+            this.state.allUsers.forEach(user => {
+                if (!this.state.selectedUsers.includes(user.name)){
+                    visibleTo.push(user.uid);
+                }
+            });
+        }
+
+        let assignedTo;
+        this.state.allUsers.forEach(user => {
+            if (user.name === this.state.assignedto){
+                assignedTo = user.uid;
+                break;
+            }
+        });
 
 		const itemData = {
             name       : this.state.name,
@@ -89,8 +112,8 @@ class AddItemForm extends Component {
             cover      : this.state.coverImgIndex,
             photos     : this.state.uploadedFiles,
             val        : this.state.val,
-            visibleto  : this.state.selectedUsers,
-            assignedto : this.state.assignedto
+            visibleto  : visibleTo,
+            assignedto : assignedTo
 		}
 
 
@@ -130,7 +153,6 @@ class AddItemForm extends Component {
         }
         this.setState({ selectedUsers : [] });
         this.visDropdown.setState({ value : [] });
-
     }
 
     handleAssignment = (event, { value }) => {
