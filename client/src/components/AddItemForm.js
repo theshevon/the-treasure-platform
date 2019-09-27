@@ -11,16 +11,19 @@ import Col from 'react-bootstrap/Col'
 // custom css
 import '../stylesheets/add-item-form.css'
 
+import users from '../data/users'
+
 class AddItemForm extends Component {
 
     state = {
-        selectedFiles: null,
+        selectedFiles: [],
         selectingWatchers: true,
         stage: 0,
         coverImgIndex: 0,
         validated: [false, false],
         loading: false,
-        users: []
+        users: users,
+        visibleto: []
     }
 
     handleSubmit = (event) => {
@@ -39,45 +42,54 @@ class AddItemForm extends Component {
     }
 
     handleFileSelect = (event) => {
-        let selectedFiles = [];
-        let uploadedFiles = Array.from(event.target.files);
-        uploadedFiles.forEach(file => {
-            selectedFiles.push(URL.createObjectURL(file));
-        })
-        this.setState({selectedFiles: selectedFiles})
+        if (this.state.selectedFiles.length === 0){
+            let selectedFiles = [];
+            let uploadedFiles = Array.from(event.target.files);
+            uploadedFiles.forEach(file => {
+                selectedFiles.push(URL.createObjectURL(file));
+            })
+            this.setState({selectedFiles: selectedFiles})
+        } else {
+            this.setState({selectedFiles: []})
+        }
     }
 
-    handleOptionChange = () => {
+    handleVisibilityOptionChange = () => {
 
         if (this.state.selectingWatchers){
             this.setState({selectingWatchers : false});
         } else {
             this.setState({selectingWatchers : true});
         }
-    }
-
-    validateFrom = () => {
-
+        this.setState({ visiblto : [] });
     }
 
     handleImgSelect = (index) => {
         this.setState({ coverImgIndex : index });
     }
 
-    componentDidMount(){
-        axios.get({
-                        method: 'get',
-                        url: 'http://localhost:5000/comp30022app/us-central1/api/users'
-                    })
-                    .then(res => {
-                        this.setState({
-                            users: res.data
-                        })
-                    })
-                    .catch(err => {
-                        console.log(err);
-                    });
+    handleReturn = () => {
+        this.setState({
+                        stage: 0,
+                        validated: [false, false]
+                      });
+
     }
+
+    // componentDidMount(){
+    //     axios.get({
+    //                     method: 'get',
+    //                     url: 'http://localhost:5000/comp30022app/us-central1/api/users'
+    //                 })
+    //                 .then(res => {
+    //                     this.setState({
+    //                         users: res.data
+    //                     })
+    //                 })
+    //                 .catch(err => {
+    //                     console.log(err);
+    //                 });
+    // }
 
     render() {
 
@@ -103,7 +115,7 @@ class AddItemForm extends Component {
             );
         }
 
-        if (this.state.stage == 0){
+        if (this.state.stage === 0){
             form = (
 
                 <div>
@@ -179,7 +191,7 @@ class AddItemForm extends Component {
                                     className="visibility-select"
                                     as="select"
                                     val={visibilityLabel}
-                                    onChange={this.handleOptionChange}>
+                                    onChange={this.handleVisibilityOptionChange}>
                                     <option>Visible to</option>
                                     <option>Hidden from</option>
                                 </Form.Control>
@@ -191,7 +203,7 @@ class AddItemForm extends Component {
                                     className="user-select"
                                     as="select"
                                     val={visibilityLabel}
-                                    onChange={this.handleOptionChange}>
+                                    onChange={this.handleVisibilityOptionChange}>
                                     <option>Visible to</option>
                                     <option>Hidden from</option>
                                 </Form.Control>
@@ -207,7 +219,7 @@ class AddItemForm extends Component {
                             <Form.Label
                                 column
                                 sm="3">
-                                Assigned to{" "}
+                                Assign to{" "}
                                 <span
                                     className="text-muted">
                                     (Optional)
@@ -218,7 +230,17 @@ class AddItemForm extends Component {
                                 <Form.Control
                                     type="text"
                                     name="assignedto"
-                                    required />
+                                    as="select"
+                                    required>
+                                    <option
+                                        selected
+                                        disabled
+                                        hideen
+                                    >Select User</option>
+                                    { this.state.users.map(user => (
+                                        <option>{user.name}</option>
+                                    ))}
+                                </Form.Control>
                             </Col>
                         </Form.Group>
 
@@ -281,6 +303,14 @@ class AddItemForm extends Component {
                             </Col>
                         ))}
                     </Row>
+
+                    <Button
+                        type="button"
+                        variant="light"
+                        onClick={this.handleReturn}
+                    >
+                        Back
+                    </Button>
 
                     <Button
                         className="float-right btn"
