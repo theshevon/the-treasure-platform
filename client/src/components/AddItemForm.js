@@ -71,8 +71,8 @@ class AddItemForm extends Component {
 		this.setState({ [event.target.name] : event.target.value });
 	}
 
-    handleMultiSelect = (event, { values }) => {
-        this.setState({ selectedUsers : values })
+    handleMultiSelect = (event, { value }) => {
+        this.setState({ selectedUsers : value })
     }
 
     handleSubmit = event => {
@@ -92,6 +92,7 @@ class AddItemForm extends Component {
             visibleto  : this.state.selectedUsers,
             assignedto : this.state.assignedto
 		}
+
 
 		axios({
 				method: 'post',
@@ -127,6 +128,9 @@ class AddItemForm extends Component {
         } else {
             this.setState({selectingWatchers : true});
         }
+        this.setState({ selectedUsers : [] });
+        this.visDropdown.setState({ value : [] });
+
     }
 
     handleAssignment = (event, { value }) => {
@@ -186,6 +190,7 @@ class AddItemForm extends Component {
                     noValidate
                     validated={this.state.validated}
                     onSubmit={this.handleValidation}>
+
                     {/* Item name input field */}
                     <Form.Group
                         as={Row}
@@ -266,6 +271,7 @@ class AddItemForm extends Component {
                             className="px-1">
                             <Dropdown
                                 selection
+                                defaultValue="Visible to"
                                 options={visibilityOptions}
                                 onChange={this.handleVisibilityOptionChange}/>
                         </Col>
@@ -277,6 +283,8 @@ class AddItemForm extends Component {
                                 fluid
                                 multiple
                                 selection
+                                defaultValue={this.state.selectedUsers}
+                                ref={visDropdown => this.visDropdown = visDropdown}
                                 options={userOptions} />
                             <Form.Text
                                 className="text-muted">
@@ -285,6 +293,7 @@ class AddItemForm extends Component {
                         </Col>
                     </Form.Group>
 
+                    {/* Item assignment field */}
                     <Form.Group
                         as={Row}
                         className={this.state.stage ===  0 ? "" : "hidden-field"}>
@@ -309,6 +318,7 @@ class AddItemForm extends Component {
                         </Col>
                     </Form.Group>
 
+                    {/* Item photo field */}
                     <Form.Group
                         as={Row}
                         className={this.state.stage ===  0 ? "" : "hidden-field"}>
@@ -348,6 +358,7 @@ class AddItemForm extends Component {
                         Next
                     </Button>
 
+                    {/* Uploaded image preview */}
                     <Row
                         className={this.state.stage ===  1 ? "" : "hidden-field"}>
 
