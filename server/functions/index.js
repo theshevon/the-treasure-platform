@@ -3,23 +3,16 @@ const functions = require('firebase-functions'),
 
 const app       = express();
 
-// mount controllers
-const { registerNewUser, logInUser, getUsers } = require("./controllers/users");
-const { getItems, getSpecificItem, createNewItem } = require("./controllers/items");
+// import routes
+const userRoutes  = require("./routes/users"),
+      itemRoutes  = require("./routes/items"),
+      indexRoutes = require("./routes/index");
 
-/*=================================ROUTING====================================*/
+/*==================================routing===================================*/
 
-// -- landing route
-app.get("/", getItems);
-
-// -- admin routes
-app.post("/register", registerNewUser); // registration route
-app.post("/login", logInUser); // login route
-app.get("/users", getUsers);
-
-// -- item routes
-app.get("/items", getItems);
-app.get("/item/:id", getSpecificItem)
+app.use(userRoutes);
+app.use(itemRoutes);
+app.use(indexRoutes);
 
 /*============================================================================*/
 
