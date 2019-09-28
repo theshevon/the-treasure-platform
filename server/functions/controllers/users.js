@@ -63,13 +63,13 @@ exports.logInUser =
 
     (req, res) => {
 
-        // extract credentials from form
+        // Extract credentials from form
         const user = {
             email: req.body.email,
             password: req.body.password
         };
 
-        // validate credentials
+        // Calidate credentials
         const { valid, errors } = validateLoginData(user);
         if (!valid) return res.status(400).json(errors);
 
@@ -85,22 +85,33 @@ exports.logInUser =
             .catch(err => {
                 console.log("Error: " + err);
                 return res.status(403).json({ general: "Sorry, the email address or password you entered is incorrect." });
-            })
+            });
     }
 
-// exports.logOutUser =
+exports.logOutUser =
 
-//     (req, res) => {
-//         return true
-//     }
+    (req, res) => {
+        // Logout of the current user account
+        firebase
+            .auth()
+            .signOut()
+            .then(data => {
+                res.status(200).json("Success: Signed out.");
+            })
+            .catch(err => {
+                console.log("Error: " + err)
+                return res.status(500).json({ error: err.code });
+            });
+    }
 
 exports.getUsers =
 
     (req, res) => {
+        // Get a list of all users from the database
         db.collection('users')
             .get()
             .then((data) => {
-                //extract all userIDs
+                // Extract all userIDs
                 let users = [];
                 data.forEach((doc) => {
                     if (doc.data().utype === 2){

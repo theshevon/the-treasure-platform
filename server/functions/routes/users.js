@@ -7,7 +7,7 @@ const userController = require("../controllers/users")
 
 router.get("/users", userController.getUsers);
 
-// router.get("/logout", userController.logoutUser);
+router.get("/logout", userController.logOutUser);
 
 /*================================POST ROUTES=================================*/
 
