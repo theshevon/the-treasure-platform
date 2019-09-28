@@ -21,24 +21,24 @@ exports.getItems =
             });
     }
 
-exports.getSpecificItem =
+// exports.getSpecificItem =
 
-    (req, res) => {
-        db.collection('items')
-            .get()
-            .then((data) => {
-                data.forEach((doc) => {
-                    //console.log(req.substring("/item/".length));       //DELETE
-                    if (req.params.id == doc.id) {
-                        return res.json({
-                            itemId: doc.id,
-                            name: doc.data().name
-                        });
-                    }
-                });
-            })
-            .catch((err) => {
-                console.error(err);
-                res.status(500).json({ error: err.code });
-            });
-    }
+//     (req, res) => {
+//         db.collection('items')
+//             .get()
+//             .then((data) => {
+//                 data.forEach((doc) => {
+//                     //console.log(req.substring("/item/".length));       //DELETE
+//                     if (req.params.id == doc.id) {
+//                         return res.json({
+//                             itemId: doc.id,
+//                             name: doc.data().name
+//                         });
+//                     }
+//                 });
+//             })
+//             .catch((err) => {
+//                 console.error(err);
+//                 res.status(500).json({ error: err.code });
+//             });
+//     }
