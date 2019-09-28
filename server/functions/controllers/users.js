@@ -69,7 +69,7 @@ exports.logInUser =
             password: req.body.password
         };
 
-        // Calidate credentials
+        // Validate credentials
         const { valid, errors } = validateLoginData(user);
         if (!valid) return res.status(400).json(errors);
 
