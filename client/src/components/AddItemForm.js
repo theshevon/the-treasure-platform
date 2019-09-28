@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import axios from 'axios'
-import Multiselect from 'react-bootstrap-multiselect'
 
 // bootstrap imports
 import Spinner from 'react-bootstrap/Spinner'
@@ -16,7 +15,7 @@ import { Dropdown } from 'semantic-ui-react'
 import '../stylesheets/add-item-form.css'
 
 // stub data
-import users from '../data/users'
+// import users from '../data/users'
 
 class AddItemForm extends Component {
 
@@ -28,7 +27,7 @@ class AddItemForm extends Component {
         val               : null,
         assignedto        : null,
         stage             : 0,
-        allUsers          : users,
+        allUsers          : null,
         selectingWatchers : true,
         selectedUsers     : [],
         loading           : false,
@@ -36,6 +35,8 @@ class AddItemForm extends Component {
     }
 
     componentDidMount(){
+
+        // fetch user IDs and names of all the secondary users on the platform
         axios.get({
                         method: 'get',
                         url: 'http://localhost:5000/comp30022app/us-central1/api/users'
@@ -48,8 +49,29 @@ class AddItemForm extends Component {
                     .catch(err => {
                         console.log(err);
                     });
+
+        // user options for visibility dropdown
+        let userOptions = [];
+        this.state.allUsers.forEach(user => {
+            userOptions.push({
+                key: user.uid,
+                text: user.name,
+                value: user.name
+            });
+        });
+        this.setState({ userOptions : userOptions });
+
+        // options for visibility toggler dropdown
+        let opts = ["Visible to", "Hidden from"];
+        let visibilityOptions = opts.map(item => ({
+                                                    key: item,
+                                                    text: item,
+                                                    value: item
+                                                }));
+        this.setState({ visibilityOptions : visibilityOptions });
     }
 
+    // handles validation of the input fields in the form
     handleValidation = event => {
 
         const form = event.currentTarget;
@@ -71,10 +93,12 @@ class AddItemForm extends Component {
 		this.setState({ [event.target.name] : event.target.value });
 	}
 
+    // handles state updates to item visibility changes
     handleMultiSelect = (event, { value }) => {
         this.setState({ selectedUsers : value })
     }
 
+    // prepares and sends the data to the server to create a new item
     handleSubmit = event => {
 
 		event.preventDefault();
@@ -83,7 +107,8 @@ class AddItemForm extends Component {
 			loading: true
         });
 
-        // adjust selectedUsers
+        // create an array with just the ids of the users who the item will
+        // be visible to
         let visibleTo = [];
         if (this.state.selectingWatchers){
             this.state.allUsers.forEach(user => {
@@ -99,6 +124,7 @@ class AddItemForm extends Component {
             });
         }
 
+        // replace assignedto with the uid of the corresponding user
         let assignedTo;
         for (var i=0; i<this.state.allUsers.length; i++){
             let user = this.state.allUsers[i];
@@ -108,6 +134,7 @@ class AddItemForm extends Component {
             }
         }
 
+        // data needed to make an item on firebase
 		const itemData = {
             name       : this.state.name,
             desc       : this.state.desc,
@@ -118,7 +145,7 @@ class AddItemForm extends Component {
             assignedto : assignedTo
 		}
 
-
+        // send the data to the server
 		axios({
 				method: 'post',
 				url: 'http://localhost:5000/comp30022app/us-central1/api/items',
@@ -138,14 +165,12 @@ class AddItemForm extends Component {
 			})
 	}
 
+    // handles state updates to uploaded files
     handleFileSelect = event => {
-        if (this.state.uploadedFiles.length === 0){
-            this.setState({ uploadedFiles : Array.from(event.target.files) });
-        } else {
-            this.setState({ uploadedFiles : [] });
-        }
+        this.setState({ uploadedFiles : Array.from(event.target.files) });
     }
 
+    // handles state updates to visibility toggler
     handleVisibilityOptionChange = () => {
 
         if (this.state.selectingWatchers){
@@ -157,14 +182,17 @@ class AddItemForm extends Component {
         this.visDropdown.setState({ value : [] });
     }
 
+    // handles state updates to item assignee
     handleAssignment = (event, { value }) => {
         this.setState({ assignedto: value });
     }
 
+    // handles state updates to cover image selection
     handleImgSelect = (index) => {
         this.setState({ coverImgIndex : index });
     }
 
+    // handles state updates to form navigation
     handleReturn = () => {
         this.setState({
                         stage: 0,
@@ -175,6 +203,7 @@ class AddItemForm extends Component {
 
     render() {
 
+        // decide on what text needs to be on the photo upload button
         let photoSelectText;
         let noUploaded = this.state.uploadedFiles.length;
         if (noUploaded === 0){
@@ -185,7 +214,7 @@ class AddItemForm extends Component {
             photoSelectText = noUploaded + " photos selected";
         }
 
-        // if loading, replace button text with spinner
+        // if loading, replace 'add item' button text with a spinner
         let loginBtnContent;
 		if (this.state.loading){
 			loginBtnContent = (<Spinner animation="border" size="sm"/>);
@@ -193,23 +222,6 @@ class AddItemForm extends Component {
 			loginBtnContent = ("Add Item");
         }
 
-        let userOptions = [];
-        this.state.allUsers.forEach(user => {
-            userOptions.push({
-                key: user.uid,
-                text: user.name,
-                value: user.name
-            })
-        })
-
-        let opts = ["Visible to", "Hidden from"];
-        let visibilityOptions = opts.map(item => ({
-                                                    key: item,
-                                                    text: item,
-                                                    value: item
-                                                }));
-
-        console.log("state: " + this.state.stage);
         return (
             <div>
 
@@ -299,7 +311,7 @@ class AddItemForm extends Component {
                             <Dropdown
                                 selection
                                 defaultValue="Visible to"
-                                options={visibilityOptions}
+                                options={this.state.visibilityOptions}
                                 onChange={this.handleVisibilityOptionChange}/>
                         </Col>
                         <Col
@@ -312,7 +324,7 @@ class AddItemForm extends Component {
                                 selection
                                 defaultValue={this.state.selectedUsers}
                                 ref={visDropdown => this.visDropdown = visDropdown}
-                                options={userOptions} />
+                                options={this.state.userOptions} />
                             <Form.Text
                                 className="text-muted">
                                 If no users are selected, this item will be visible to everyone.
@@ -340,7 +352,7 @@ class AddItemForm extends Component {
                                 placeholder='Select User(s)'
                                 search
                                 selection
-                                options={userOptions}
+                                options={this.state.userOptions}
                                 onChange={this.handleAssignment}/>
                         </Col>
                     </Form.Group>
@@ -388,14 +400,20 @@ class AddItemForm extends Component {
 
                 {/* Uploaded image preview */}
                 <Row
-                    className={this.state.stage ===  1 ? "" : "hidden-field"}>
+                    className={this.state.stage ===  1 ? "d-flex justify-content-center" : "hidden-field"}>
+                    <span>
+                        Please select a cover image for the item
+                    </span>
+                </Row>
+                <Row
+                    className={this.state.stage ===  1 ? "px-1 py-4" : "hidden-field"}>
 
                     { this.state.uploadedFiles.map((file, index) => (
                         <Col
                             key={index}
-                            xs={12} md={4}
+                            xs={12} md={3}
                             onClick={this.handleImgSelect.bind(this, index)}
-                            className={ index === this.state.coverImgIndex? "selected-img m-1" : "non-selected-img m-1"}>
+                            className={ index === this.state.coverImgIndex? "selected-img" : "non-selected-img"}>
                             <img
                                 src={ URL.createObjectURL(file) }
                                 className={ "img-fluid" }
