@@ -36,11 +36,6 @@ class InviteModal extends Component {
                     <Modal.Body>
                         <InviteFrom/>
                     </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="dark" onClick={this.handleSubmit}>
-                            Send Invitations
-                        </Button>
-                    </Modal.Footer>
                 </Modal>
 
             </div>
