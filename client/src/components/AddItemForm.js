@@ -214,12 +214,12 @@ class AddItemForm extends Component {
             photoSelectText = noUploaded + " photos selected";
         }
 
-        // if loading, replace 'add item' button text with a spinner
-        let loginBtnContent;
+        // if loading, replace button text with a spinner
+        let btnContent;
 		if (this.state.loading){
-			loginBtnContent = (<Spinner animation="border" size="sm"/>);
+			btnContent = (<Spinner animation="border" size="sm"/>);
 		} else {
-			loginBtnContent = ("Add Item");
+			btnContent = ("Add Item");
         }
 
         return (
@@ -433,8 +433,9 @@ class AddItemForm extends Component {
                 <Button
                     variant="light"
                     onClick={this.handleSubmit}
-                    className={this.state.stage ===  1 ? "float-right btn" : "hidden-field"}>
-                    {loginBtnContent}
+                    className={this.state.stage ===  1 ? "float-right btn" : "hidden-field"}
+                    disabled={this.state.loading}>
+                    {btnContent}
                 </Button>
 
             </div>
