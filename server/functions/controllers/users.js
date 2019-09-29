@@ -96,7 +96,7 @@ exports.logOutUser =
             .auth()
             .signOut()
             .then(data => {
-                res.status(200).json("Success: Signed out.");
+                return res.status(200).json("Success: Signed out.");
             })
             .catch(err => {
                 console.log("Error: " + err)
