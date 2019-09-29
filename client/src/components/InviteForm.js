@@ -1,108 +1,76 @@
-// Form.js
+import React, { Component } from 'react'
+import Form from 'react-bootstrap/Form'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
+import Button from 'react-bootstrap/Button'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTimes } from '@fortawesome/free-solid-svg-icons'
 
-import React, { useState } from 'react';
-import InviteeInputs from './InviteeInputs';
-import { Row, Col, Button} from 'react-bootstrap';
+class InviteForm extends Component {
 
-const InviteForm = () => {
-    const blankInvitee = { name: '', email: '' };
-    const [inviteeState, setInviteeState] = useState([
-        { ...blankInvitee },
-    ]);
+    state = {
+        noRows : 5       // the default no of rows will be 5
+    }
 
-    const addInvitee = () => {
-        setInviteeState([...inviteeState, { ...blankInvitee }]);
-    };
+    reduceNoRows = () => {
+        this.setState({ noRows : (this.state.noRows - 1) });
+    }
 
-    const handleInviteeChange = (e) => {
-        const updatedInvitees = [...inviteeState];
-        updatedInvitees[e.target.dataset.idx][e.target.className] = e.target.value;
-        setInviteeState(updatedInvitees);
-        console.log(e);
-    };
-
-    return (
-        <form>
-            {
-                inviteeState.map((val, idx) => (
-                    <InviteeInputs
-                        key={`invitee-${idx}`}
-                        idx={idx}
-                        inviteeState={inviteeState}
-                        handleInviteeChange={handleInviteeChange}
-                    />
-                ))
-            }
-            <div className = 'btn-col-xs-3'>
-            <Button variant="light" onClick={addInvitee}> Add another </Button>
-            </div>
-
-        </form>
-
-    )
-};
-
-export default InviteForm
+    addRows = () => {
+        this.setState({ noRows : (this.state.noRows + 1) });
+    }
 
 
+    render() {
 
-// import React, { Component } from 'react'
-// import Form from 'react-bootstrap/Form'
-// import Row from 'react-bootstrap/Row'
-// import Col from 'react-bootstrap/Col'
-// import Button from 'react-bootstrap/Button'
-//
-// export class InviteForm extends Component {
-//     render() {
-//
-//         var formRow = (
-//             <Row className="my-2">
-//                 <Col xs="11">
-//                     <Row>
-//                         <Col>
-//                             <Form.Control placeholder="muhammed" />
-//                         </Col>
-//                         <Col>
-//                             <Form.Control placeholder="wong"/>
-//                         </Col>
-//                         <Col>
-//                             <Form.Control placeholder="name@example.com" />
-//                         </Col>
-//                     </Row>
-//                 </Col>
-//                 <Col xs="1">
-//                     <Button variant='outline-secondary'>x</Button>
-//                 </Col>
-//             </Row>
-//         )
-//
-//         return (
-//             <div>
-//                 <Form>
-//                     <Row>
-//                         <Col xs="11">
-//                             <Row>
-//                                 <Col style={{"fontWeight" : "bold"}}>
-//                                     First Name
-//                                 </Col>
-//                                 <Col style={{"fontWeight" : "bold"}}>
-//                                     Last Name
-//                                 </Col>
-//                                 <Col style={{"fontWeight" : "bold"}}>
-//                                     Email Address
-//                                 </Col>
-//                             </Row>
-//                         </Col>
-//                     </Row>
-//                     { formRow }
-//                     { formRow }
-//                     { formRow }
-//                     { formRow }
-//                     { formRow }
-//                 </Form>
-//             </div>
-//         )
-//     }
-// }
-//
-// export default InviteForm
+        let formRow = (
+            <Row>
+                <Col xs="11">
+                    <Row>
+                        <Col>
+                            <Form.Control
+                                placeholder="name"/>
+                        </Col>
+                        <Col>
+                            <Form.Control
+                                type="email"
+                                placeholder="email"/>
+                        </Col>
+                    </Row>
+                </Col>
+                <Col xs="1">
+                    <Button
+                        className="del-row-btn"
+                        onClick={this.reduceNoRows}>
+                        ×
+                    </Button>
+                </Col>
+            </Row>
+        )
+
+        let formContent = [];
+        for (var i=0; i< this.state.noRows; i++ ){
+            formContent.push(formRow);
+        }
+
+        return (
+                <Form>
+                    {formContent}
+                    <a
+                        className="add-row-btn float-left mt-4"
+                        variant="light"
+                        onClick={this.addRows}>
+                        <span
+                            className="mr-1">
+                            +
+                        </span>
+                        <span>
+                            Add Another
+                        </span>
+                    </a>
+                </Form>
+        )
+    }
+}
+
+export default InviteForm
