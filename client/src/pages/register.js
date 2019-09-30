@@ -18,7 +18,7 @@ class Register extends Component {
         pw:      '',
         pw_c:    '',
         loading: false,
-        stage:   0,
+        stage:   1,
         validated: false
     }
 
@@ -126,6 +126,7 @@ class Register extends Component {
 
         if (this.state.stage === 0){
 
+            // set up error messages
             let emailErr, codeErr;
             if (this.state.errors){
                 if (this.state.errors.email) emailErr = this.state.errors.email;
@@ -141,6 +142,18 @@ class Register extends Component {
                     noValidate
                     validated={this.state.validated}
                     onSubmit={this.handleValidation}>
+
+                    <h1
+                        className="form-title">
+                        Let's Get Started!
+                    </h1>
+                    <p
+                        className="text-muted mb-4 text-center">
+                        Please enter your email address and the unique code that
+                        was emailed to you.<br/>
+                        <strong>Note: </strong>The email address entered must be
+                        the same one that the invite was sent to.
+                    </p>
 
                     {/* Email field */}
                     <Row
@@ -189,6 +202,7 @@ class Register extends Component {
 
         else {
 
+            // set up error messages
             let fnameErr, lnameErr, pwError;
             if (this.state.errors){
                 if (this.state.errors.fname) {
@@ -208,6 +222,15 @@ class Register extends Component {
                     noValidate
                     validated={this.state.validated}
                     onSubmit={this.handleRegistration}>
+
+                    <h1
+                        className="form-title">
+                        Almost There!
+                    </h1>
+                    <p
+                        className="text-muted mb-4 text-center">
+                        Just fill in your details and you'll be all good to go!
+                    </p>
 
                     {/* Name fields */}
                     <Row
@@ -317,10 +340,6 @@ class Register extends Component {
                         xs="10"
                         sm="6"
                         md="3">
-                        <h1
-                            className="form-title mb-4">
-                            Welcome
-                        </h1>
                         { formContent }
                     </Col>
 				</Row>
