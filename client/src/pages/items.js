@@ -35,7 +35,6 @@ class Items extends Component {
                 url: 'http://localhost:5000/comp30022app/us-central1/api/items'
             })
             .then(res => {
-                console.log(res);
                 this.setState({
                     items: res.data,
                     loading: false

@@ -1,31 +1,3 @@
-exports.validateRegistrationData =
-
-    newUser => {
-
-        let errors = {};
-
-        // validate first name
-        if (isEmpty(newUser.fname)){
-            errors.fname = "Please enter your first name!";
-        }
-
-        // validate last name
-        if (isEmpty(newUser.lname)){
-            errors.lname = "Please enter your last name!";
-        }
-
-        // validate entered passwords
-        if (isEmpty(newUser.password)) errors.pw = "Please enter a password!";
-        if (newUser.password !== newUser.confirmPassword) errors.pw_c = "Passwords must match";
-
-        return  {
-                    errors,
-                    valid: Object.keys(errors).length === 0
-                }
-
-    }
-
-
 exports.validateInviteeData =
 
     invitee => {
@@ -46,6 +18,33 @@ exports.validateInviteeData =
                     errors,
                     valid: Object.keys(errors).length === 0
                 }
+    }
+
+exports.validateRegistrationData =
+
+    newUser => {
+
+        let errors = {};
+
+        // validate first name
+        if (isEmpty(newUser.fname)){
+            errors.fname = "Please enter your first name!";
+        }
+
+        // validate last name
+        if (isEmpty(newUser.lname)){
+            errors.lname = "Please enter your last name!";
+        }
+
+        // validate entered passwords
+        if (isEmpty(newUser.pw)) errors.pw = "Please enter a password!";
+        if (newUser.pw !== newUser.pw_c) errors.pw = "Passwords must match";
+
+        return  {
+                    errors,
+                    valid: Object.keys(errors).length === 0
+                }
+
     }
 
 exports.validateLoginData =

@@ -3,13 +3,10 @@ import axios from 'axios'
 
 // boostrap imports
 import Spinner from 'react-bootstrap/Spinner'
-import Button from 'react-bootstrap/Button'
-import Form from 'react-bootstrap/Form'
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
-
-// custom components
-// import RegistrationForm from '../components/RegistrationForm'
+import Button  from 'react-bootstrap/Button'
+import Form    from 'react-bootstrap/Form'
+import Row     from 'react-bootstrap/Row'
+import Col     from 'react-bootstrap/Col'
 
 class Register extends Component {
 
@@ -25,10 +22,16 @@ class Register extends Component {
         validated: false
     }
 
+    // handles changes made to input fields
+    // when the value of an input field changes, its corresponding entry
+    // in the state changes too
     handleChange = event => {
 		this.setState({ [event.target.name] : event.target.value });
 	}
 
+    // handles the validation of the stage 0 data, which ensures that the
+    // email address corresponds to an invited user and that the code entered
+    // is the same as that linked to their record on the database
     handleValidation = event => {
 
         event.preventDefault();
@@ -47,8 +50,9 @@ class Register extends Component {
             })
             .then(res => {
                 this.setState({
-                                loading : false,
-                                stage   : 1
+                                loading  : false,
+                                stage    : 1,
+                                validated: false
                               });
             })
             .catch(err => {
@@ -62,6 +66,8 @@ class Register extends Component {
             })
     }
 
+    // handles the registration of a new user by sending the user's data
+    // to the server
     handleRegistration = event => {
 
         event.preventDefault();
@@ -87,19 +93,20 @@ class Register extends Component {
             })
             .catch(err => {
                 this.setState({
-                    email: "",
-                    password: "",
                     errors: err.response.data,
                     loading: false,
                     validated: true
+                });
+
+                // clear all error fields
+                Object.keys(this.state.errors).forEach(key => {
+                    this.setState({ [key] : ''})
                 })
             })
 
     }
 
     render() {
-
-        console.log(this.state.errors);
 
         // if loading, replace button text with a spinner
         let btnContent;
@@ -113,8 +120,10 @@ class Register extends Component {
             }
         }
 
-        // decide on form content based on the stage that the user is on
+        // -- decide on form content based on the stage that the user is on
+
         let formContent;
+
         if (this.state.stage === 0){
 
             let emailErr, codeErr;
@@ -150,6 +159,7 @@ class Register extends Component {
                         </Form.Control.Feedback>
                     </Row>
 
+                    {/* Invitation code field */}
                     <Row
                         className="my-1">
                         <Form.Control
@@ -165,24 +175,45 @@ class Register extends Component {
                         </Form.Control.Feedback>
                     </Row>
 
+                    {/* Submit button */}
                     <Button
                         className="login-btn btn mt-3"
                         type="submit"
                         onClick={this.handleValidation}
-                        disabled={this.state.loading}
-                    >{btnContent}</Button>
+                        disabled={this.state.loading}>
+                        {btnContent}
+                    </Button>
                 </Form>
             )
-        } else {
+        }
+
+        else {
+
+            let fnameErr, lnameErr, pwError;
+            if (this.state.errors){
+                if (this.state.errors.fname) {
+                    fnameErr = this.state.errors.fname;
+                }
+                if (this.state.errors.lname){
+                    lnameErr = this.state.errors.lname;
+                }
+                if (this.state.errors.pw){
+                    pwError = this.state.errors.pw;
+                }
+            }
 
             formContent = (
 
                 <Form
                     noValidate
                     validated={this.state.validated}
-                    onSubmit={this.handleSubmit}>
+                    onSubmit={this.handleRegistration}>
+
+                    {/* Name fields */}
                     <Row
                         className="my-1">
+
+                        {/* First Name field */}
                         <Col
                             xs="12"
                             sm="6"
@@ -196,9 +227,11 @@ class Register extends Component {
                                 required/>
                             <Form.Control.Feedback
                                 type="invalid">
-                                {/* {emailError} */}
+                                { fnameErr }
                             </Form.Control.Feedback>
                         </Col>
+
+                        {/* Last Name field */}
                         <Col
                             xs="12"
                             sm="6"
@@ -212,12 +245,13 @@ class Register extends Component {
                                 required/>
                             <Form.Control.Feedback
                                 type="invalid">
-                                {/* {emailError} */}
+                                { lnameErr }
                             </Form.Control.Feedback>
                         </Col>
                     </Row>
 
-                    {/* Email field (read-only) */}
+                    {/* Email field (read-only now since it has alread been
+                        validated) */}
                     <Row
                         className="my-1">
                         <Form.Control
@@ -227,12 +261,9 @@ class Register extends Component {
                             placeholder="email"
                             value={this.state.email}
                             readOnly/>
-                        <Form.Control.Feedback
-                            type="invalid">
-                            {/* {emailError} */}
-                        </Form.Control.Feedback>
                     </Row>
 
+                    {/* Password field */}
                     <Row
                         className="my-1">
                         <Form.Control
@@ -245,9 +276,11 @@ class Register extends Component {
                             required/>
                         <Form.Control.Feedback
                             type="invalid">
-                            {/* {pwError} */}
+                            { "" }
                         </Form.Control.Feedback>
                     </Row>
+
+                    {/* Password confirmation field */}
                     <Row
                         className="my-1">
                         <Form.Control
@@ -260,13 +293,14 @@ class Register extends Component {
                             required/>
                         <Form.Control.Feedback
                             type="invalid">
-                            {/* {pwError} */}
+                            { pwError }
                         </Form.Control.Feedback>
                     </Row>
+
+                    {/* Submit button */}
                     <Button
                         className="login-btn btn mt-3"
                         type="submit"
-                        onClick={this.handleSubmit}
                         disabled={this.state.loading}>
                         {btnContent}
                     </Button>
@@ -284,8 +318,9 @@ class Register extends Component {
                         sm="6"
                         md="3">
                         <h1
-                            className="login-form-title mb-4"
-                        >Welcome</h1>
+                            className="form-title mb-4">
+                            Welcome
+                        </h1>
                         { formContent }
                     </Col>
 				</Row>

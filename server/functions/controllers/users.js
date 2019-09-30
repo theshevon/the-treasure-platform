@@ -62,8 +62,8 @@ exports.registerNewUser =
             fname: req.body.fname,
             lname: req.body.lname,
             email: req.body.email,
-            password: req.body.pw,
-            confirmPassword: req.body.pw_c
+            pw: req.body.pw,
+            pw_c: req.body.pw_c
         }
 
         // carry out validation
@@ -73,7 +73,7 @@ exports.registerNewUser =
         // create new firebase user
         firebase
             .auth()
-            .createUserWithEmailAndPassword(newUser.email, newUser.password)
+            .createUserWithEmailAndPassword(newUser.email, newUser.pw)
             .then(data => {
 
                 let uid = data.user.uid;
