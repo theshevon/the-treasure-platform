@@ -1,32 +1,24 @@
-/* .modal{
-    width: 100% !important;
-    height: 80vh !important;
-}
-label {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  text-align: center;
-  width: 100px;
-  line-height: 40px;
-  margin-bottom: 20px;
-  margin-left: 6px;
+.invite-user-modal .modal-body{
+  overflow-x: hidden !important;
 }
 
-input {
-  height: 35px;
-  width: auto;
-  border-radius: 2px;
-  flex: 0 0 100px;
-  margin-left: 100px;
-  text-align: left;
-  text-indent: 8px;
-  outline: none;
-  border : 0.5px solid;
-  box-shadow: none;
-  border-color: #add8e6
+.del-row-btn{
+  background: none !important;
+  border: none !important;
+  color: gray !important;
+  font-size: 1.25rem !important;
 }
 
-.btn-col-xs-3 {
-    margin-left: 20px;
-} */
+.del-row-btn:hover{
+  color: #3F3F3F !important;
+}
+
+.add-row-btn{
+  color: gray !important;
+  transition: 300ms !important;
+}
+
+.add-row-btn:hover{
+  cursor: pointer;
+  color: #3F3F3F !important;
+}
