@@ -53,6 +53,8 @@ exports.checkInvitee =
             })
     }
 
+firebase.initializeApp(config);
+
 exports.registerNewUser =
 
     (req, res) => {
@@ -151,6 +153,12 @@ exports.logOutUser =
                 return res.status(500).json({ error: err.code });
             });
     }
+
+// exports.logOutUser =
+
+//     (req, res) => {
+//         return true
+//     }
 
 exports.getUsers =
 
