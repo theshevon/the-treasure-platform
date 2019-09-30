@@ -417,6 +417,7 @@ class AddItemForm extends Component {
                             <img
                                 src={ URL.createObjectURL(file) }
                                 className={ "img-fluid" }
+                                alt={"img-" + index}
                             ></img>
                         </Col>
                     ))}

@@ -132,14 +132,14 @@ class InviteForm extends Component {
                     // validated={this.state.validated}
                     onSubmit={this.handleSubmit}>
                     {formContent}
-                    <a
+                    <Button
                         className="add-row-btn float-left mt-4"
                         variant="light"
                         onClick={this.addRows}>
                         <span>
                             + Add Another
                         </span>
-                    </a>
+                    </Button>
                     <hr className="mt-5"/>
                     <Button
                         className="float-right"

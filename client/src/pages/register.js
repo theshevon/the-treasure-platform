@@ -14,12 +14,12 @@ import Col from 'react-bootstrap/Col'
 class Register extends Component {
 
     state = {
-        fname:   null,
-        lname:   null,
-        email:   null,
-        code :   null,
-        pw:      null,
-        pw_c:    null,
+        fname:   '',
+        lname:   '',
+        email:   '',
+        code :   '',
+        pw:      '',
+        pw_c:    '',
         loading: false,
         stage:   0,
         validated: false
@@ -30,8 +30,6 @@ class Register extends Component {
 	}
 
     handleValidation = event => {
-
-        this.setState({ stage : 1})
 
         event.preventDefault();
 
@@ -55,6 +53,8 @@ class Register extends Component {
             })
             .catch(err => {
                 this.setState({
+                    email: '',
+                    code: '',
                     errors: err.response.data,
                     loading: false,
                     validated: true
@@ -99,6 +99,8 @@ class Register extends Component {
 
     render() {
 
+        console.log(this.state.errors);
+
         // if loading, replace button text with a spinner
         let btnContent;
         if (this.state.loading){
@@ -115,25 +117,21 @@ class Register extends Component {
         let formContent;
         if (this.state.stage === 0){
 
-            let emailError;
-
-            // check for email errors
-            if (this.state.errors && (this.state.errors.email || this.state.errors.general)){
-                if (this.state.errors.email){
-                    emailError = (this.state.errors.email);
-                } else {
-                    emailError = ("");
+            let emailErr, codeErr;
+            if (this.state.errors){
+                if (this.state.errors.email) emailErr = this.state.errors.email;
+                if (this.state.errors.code) codeErr = this.state.errors.code;
+                if (this.state.errors.general){
+                    emailErr = ("");
+                    codeErr = this.state.errors.general;
                 }
-            } else{
-                emailError = ("Please enter a valid email address.");
             }
-
 
             formContent = (
                 <Form
                     noValidate
                     validated={this.state.validated}
-                    onSubmit={this.handleSubmit}>
+                    onSubmit={this.handleValidation}>
 
                     {/* Email field */}
                     <Row
@@ -148,7 +146,7 @@ class Register extends Component {
                             required/>
                         <Form.Control.Feedback
                             type="invalid">
-                            {/* {emailError} */}
+                            { emailErr }
                         </Form.Control.Feedback>
                     </Row>
 
@@ -163,7 +161,7 @@ class Register extends Component {
                             required/>
                         <Form.Control.Feedback
                             type="invalid">
-                            {/* {pwError} */}
+                            { codeErr }
                         </Form.Control.Feedback>
                     </Row>
 
@@ -228,7 +226,6 @@ class Register extends Component {
                             type="email"
                             placeholder="email"
                             value={this.state.email}
-                            onChange={this.handleChange}
                             readOnly/>
                         <Form.Control.Feedback
                             type="invalid">

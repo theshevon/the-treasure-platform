@@ -40,7 +40,7 @@ exports.validateInviteeData =
         }
 
         // validate code
-        if (isEmpty(invitee.code)) errors.code = "Please enter a code";
+        if (isEmpty(invitee.code)) errors.code = "Please enter a code!";
 
         return  {
                     errors,
