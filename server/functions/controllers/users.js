@@ -5,6 +5,36 @@ const { validateRegistrationData, validateLoginData } = require("../util/validat
 
 firebase.initializeApp(config);
 
+exports.checkInvitee =
+
+    (req, res) => {
+
+        // extract user data from the form
+        const invitee = {
+            email: req.body.email,
+            code: req.body.code
+        }
+
+        // TODO: carry out validation
+
+
+        // validate code against database entry
+        db
+            .collection('invitees')
+            .doc(invitee.email)
+            .get()
+            .then(doc => {
+                if (!doc.exists) return res.status(400).json("Sorry, you have not been invited to join this platform");
+                if (doc.data().code === invitee.code){
+                    return res.status(200).json({success: "User validated"});
+                }
+                return res.status(400).json({Error: "Error"});
+            })
+            .catch(err => {
+                res.status(400).json({err: err});
+            })
+    }
+
 exports.registerNewUser =
 
     (req, res) => {

@@ -11,6 +11,8 @@ router.get("/logout", userController.logOutUser);
 
 /*================================POST ROUTES=================================*/
 
+router.post("/check_invitee", userController.checkInvitee);
+
 router.post("/register", userController.registerNewUser);
 
 router.post("/login", userController.logInUser);
