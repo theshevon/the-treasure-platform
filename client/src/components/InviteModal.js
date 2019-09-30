@@ -14,7 +14,6 @@ class InviteModal extends Component {
     handleClose = () => this.setState({ show : false });
     handleShow = () => this.setState({ show : true });
 
-
     render() {
 
         return (
@@ -24,18 +23,19 @@ class InviteModal extends Component {
                     + Users
                 </Button>
 
-                <Modal size="lg" scrollable show={this.state.show} onHide={this.handleClose}>
+                <Modal
+                    className="invite-user-modal"
+                    size="lg"
+                    scrollable
+                    centered
+                    show={this.state.show}
+                    onHide={this.handleClose}>
                     <Modal.Header closeButton>
                         <Modal.Title>Invite Users</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <InviteFrom type="email"/>
+                        <InviteFrom/>
                     </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="dark" onClick={this.handleClose}>
-                            Send Invitations
-                        </Button>
-                    </Modal.Footer>
                 </Modal>
 
             </div>
