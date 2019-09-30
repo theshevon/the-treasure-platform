@@ -1,7 +1,7 @@
 const { admin, db } = require('../util/admin');
 const firebase      = require('firebase');
 const config        = require('../util/config');
-const { validateRegistrationData, validateLoginData } = require("../util/validators");
+const { validateRegistrationData, validateLoginData, validateInviteeData } = require("../util/validators");
 
 firebase.initializeApp(config);
 
@@ -15,8 +15,9 @@ exports.checkInvitee =
             code: req.body.code
         }
 
-        // TODO: carry out validation
-
+        // validate data fields
+        const { valid, errors } = validateInviteeData(invitee);
+        if (!valid) return res.status(400).json(errors);
 
         // validate code against database entry
         db
@@ -24,14 +25,31 @@ exports.checkInvitee =
             .doc(invitee.email)
             .get()
             .then(doc => {
-                if (!doc.exists) return res.status(400).json("Sorry, you have not been invited to join this platform");
+
+                // error case 1: user has not been invited to the platform
+                if (!doc.exists) return res.status(400).json("Sorry, you have not been granted access to this platform.");
+
+                // error case 2: invitation has already been accepted
+                if (doc.data().accepted) return res.status(400).json("Error: This invitation has already been accepted.");
+
+                // success case
                 if (doc.data().code === invitee.code){
-                    return res.status(200).json({success: "User validated"});
+
+                    // change accepted field to true
+                    invitee.accepted = true;
+                    db
+                        .collection('invitees')
+                        .doc(invitee.email)
+                        .set(invitee);
+
+                    return res.status(200).json("Success: User validated");
                 }
-                return res.status(400).json({Error: "Error"});
+
+                // error case 3: incorrect info entered
+                return res.status(400).json("Sorry, the email address or code you entered is incorrect.");
             })
             .catch(err => {
-                res.status(400).json({err: err});
+                res.status(500).json({err: err});
             })
     }
 
@@ -76,7 +94,7 @@ exports.registerNewUser =
                                 .doc(uid)
                                 .set(userData)
 
-                return res.status(200).json(" success: new user created.");
+                return res.status(200).json("success: new user created.");
             })
             .catch(err => {
                 if (err.code === "auth/email-already-in-use"){
@@ -137,6 +155,7 @@ exports.logOutUser =
 exports.getUsers =
 
     (req, res) => {
+
         // Get a list of all users from the database
         db.collection('users')
             .get()

@@ -44,7 +44,7 @@ exports.validateInviteeData =
 
         return  {
                     errors,
-                    valid: Objects.keys(errors).length === 0
+                    valid: Object.keys(errors).length === 0
                 }
     }
 
