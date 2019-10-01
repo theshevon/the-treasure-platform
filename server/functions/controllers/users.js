@@ -86,15 +86,21 @@ exports.registerNewUser =
                     email: newUser.email,
                     utype: 1,
                     createdon: admin.firestore.FieldValue.serverTimestamp(),
-                    intitems: null
+                    intitems: []
                 }
 
-                newUserDoc = db
-                                .collection("users")
-                                .doc(uid)
-                                .set(userData)
+                // eslint-disable-next-line promise/no-nesting
+                return db
+                        .collection("users")
+                        .doc(uid)
+                        .set(userData)
+                        .then(() => {
+                            return res.status(200).json("Success: new user created.");
+                        })
+                        .catch(err => {
+                            return res.status(500).json(err);
+                        })
 
-                return res.status(200).json("Success: new user created.");
             })
             .catch(err => {
                 if (err.code === "auth/email-already-in-use"){
@@ -104,7 +110,6 @@ exports.registerNewUser =
                 }
             });
 
-        return res.status(200).json("Success: new user created.");
     }
 
 exports.logInUser =
