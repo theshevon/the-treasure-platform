@@ -38,15 +38,16 @@ exports.checkInvitee =
                     // change accepted field to true
                     invitee.accepted = true;
 
+                    // eslint-disable-next-line promise/no-nesting
                     return db
                             .collection('invitees')
                             .doc(invitee.email)
                             .set(invitee)
                             .then(() => {
-                                res.status(200).json({ "Success: User validated" });
+                                return res.status(200).json("Success: User validated");
                             })
                             .catch(err => {
-                                res.status(500).json({ error : error });
+                                return res.status(500).json({ error : err });
                             })
                 }
 
