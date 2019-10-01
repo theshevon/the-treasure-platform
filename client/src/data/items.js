@@ -16,53 +16,91 @@ var items = [
         id: 1,
         name: "Item1",
         desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        img_src: "https://images.unsplash.com/photo-1511253819057-5408d4d70465?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80",
+        cover: "https://images.unsplash.com/photo-1535632787350-4e68ef0ac584?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1650&q=80",
+        photos: [String],
         val: null,
         createdon: "September 1, 2019 at 12:10:00 AM UTC+10",
         visibleto: [
                         "user1",
                         "user2"
                    ],
-        intusers:  ["user1"]
+        hiddenfrom: [
+                        "user3"
+                    ],
+        intusers:  ["user1"],
+        assignedto: null
     },
     {
         id: 2,
         name: "Item2",
         desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        img_src: "https://images.unsplash.com/photo-1511253819057-5408d4d70465?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80",
+        cover: "https://images.unsplash.com/photo-1535632787350-4e68ef0ac584?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1650&q=80",
+        photos: [String],
         val: null,
         createdon: "September 1, 2019 at 12:10:00 AM UTC+10",
         visibleto: [
                         "user1",
                         "user2"
                    ],
-        intusers:  ["user1"]
+        hiddenfrom: [
+                        "user3"
+                    ],
+        intusers:  ["user1"],
+        assignedto: null
     },
     {
         id: 3,
         name: "Item3",
         desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        img_src: "https://images.unsplash.com/photo-1511253819057-5408d4d70465?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80",
+        cover: "https://images.unsplash.com/photo-1535632787350-4e68ef0ac584?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1650&q=80",
+        photos: [String],
         val: null,
         createdon: "September 1, 2019 at 12:10:00 AM UTC+10",
         visibleto: [
                         "user1",
                         "user2"
                    ],
-        intusers:  ["user1"]
+        hiddenfrom: [
+                        "user3"
+                    ],
+        intusers:  ["user1"],
+        assignedto: null
     },
     {
         id: 4,
         name: "Item4",
         desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        img_src: "https://images.unsplash.com/photo-1511253819057-5408d4d70465?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80",
+        cover: "https://images.unsplash.com/photo-1535632787350-4e68ef0ac584?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1650&q=80",
+        photos: [String],
         val: null,
         createdon: "September 1, 2019 at 12:10:00 AM UTC+10",
         visibleto: [
                         "user1",
                         "user2"
                    ],
-        intusers:  ["user1"]
+        hiddenfrom: [
+                        "user3"
+                    ],
+        intusers:  ["user1"],
+        assignedto: null
+    },
+    {
+        id: 5,
+        name: "Item2",
+        desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        cover: "https://images.unsplash.com/photo-1535632787350-4e68ef0ac584?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1650&q=80",
+        photos: [String],
+        val: null,
+        createdon: "September 1, 2019 at 12:10:00 AM UTC+10",
+        visibleto: [
+                        "user1",
+                        "user2"
+                   ],
+        hiddenfrom: [
+                        "user3"
+                    ],
+        intusers:  ["user1"],
+        assignedto: null
     }
 ]
 

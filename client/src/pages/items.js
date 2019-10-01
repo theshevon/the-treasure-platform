@@ -1,53 +1,99 @@
 import React, { Component } from 'react'
 import axios from "axios";
+
+// boostrap imports
+import Button from 'react-bootstrap/Button'
+import Modal from 'react-bootstrap/Modal'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import Item from "../components/Item";
-import itemsData from "../data/items";
 
-export class Items extends Component {
+// custom components
+import ItemSkeleton from '../components/ItemSkeleton'
+import AddItemForm from '../components/AddItemForm'
+import Navbar from '../components/Navbar'
+import Item from '../components/Item'
 
-    // this just stores stub data for now
-    // -- will be updated when backend is ready
+// custom css
+import '../stylesheets/items.css'
+import '../stylesheets/item.css'
+
+// stub data
+// import itemsData from '../data/items'
+
+class Items extends Component {
+
     state = {
-        items: itemsData
+        items: null,
+        showAddItemModal: false,
+        loading: true
     }
 
     // fetch item data from database
-    // componentDidMount(){
-    //     axios.get("/items")
-    //         .then(res => {
-    //             this.setState({
-    //                 items: res.data
-    //             })
-    //         })
-    //         .catch(
-    //             err => console.log(err)
-    //         );
-    // };
+    componentDidMount(){
+        axios({
+                method: 'get',
+                url: 'http://localhost:5000/comp30022app/us-central1/api/items'
+            })
+            .then(res => {
+                this.setState({
+                    items: res.data,
+                    loading: false
+                })
+            })
+            .catch(
+                err => console.log(err)
+            );
+    };
+
+    // handle modal close
+    handleClose = () => {
+		this.setState({ showAddItemModal : false })
+	};
+
+    // handle modal show
+	handleShow = () => {
+		this.setState({ showAddItemModal : true })
+	};
 
     render() {
 
-        let itemListContent;
+        let itemListContent = (<ItemSkeleton/>);
 
-        if (this.state.items){
+        if (!this.state.loading){
             itemListContent = (
-                <Row className="my-3">
-                    { this.state.items.map(item => (
-                        <Col xs={12} md={6} lg={4}>
+                <Row className="my-3 justify-content-center">
+                    { this.state.items.map((item, index) => (
+                        <Col key={index} className='item-col' xs={12} md={6}>
                             <Item className="my-5" item={ item }/>
                         </Col>
                     ))}
                 </Row>
             )
-        } else {
-            itemListContent = null;
         }
 
         return (
             <div>
-                <h1> ITEMS </h1>
-                { itemListContent }
+
+                <Navbar />
+
+                <div id="content" className="container">
+
+                    <h1 className="page-title"> ITEMS </h1>
+
+                    <Button className="mt-2 mb-3 add-btn btn" variant="light" onClick={this.handleShow}>Add Item</Button>
+
+                    <Modal className="add-item-modal" show={this.state.showAddItemModal} size="lg" onHide={this.handleClose} centered scrollable>
+                        <Modal.Header closeButton>
+                            <Modal.Title>Add A New Item</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <AddItemForm />
+                        </Modal.Body>
+                    </Modal>
+
+                    { itemListContent }
+
+                </div>
             </div>
         )
     }

@@ -1,0 +1,50 @@
+.add-item-btn{
+    align-self: right;
+}
+
+.visibility-select{
+    color: black !important;
+}
+
+.selected-img, .non-selected-img{
+    border-radius: 4px;
+    transition: 200ms;
+}
+
+.selected-img:hover, .non-selected-img:hover{
+    cursor: pointer;
+}
+.selected-img{
+    border: 3px solid rgb(34, 168, 112);
+}
+
+.non-selected-img{
+    border: 1px solid #E2E2E2;
+}
+
+.hidden-field{
+    display: none !important;
+}
+
+#visibility-toggler, .optional-field {
+    border-color: #CED4DA !important;
+}
+
+.add-item-modal .modal-body{
+    overflow-x: hidden !important;
+}
+
+.ui.label{
+    /* background: rgb(218, 255, 243); */
+    border-radius: 12px;
+    color: black !important;
+    font-weight: 400;
+}
+
+#visibility-toggler{
+    margin-right: 100px !important
+}
+
+.selector{
+    padding-right: 100px !important;
+}

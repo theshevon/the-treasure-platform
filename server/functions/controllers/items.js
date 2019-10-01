@@ -10,17 +10,8 @@ exports.getItems =
             .then((data) => {
                 let items = [];
                 data.forEach((doc) => {
-                    items.push({
-                        itemId: doc.id,
-                        name: doc.data().name,
-                        desc: doc.data().desc,
-                        item_src: doc.data().item_src,
-                        val: doc.data().val,
-                        createdOn: doc.data().createdOn,
-                        visibleTo: doc.data().visibleTo,
-                        intUsers: doc.data().intUsers,
-                        assignedTo: doc.data().assignedTo
-                    });
+                    let item = {id : doc.id};
+                    items.push(Object.assign(item, doc.data()));
                 });
                 return res.json(items);
             })
@@ -31,7 +22,6 @@ exports.getItems =
     }
 
 exports.getSpecificItem =
-
     (req, res) => {
         db.collection('items')
             .get()

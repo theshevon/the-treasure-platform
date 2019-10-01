@@ -1,18 +1,44 @@
+exports.validateInviteeData =
+
+    invitee => {
+
+        let errors = {};
+
+        // validate email address
+        if (isEmpty(invitee.email)){
+            errors.email = "Please enter your email address!";
+        } else if (!isEmail(invitee.email)){
+            errors.email = "Please enter a valid email address!";
+        }
+
+        // validate code
+        if (isEmpty(invitee.code)) errors.code = "Please enter a code!";
+
+        return  {
+                    errors,
+                    valid: Object.keys(errors).length === 0
+                }
+    }
+
 exports.validateRegistrationData =
 
     newUser => {
 
         let errors = {};
 
-        if (isEmpty(newUser.email)){
-            errors.email = "Must not be empty";
-        } else if (!isEmail(newUser.email)){
-            errors.email = "Must be a valid email address";
+        // validate first name
+        if (isEmpty(newUser.fname)){
+            errors.fname = "Please enter your first name!";
         }
 
-        if (isEmpty(newUser.password)) errors.password = "Must not be empty";
-        if (newUser.password !== newUser.confirmPassword) errors.confirmPassword = "Passwords must match";
-        if (isEmpty(newUser.handle)) errors.handle = "Must not be empty";
+        // validate last name
+        if (isEmpty(newUser.lname)){
+            errors.lname = "Please enter your last name!";
+        }
+
+        // validate entered passwords
+        if (isEmpty(newUser.pw)) errors.pw = "Please enter a password!";
+        if (newUser.pw !== newUser.pw_c) errors.pw = "Passwords must match";
 
         return  {
                     errors,
@@ -26,8 +52,8 @@ exports.validateLoginData =
     user => {
 
         let errors = {};
-        if (isEmpty(user.email)) errors.email = "Must not be empty";
-        if (isEmpty(user.password)) errors.password = "Must not be empty";
+        if (isEmpty(user.email) || !isEmail(user.email)) errors.email = "Please enter a valid email address.";
+        if (isEmpty(user.password)) errors.password = "Please enter a password.";
 
         return  {
             errors,
@@ -38,7 +64,7 @@ exports.validateLoginData =
 /*=============================HELPER FUNCTIONS===============================*/
 
 const isEmpty = (string) => {
-    return (string.trim() === "");
+    return (!string || string.trim() === "");
 }
 
 const isEmail = (email) => {
