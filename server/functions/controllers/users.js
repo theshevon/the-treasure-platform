@@ -37,12 +37,18 @@ exports.checkInvitee =
 
                     // change accepted field to true
                     invitee.accepted = true;
-                    db
-                        .collection('invitees')
-                        .doc(invitee.email)
-                        .set(invitee);
 
-                    return res.status(200).json({ general : "Success: User validated" });
+                    // eslint-disable-next-line promise/no-nesting
+                    return db
+                            .collection('invitees')
+                            .doc(invitee.email)
+                            .set(invitee)
+                            .then(() => {
+                                return res.status(200).json("Success: User validated");
+                            })
+                            .catch(err => {
+                                return res.status(500).json({ error : err });
+                            })
                 }
 
                 // error case 3: incorrect info entered
@@ -86,15 +92,21 @@ exports.registerNewUser =
                     email: newUser.email,
                     utype: 1,
                     createdon: admin.firestore.FieldValue.serverTimestamp(),
-                    intitems: null
+                    intitems: []
                 }
 
-                newUserDoc = db
-                                .collection("users")
-                                .doc(uid)
-                                .set(userData)
+                // eslint-disable-next-line promise/no-nesting
+                return db
+                        .collection("users")
+                        .doc(uid)
+                        .set(userData)
+                        .then(() => {
+                            return res.status(200).json("Success: new user created.");
+                        })
+                        .catch(err => {
+                            return res.status(500).json({ error: err });
+                        })
 
-                return res.status(200).json("success: new user created.");
             })
             .catch(err => {
                 if (err.code === "auth/email-already-in-use"){
@@ -104,7 +116,6 @@ exports.registerNewUser =
                 }
             });
 
-        return res.status(200).json(" success: new user created.");
     }
 
 exports.logInUser =
@@ -152,24 +163,18 @@ exports.logOutUser =
             });
     }
 
-// exports.logOutUser =
-
-//     (req, res) => {
-//         return true
-//     }
-
 exports.getUsers =
 
     (req, res) => {
 
-        // Get a list of all users from the database
+        // Get a list of all the secondary users from the database
         db.collection('users')
             .get()
             .then((data) => {
                 // Extract all userIDs
                 let users = [];
                 data.forEach((doc) => {
-                    if (doc.data().utype === 2){
+                    if (doc.data().utype === 1){
                         let user = {
                                     uid : doc.id,
                                     name : doc.data().fname + doc.data().lname,

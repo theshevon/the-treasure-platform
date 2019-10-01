@@ -18,7 +18,7 @@ class Register extends Component {
         pw:      '',
         pw_c:    '',
         loading: false,
-        stage:   1,
+        stage:   0,
         validated: false
     }
 
