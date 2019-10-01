@@ -17,6 +17,7 @@ router.post("/register", userController.registerNewUser);
 
 router.post("/login", userController.logInUser);
 
+router.post("/invite", userController.inviteNewUser);
 /*===========================================================================*/
 
 module.exports = router;

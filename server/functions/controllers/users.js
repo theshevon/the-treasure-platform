@@ -152,12 +152,6 @@ exports.logOutUser =
             });
     }
 
-// exports.logOutUser =
-
-//     (req, res) => {
-//         return true
-//     }
-
 exports.getUsers =
 
     (req, res) => {
@@ -182,4 +176,14 @@ exports.getUsers =
             .catch((err) => {
                 res.status(500).json({ error: err.code });
             });
+    }
+
+
+exports.inviteNewUsers =
+
+    (req, res) => {
+
+        // Create new secondary users from an array of JSON objects,
+        // containing names and emails
+        return true;
     }
