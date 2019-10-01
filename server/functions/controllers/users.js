@@ -37,12 +37,17 @@ exports.checkInvitee =
 
                     // change accepted field to true
                     invitee.accepted = true;
-                    db
-                        .collection('invitees')
-                        .doc(invitee.email)
-                        .set(invitee);
 
-                    return res.status(200).json({ general : "Success: User validated" });
+                    return db
+                            .collection('invitees')
+                            .doc(invitee.email)
+                            .set(invitee)
+                            .then(() => {
+                                res.status(200).json({ "Success: User validated" });
+                            })
+                            .catch(err => {
+                                res.status(500).json({ error : error });
+                            })
                 }
 
                 // error case 3: incorrect info entered
@@ -98,7 +103,7 @@ exports.registerNewUser =
                             return res.status(200).json("Success: new user created.");
                         })
                         .catch(err => {
-                            return res.status(500).json(err);
+                            return res.status(500).json({ error: err });
                         })
 
             })
