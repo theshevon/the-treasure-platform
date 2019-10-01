@@ -86,15 +86,15 @@ exports.registerNewUser =
                     email: newUser.email,
                     utype: 1,
                     createdon: admin.firestore.FieldValue.serverTimestamp(),
-                    intitems: null
+                    intusers: []
                 }
 
                 newUserDoc = db
                                 .collection("users")
                                 .doc(uid)
-                                .set(userData)
+                                .set(userData);
 
-                return res.status(200).json("success: new user created.");
+                return res.status(200).json(newUserDoc);
             })
             .catch(err => {
                 if (err.code === "auth/email-already-in-use"){
@@ -103,8 +103,6 @@ exports.registerNewUser =
                     return res.status(500).json({ error: err.code });
                 }
             });
-
-        return res.status(200).json(" success: new user created.");
     }
 
 exports.logInUser =
@@ -151,12 +149,6 @@ exports.logOutUser =
                 return res.status(500).json({ error: err.code });
             });
     }
-
-// exports.logOutUser =
-
-//     (req, res) => {
-//         return true
-//     }
 
 exports.getUsers =
 
