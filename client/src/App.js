@@ -2,9 +2,10 @@ import React, { Component } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 // pages
-import dashboard from "./pages/dashboard";
-import login from "./pages/login";
-import items from "./pages/items";
+import dashboard from './pages/dashboard'
+import login from './pages/login'
+import items from './pages/items'
+import register from './pages/register'
 
 class App extends Component {
   render() {
@@ -15,6 +16,7 @@ class App extends Component {
               <Route exact path="/dashboard" component={ dashboard }/>
               <Route exact path="/items" component={ items }/>
               <Route exact path="/login" component={ login }/>
+              <Route exact path="/register" component={ register }/>
             </Switch>
         </Router>
     );

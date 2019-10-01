@@ -27,10 +27,10 @@ exports.checkInvitee =
             .then(doc => {
 
                 // error case 1: user has not been invited to the platform
-                if (!doc.exists) return res.status(400).json("Sorry, you have not been granted access to this platform.");
+                if (!doc.exists) return res.status(400).json({ general : "Sorry, the email address or code you entered was incorrect." });
 
                 // error case 2: invitation has already been accepted
-                if (doc.data().accepted) return res.status(400).json("Error: This invitation has already been accepted.");
+                if (doc.data().accepted) return res.status(400).json({ general : "Error: This invitation has already been accepted." });
 
                 // success case
                 if (doc.data().code === invitee.code){
@@ -42,18 +42,16 @@ exports.checkInvitee =
                         .doc(invitee.email)
                         .set(invitee);
 
-                    return res.status(200).json("Success: User validated");
+                    return res.status(200).json({ general : "Success: User validated" });
                 }
 
                 // error case 3: incorrect info entered
-                return res.status(400).json("Sorry, the email address or code you entered is incorrect.");
+                return res.status(400).json({ general : "Sorry, the email address or code you entered was incorrect." });
             })
             .catch(err => {
                 res.status(500).json({err: err});
             })
     }
-
-firebase.initializeApp(config);
 
 exports.registerNewUser =
 
@@ -64,8 +62,8 @@ exports.registerNewUser =
             fname: req.body.fname,
             lname: req.body.lname,
             email: req.body.email,
-            password: req.body.pw,
-            confirmPassword: req.body.pw_c
+            pw: req.body.pw,
+            pw_c: req.body.pw_c
         }
 
         // carry out validation
@@ -75,7 +73,7 @@ exports.registerNewUser =
         // create new firebase user
         firebase
             .auth()
-            .createUserWithEmailAndPassword(newUser.email, newUser.password)
+            .createUserWithEmailAndPassword(newUser.email, newUser.pw)
             .then(data => {
 
                 let uid = data.user.uid;

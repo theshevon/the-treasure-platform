@@ -11,8 +11,9 @@ body{
     transform: translateY(-25%);
 }
 
-.login-form-title{
-    font-weight: 200;
+.form-title{
+    font-family: 'Roboto';
+    font-weight: 100;
     text-align: center;
 }
 

@@ -107,8 +107,9 @@ class Login extends Component {
 						sm="6"
 						md="3">
 						<h1
-							className="login-form-title mb-4"
-						>Welcome</h1>
+							className="form-title mb-4">
+							Welcome
+						</h1>
 						<Form
 							noValidate
 							validated={this.state.validated}

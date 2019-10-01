@@ -1,3 +1,25 @@
+exports.validateInviteeData =
+
+    invitee => {
+
+        let errors = {};
+
+        // validate email address
+        if (isEmpty(invitee.email)){
+            errors.email = "Please enter your email address!";
+        } else if (!isEmail(invitee.email)){
+            errors.email = "Please enter a valid email address!";
+        }
+
+        // validate code
+        if (isEmpty(invitee.code)) errors.code = "Please enter a code!";
+
+        return  {
+                    errors,
+                    valid: Object.keys(errors).length === 0
+                }
+    }
+
 exports.validateRegistrationData =
 
     newUser => {
@@ -15,37 +37,14 @@ exports.validateRegistrationData =
         }
 
         // validate entered passwords
-        if (isEmpty(newUser.password)) errors.pw = "Please enter a password!";
-        if (newUser.password !== newUser.confirmPassword) errors.pw_c = "Passwords must match";
+        if (isEmpty(newUser.pw)) errors.pw = "Please enter a password!";
+        if (newUser.pw !== newUser.pw_c) errors.pw = "Passwords must match";
 
         return  {
                     errors,
                     valid: Object.keys(errors).length === 0
                 }
 
-    }
-
-
-exports.validateInviteeData =
-
-    invitee => {
-
-        let errors = {};
-
-        // validate email address
-        if (isEmpty(invitee.email)){
-            errors.email = "Please enter your email address!";
-        } else if (!isEmail(invitee.email)){
-            errors.email = "Please enter a valid email address!";
-        }
-
-        // validate code
-        if (isEmpty(invitee.code)) errors.code = "Please enter a code";
-
-        return  {
-                    errors,
-                    valid: Object.keys(errors).length === 0
-                }
     }
 
 exports.validateLoginData =
