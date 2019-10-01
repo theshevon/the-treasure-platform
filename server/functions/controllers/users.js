@@ -86,15 +86,15 @@ exports.registerNewUser =
                     email: newUser.email,
                     utype: 1,
                     createdon: admin.firestore.FieldValue.serverTimestamp(),
-                    intusers: []
+                    intitems: null
                 }
 
                 newUserDoc = db
                                 .collection("users")
                                 .doc(uid)
-                                .set(userData);
+                                .set(userData)
 
-                return res.status(200).json(newUserDoc);
+                return res.status(200).json("Success: new user created.");
             })
             .catch(err => {
                 if (err.code === "auth/email-already-in-use"){
@@ -103,6 +103,8 @@ exports.registerNewUser =
                     return res.status(500).json({ error: err.code });
                 }
             });
+
+        return res.status(200).json("Success: new user created.");
     }
 
 exports.logInUser =
@@ -154,14 +156,14 @@ exports.getUsers =
 
     (req, res) => {
 
-        // Get a list of all users from the database
+        // Get a list of all the secondary users from the database
         db.collection('users')
             .get()
             .then((data) => {
                 // Extract all userIDs
                 let users = [];
                 data.forEach((doc) => {
-                    if (doc.data().utype === 2){
+                    if (doc.data().utype === 1){
                         let user = {
                                     uid : doc.id,
                                     name : doc.data().fname + doc.data().lname,
