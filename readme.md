@@ -19,16 +19,16 @@ To deploy the express.js server locally, navigate into the `server` folder and r
 To commit changes and deploy the server globally, do the same as mentioned above, but instead of `firebase serve`, run `firebase deploy`.
 
 **Notes**:
-- You may have to run `firebase login` before running `firebase serve` or `firebase deploy`
-- A service key is required to make GET requests from firebase.
+- A service key is required to read/write from firebase.
+- You may need to installed a plug-in to disable Access-Control-Allow-Origin in order to make requests from the React app.
 
 ## Build Status - *Incomplete*
 
-Currently, the login and items page have been implemented.
+Currently, the registration, login, item catalogue, item view and invite users components have been implemented.
 
-To test login, start the server, then run the React app. Currently, we have one user, whose credentials are `userx@email.com` and `123456` that leads to a succefully login.
-
-The item page can be used to retrieve and view information about artefacts that have been cataloged.
+If you wish to test the app, you can login using the test account: 
+`username` : "test@email.com", 
+`password` : "password"
 
 ## Development Team
 
