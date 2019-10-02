@@ -27,7 +27,7 @@ class AddItemForm extends Component {
         val               : null,
         assignedto        : null,
         stage             : 0,
-        allUsers          : null,
+        allUsers          : [],
         selectingWatchers : true,
         selectedUsers     : [],
         loading           : false,

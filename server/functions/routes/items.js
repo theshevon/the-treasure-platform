@@ -11,6 +11,7 @@ router.get("/items", itemController.getItems);
 
 /*================================POST ROUTES=================================*/
 
+router.post("/items", itemController.createItem);
 
 /*===========================================================================*/
 
