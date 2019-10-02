@@ -5,51 +5,52 @@ import Button from 'react-bootstrap/Button'
 import Modal  from 'react-bootstrap/Modal'
 
 // custom components
-import InviteFrom from './InviteForm'
+import AddItemForm from './AddItemForm'
 
-// custom stylesheets
-import '../stylesheets/invite-modal.css'
-
-class InviteModal extends Component {
+class AddItemModal extends Component {
 
     state = {
-        show : false
+        showAddItemModal: false,
     }
 
-    handleClose = () => this.setState({ show : false });
-    handleShow = () => this.setState({ show : true });
+    // handle modal close
+    handleClose = () => {
+		this.setState({ showAddItemModal : false })
+	}
+
+    // handle modal show
+	handleShow = () => {
+		this.setState({ showAddItemModal : true })
+	}
 
     render() {
-
         return (
             <div>
-
                 <Button
                     className="mt-2 mb-3 add-btn btn"
                     variant="light"
                     onClick={this.handleShow}>
-                    + Users
+                    Add Item
                 </Button>
 
                 <Modal
-                    className="invite-user-modal"
+                    className="add-item-modal"
+                    show={this.state.showAddItemModal}
                     size="lg"
-                    scrollable
+                    onHide={this.handleClose}
                     centered
-                    show={this.state.show}
-                    onHide={this.handleClose}>
+                    scrollable>
                     <Modal.Header
                         closeButton>
-                        <Modal.Title>Invite Users</Modal.Title>
+                        <Modal.Title>Add A New Item</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <InviteFrom/>
+                        <AddItemForm />
                     </Modal.Body>
                 </Modal>
-
             </div>
         )
     }
 }
 
-export default InviteModal
+export default AddItemModal

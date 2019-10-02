@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 // bootstrap imports
 import Navbar from 'react-bootstrap/Navbar'
-import Nav from 'react-bootstrap/Nav'
+import Nav    from 'react-bootstrap/Nav'
 
 // custom css
 import '../stylesheets/navbar.css'
@@ -54,6 +54,10 @@ class NavbarComponent extends Component {
                     id="basic-navbar-nav">
                     <Nav
                         className="mr-auto">
+                        <Nav.Link
+                            href="/dashboard">
+                            Dashboard
+                        </Nav.Link>
                         <Nav.Link
                             href="/register">
                             Register

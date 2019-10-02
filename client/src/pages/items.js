@@ -2,16 +2,13 @@ import React, { Component } from 'react'
 import axios from "axios";
 
 // boostrap imports
-import Button from 'react-bootstrap/Button'
-import Modal from 'react-bootstrap/Modal'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
 // custom components
 import ItemSkeleton from '../components/ItemSkeleton'
-import AddItemForm from '../components/AddItemForm'
-import Navbar from '../components/Navbar'
-import Item from '../components/Item'
+import Navbar       from '../components/Navbar'
+import Item         from '../components/Item'
 
 // custom css
 import '../stylesheets/items.css'
@@ -24,7 +21,6 @@ class Items extends Component {
 
     state = {
         items: null,
-        showAddItemModal: false,
         loading: true
     }
 
@@ -45,26 +41,23 @@ class Items extends Component {
             );
     };
 
-    // handle modal close
-    handleClose = () => {
-		this.setState({ showAddItemModal : false })
-	};
-
-    // handle modal show
-	handleShow = () => {
-		this.setState({ showAddItemModal : true })
-	};
-
     render() {
 
         let itemListContent = (<ItemSkeleton/>);
 
         if (!this.state.loading){
             itemListContent = (
-                <Row className="my-3 justify-content-center">
+                <Row
+                    className="my-3 justify-content-center">
                     { this.state.items.map((item, index) => (
-                        <Col key={index} className='item-col' xs={12} md={6}>
-                            <Item className="my-5" item={ item }/>
+                        <Col
+                            key={index}
+                            className='item-col'
+                            xs={12}
+                            md={6}>
+                            <Item
+                                className="my-5"
+                                item={ item }/>
                         </Col>
                     ))}
                 </Row>
@@ -76,23 +69,14 @@ class Items extends Component {
 
                 <Navbar />
 
-                <div id="content" className="container">
-
-                    <h1 className="page-title"> ITEMS </h1>
-
-                    <Button className="mt-2 mb-3 add-btn btn" variant="light" onClick={this.handleShow}>Add Item</Button>
-
-                    <Modal className="add-item-modal" show={this.state.showAddItemModal} size="lg" onHide={this.handleClose} centered scrollable>
-                        <Modal.Header closeButton>
-                            <Modal.Title>Add A New Item</Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
-                            <AddItemForm />
-                        </Modal.Body>
-                    </Modal>
-
+                <div
+                    id="content"
+                    className="container">
+                    <h1
+                        className="page-title">
+                        ITEMS
+                    </h1>
                     { itemListContent }
-
                 </div>
             </div>
         )

@@ -3,9 +3,9 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 // pages
 import dashboard from './pages/dashboard'
-import login from './pages/login'
-import items from './pages/items'
-import register from './pages/register'
+import register  from './pages/register'
+import login     from './pages/login'
+import items     from './pages/items'
 
 class App extends Component {
   render() {
