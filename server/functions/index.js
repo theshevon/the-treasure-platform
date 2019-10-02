@@ -1,7 +1,6 @@
 const functions = require('firebase-functions'),
-      express   = require('express');
-
-const app       = express();
+      express   = require('express'),
+      app       = express();
 
 // import routes
 const userRoutes  = require("./routes/users"),
