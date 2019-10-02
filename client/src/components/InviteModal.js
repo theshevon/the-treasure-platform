@@ -28,7 +28,7 @@ class InviteModal extends Component {
                     className="mt-2 mb-3 add-btn btn"
                     variant="light"
                     onClick={this.handleShow}>
-                    + Users
+                    Invite Users
                 </Button>
 
                 <Modal
