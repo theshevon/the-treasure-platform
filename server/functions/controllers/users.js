@@ -276,6 +276,8 @@ exports.inviteNewUsers =
 
     }
 
+/*=============================HELPER FUNCTIONS===============================*/
+
 generateUniqueInviteCode =
 
     (id) => {
