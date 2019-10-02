@@ -183,7 +183,127 @@ exports.inviteNewUsers =
 
     (req, res) => {
 
-        // Create new secondary users from an array of JSON objects,
-        // containing names and emails
-        return true;
+        // Creates new invitee from an array of JSON objects containing
+        // names and emails, and emails each invitee a unique invite code
+
+        let errors = {};
+
+        //// TODO: Validate input
+
+        for (var i = 0; i < req.body.length; i++) {
+            var invitee = req.body[i];
+
+            // loop over all users to check for duplicate email
+            db.collection('users')
+                .get()
+                .then((data) => {
+                    data.forEach((doc) => {
+                        if (doc.data().email === invitee.email) {
+
+                            // Duplicate email; abort and return error
+                            errors.email = "This email is already registered.";
+
+                            return {
+                                errors,
+                                valid: Object.keys(errors).length === 0
+                            };
+                        }
+                    });
+                });
+
+            // Delete all previous invites to the same email address
+
+            //// TODO: remove duplicate emails entries
+            //
+            //var duplicate_email_ids = [];
+            //
+            // db.collection('invitees')
+            //     .get()
+            //     .then((data) => {
+            //         data.forEach((doc) => {
+            //             if (doc.data().email === invitee.email) {
+            //                 // duplicate email, add to duplicate_email_ids
+            //                 duplicate_email_ids.push(doc.data().id)
+            //             }
+            //         });
+            //     });
+
+            // Terminate if errors found
+            if (Object.keys(errors).length !== 0) {
+                return {
+                    errors,
+                    valid: Object.keys(errors).length === 0
+                };
+            }
+
+            // Create new invitee doc
+            const newUser = db.collection('invitees').doc();
+
+            // Generate unique invite code for invitee
+            const key = generateUniqueInviteCode(newUser.id);
+            if (key === null) {
+                errors.key = "Unique code generation failed";
+
+                return {
+                    errors,
+                    valid: Object.keys(errors).length === 0
+                };
+            }
+
+            // Assign data to invitee doc
+            newUser.set({
+                    email: invitee.email,
+                    accepted: false,
+                    code: key
+                });
+
+            //// TODO: Check that key is unique. If not, use substring(0+i, 8+i)
+
+            console.log("Invitee added: " + invitee.email + ", code: " + key);
+
+            // Send invitation email with key code to new invitee
+            //// TODO: mailgun send email
+
+        }
+
+        if (Object.keys(errors).length === 0) {
+            return res.status(200).json("Success: Invites sent");
+        }
+        return {
+            errors,
+            valid: Object.keys(errors).length === 0
+        }
+
+    }
+
+generateUniqueInviteCode =
+
+    (id) => {
+        // Generates a unique invite code from the randomly generated id
+
+        const codeLength = 8;
+        let usedCodes = [];
+
+        db.collection('invitees')
+        .get()
+        .then((data) => {
+            // Extract all invite codes
+            data.forEach((doc) => {
+                if (doc.data().code){
+                    usedCodes.push(doc.data().code);
+                }
+            });
+        });
+        // Return 'codeLength'-char substring of id
+        for (var i = 0; i + codeLength < id.length; i++) {
+            const code = id.substring(0 + i, codeLength + i);
+
+            if (!(usedCodes.includes(code))) {
+                return code;
+            }
+        }
+
+        // Key generation failed
+        return null;
+
     }
