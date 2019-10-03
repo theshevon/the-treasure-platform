@@ -60,78 +60,84 @@ exports.uploadImg =
     (req, res) => {
 
         // find the database entry for the required item
-        let item = db
-                    .collection('items')
-                    .doc(req.params.id)
-                    .get()
-                    .then(doc => {
-                        if (!doc.exists){
-                            return res.status(400).json({ Error : "Document does not exist!" });
+        db
+            .collection('items')
+            .doc(req.params.id)
+            .get()
+            .then(doc => {
+
+                // eslint-disable-next-line promise/always-return
+                if (!doc.exists){
+                    return res.status(400).json({ Error : "Document does not exist!" });
+                }
+
+                let photos = doc.data().photos;
+
+                const busboy = new BusBoy({ headers: req.headers });
+
+                let imageToBeUploaded = {};
+                let imageFileName;
+
+                // prepare the image file
+                busboy.on('file', (fieldname, file, filename, encoding, mimetype) => {
+
+                    // check if the file type is that of an image
+                    if (mimetype !== 'image/jpeg' && mimetype !== 'image/png') {
+                        return res.status(400).json({ typeError: 'Wrong file type submitted' });
+                    }
+
+                    // create a unique name for the image
+                    const imageExtension = filename.split('.')[filename.split('.').length - 1];
+                    imageFileName = `photo_${Math.round(Math.random() * 10000000).toString()}.${imageExtension}`;
+
+                    // upload the image
+                    const filepath = path.join(os.tmpdir(), imageFileName);
+                    imageToBeUploaded = { filepath, mimetype };
+                    file.pipe(fs.createWriteStream(filepath));
+                });
+
+                // store the image on firebase storage
+                busboy.on('finish', () => {
+                    // eslint-disable-next-line promise/no-nesting
+                    admin
+                    .storage()
+                    .bucket(config.storageBucket)
+                    .upload(imageToBeUploaded.filepath, {
+                        resumable: false,
+                        metadata: {
+                            metadata: {
+                                contentType: imageToBeUploaded.mimetype
+                            }
                         }
-                        return doc;
+                    })
+                    .then(() => {
+
+                        // determine the imageURL and add it to the item's database entry
+                        const imageUrl = `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${imageFileName}?alt=media`;
+                        photos.push(imageUrl);
+
+                        // update databse entry
+                        // eslint-disable-next-line promise/no-nesting
+                        return db
+                                .collection('items')
+                                .doc(doc.id)
+                                .update({photos : photos })
+                                .then(() => {
+                                    return res.status(200).json("Success");
+                                })
+                                .catch(err => {
+                                    return res.status(200).json({ Error : err});
+                                })
+
                     })
                     .catch(err => {
-                        return res.status(400).json({ Error : err });
-                    })
+                        return res.status(500).json({ uploadError : err });
+                    });
+                });
 
-        const busboy = new BusBoy({ headers: req.headers });
-
-        let imageToBeUploaded = {};
-        let imageFileName;
-
-        // prepare the image file
-        busboy.on('file', (fieldname, file, filename, encoding, mimetype) => {
-
-            // check if the file type is that of an image
-            if (mimetype !== 'image/jpeg' && mimetype !== 'image/png') {
-                return res.status(400).json({ error: 'Wrong file type submitted' });
-            }
-
-            // create a unique name for the image
-            const imageExtension = filename.split('.')[filename.split('.').length - 1];
-            imageFileName = `photo_${Math.round(Math.random() * 10000000).toString()}.${imageExtension}`;
-
-            // upload the image
-            const filepath = path.join(os.tmpdir(), imageFileName);
-            imageToBeUploaded = { filepath, mimetype };
-            file.pipe(fs.createWriteStream(filepath));
-        });
-
-        // store the image on firebase storage
-        busboy.on('finish', () => {
-            admin
-            .storage()
-            .bucket(config.storageBucket)
-            .upload(imageToBeUploaded.filepath, {
-                resumable: false,
-                metadata: {
-                    metadata: {
-                        contentType: imageToBeUploaded.mimetype
-                    }
-                }
+                busboy.end(req.rawBody);
             })
-            .then(() => {
-
-                // determine the imageURL and add it to the item's database entry
-                const imageUrl = `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${imageFileName}?alt=media`;
-                item.photos.push(imageUrl);
-
-                // update database entry
-                return db
-                            .collection('items')
-                            .doc(item.id)
-                            .set(item)
-                            .then(() => {
-                                return res.status(200).json("Success : Image uploaded and linked to database entry");
-                            })
-                            .catch(err => {
-                                return res.status(500).json({ error : err });
-                            })
+            .catch(err => {
+                return res.status(400).json({ Error : err });
             })
-            .catch((err) => {
-                return res.status(500).json({ error: error });
-            });
-        });
-
-        busboy.end(req.rawBody);
     }
