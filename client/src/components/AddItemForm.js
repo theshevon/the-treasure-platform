@@ -3,10 +3,10 @@ import axios from 'axios'
 
 // bootstrap imports
 import Spinner from 'react-bootstrap/Spinner'
-import Button from 'react-bootstrap/Button'
-import Form from 'react-bootstrap/Form'
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
+import Button  from 'react-bootstrap/Button'
+import Form    from 'react-bootstrap/Form'
+import Row     from 'react-bootstrap/Row'
+import Col     from 'react-bootstrap/Col'
 
 // semantic-ui imports
 import { Dropdown } from 'semantic-ui-react'
@@ -145,15 +145,24 @@ class AddItemForm extends Component {
             assignedto : assignedTo
 		}
 
+        let data = new FormData();
+        itemData.photos.forEach((file, i) => {
+            data.append('images[' + i + ']', file, file.name);
+        });
+
         // send the data to the server
 		axios({
 				method: 'post',
-				url: 'http://localhost:5000/comp30022app/us-central1/api/items',
-				data: itemData
+                url: 'http://localhost:5000/comp30022app/us-central1/api/items',
+                headers: {
+                    'content-type': 'multipart/form-data'
+                },
+				data: data
 			})
 			.then(res => {
-				this.setState({ loading : false });
-				this.props.history.push('/items');
+                this.setState({ loading : false });
+                console.log(res.data);
+				// this.props.history.push('/items');
 			})
 			.catch(err => {
 				this.setState({
@@ -227,6 +236,7 @@ class AddItemForm extends Component {
 
                 <Form
                     noValidate
+                    encType="multipart/form-data"
                     validated={this.state.validated}
                     onSubmit={this.handleValidation}>
 
