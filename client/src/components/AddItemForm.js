@@ -125,7 +125,7 @@ class AddItemForm extends Component {
         }
 
         // replace assignedto with the uid of the corresponding user
-        let assignedTo;
+        let assignedTo = null;
         for (var i=0; i<this.state.allUsers.length; i++){
             let user = this.state.allUsers[i];
             if (user.name === this.state.assignedto){
@@ -139,39 +139,58 @@ class AddItemForm extends Component {
             name       : this.state.name,
             desc       : this.state.desc,
             cover      : this.state.coverImgIndex,
-            photos     : this.state.uploadedFiles,
             val        : this.state.val,
-            visibleto  : visibleTo,
-            assignedto : assignedTo
-		}
+            visibleTo  : visibleTo,
+            assignedTo : assignedTo,
+        }
 
-        let data = new FormData();
-        itemData.photos.forEach((file, i) => {
-            data.append('images[' + i + ']', file, file.name);
-        });
+        // create a new item using the data
+        axios({
+                    method: 'post',
+                    url: 'http://localhost:5000/comp30022app/us-central1/api/items/new',
+                    data: itemData
+                })
+                .then(res => {
 
-        // send the data to the server
-		axios({
-				method: 'post',
-                url: 'http://localhost:5000/comp30022app/us-central1/api/items',
-                headers: {
-                    'content-type': 'multipart/form-data'
-                },
-				data: data
-			})
-			.then(res => {
-                this.setState({ loading : false });
-                console.log(res.data);
-				// this.props.history.push('/items');
-			})
-			.catch(err => {
-				this.setState({
-                    errors    : err.response.data,
-                    stage     : 0,
-					loading   : false,
-					validated : true
-				})
-			})
+                    let itemId = res.data;
+
+                    // add all the photos to the form data
+                    let fd = new FormData();
+                    this.state.uploadedFiles.forEach(file => {
+                        fd.append('file', file, file.name);
+                    });
+
+                    // send each file as its own upload request
+                    // send the data to the server
+                    return axios({
+                                method: 'post',
+                                url: `http://localhost:5000/comp30022app/us-central1/api/items/${itemId}/img_upload`,
+                                headers: {
+                                    'content-type': 'multipart/form-data'
+                                },
+                                data: fd
+                                })
+                                .then(res => {
+                                    this.setState({ loading : false });
+                                    this.props.history.push('/items');
+                                })
+                                .catch(err => {
+                                    this.setState({
+                                        errors    : err.response.data,
+                                        stage     : 0,
+                                        loading   : false,
+                                        validated : true
+                                    })
+                                })
+                })
+                .catch(err => {
+                    this.setState({
+                        errors    : err.response.data,
+                        stage     : 0,
+                        loading   : false,
+                        validated : true
+                    })
+                })
 	}
 
     // handles state updates to uploaded files
