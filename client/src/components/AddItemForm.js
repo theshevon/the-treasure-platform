@@ -37,18 +37,18 @@ class AddItemForm extends Component {
     componentDidMount(){
 
         // fetch user IDs and names of all the secondary users on the platform
-        axios.get({
-                        method: 'get',
-                        url: 'http://localhost:5000/comp30022app/us-central1/api/users'
+        axios({
+                    method: 'get',
+                    url: 'http://localhost:5000/comp30022app/us-central1/api/users'
+                })
+                .then(res => {
+                    this.setState({
+                        allUsers: res.data
                     })
-                    .then(res => {
-                        this.setState({
-                            allUsers: res.data
-                        })
-                    })
-                    .catch(err => {
-                        console.log(err);
-                    });
+                })
+                .catch(err => {
+                    console.log(err);
+                });
 
         // user options for visibility dropdown
         let userOptions = [];

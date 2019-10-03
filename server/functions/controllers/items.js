@@ -21,33 +21,6 @@ exports.getItems =
             });
     }
 
-exports.getSpecificItem =
-    (req, res) => {
-        db.collection('items')
-            .get()
-            .then((data) => {
-                data.forEach((doc) => {
-                    if (req.params.id == doc.id) {
-                        return res.json({
-                            itemId: doc.id,
-                            name: doc.data().name,
-                            desc: doc.data().desc,
-                            item_src: doc.data().item_src,
-                            val: doc.data().val,
-                            createdOn: doc.data().createdOn,
-                            visibleTo: doc.data().visibleTo,
-                            intUsers: doc.data().intUsers,
-                            assignedTo: doc.data().assignedTo
-                        });
-                    }
-                });
-            })
-            .catch((err) => {
-                console.error(err);
-                res.status(500).json({ error: err.code });
-            });
-    }
-
 exports.createItem =
 
     (req, res) => {
