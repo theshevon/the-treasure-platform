@@ -70,7 +70,7 @@ exports.uploadImg =
                     return res.status(400).json({ Error : "Document does not exist!" });
                 }
 
-                let photos = doc.data().photos;
+                let photos = doc.data()["photos"];
 
                 const busboy = new BusBoy({ headers: req.headers });
 
@@ -147,6 +147,7 @@ exports.deleteItem =
     (req, res) => {
 
         // delete images
+
 
         // delete database entry
         db
