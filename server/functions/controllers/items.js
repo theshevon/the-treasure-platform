@@ -19,7 +19,7 @@ exports.getItems =
                 });
 
                 // sort in chronological order
-                items.sort((item1, item2) => item1.createdOn - item2.createdOn);
+                items.sort((item1, item2) => item1.createdOn.toDate() - item2.createdOn.toDate());
                 return res.json(items);
             })
             .catch((err) => {
