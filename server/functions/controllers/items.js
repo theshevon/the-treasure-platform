@@ -17,6 +17,9 @@ exports.getItems =
                     let item = {id : doc.id};
                     items.push(Object.assign(item, doc.data()));
                 });
+
+                // sort in chronological order
+                items.sort((item1, item2) => item1.createdOn - item2.createdOn);
                 return res.json(items);
             })
             .catch((err) => {
@@ -114,7 +117,7 @@ exports.uploadImg =
                         // determine the imageURL and add it to the item's database entry
                         const imageUrl = `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${imageFileName}?alt=media`;
                         photos.push(imageUrl);
-
+                        res.status(200).json(photos);
                         // update databse entry
                         // eslint-disable-next-line promise/no-nesting
                         return db

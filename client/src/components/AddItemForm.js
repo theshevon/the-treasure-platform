@@ -163,7 +163,9 @@ class AddItemForm extends Component {
                     let itemId = res.data;
 
                     // upload the photos
-                    this.state.uploadedFiles.forEach(file => {
+                    for (var i=0; i < this.state.uploadedFiles.length; i++) {
+                        let file = this.state.uploadedFiles[i];
+                        console.log(file.name);
                         let fd = new FormData();
                         fd.append('file', file, file.name);
 
@@ -189,9 +191,10 @@ class AddItemForm extends Component {
                                         })
 
                                     this.handleErrors(err.response.data);
-                                })
+                                });
 
-                    });
+                        if (this.state.errors) break;
+                    }
 
                     return
                 })
@@ -199,7 +202,7 @@ class AddItemForm extends Component {
 
                     // submission has been successful so go back to items page
                     this.setState({ loading : false });
-                    this.props.history.push('/items');
+                    // this.props.history.push('/items');
                 })
                 .catch(err => {
                     console.log(err);
