@@ -17,7 +17,7 @@ body{
     text-align: center;
 }
 
-.login-field{
+.login-field, textarea{
     text-align: center;
 }
 

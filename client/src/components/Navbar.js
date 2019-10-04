@@ -66,6 +66,10 @@ class NavbarComponent extends Component {
                             href="/items">
                             Items
                         </Nav.Link>
+                        <Nav.Link
+                            href="/support">
+                            Support
+                        </Nav.Link>
                     </Nav>
                 </Navbar.Collapse>
 

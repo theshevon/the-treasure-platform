@@ -6,6 +6,7 @@ import dashboard from './pages/dashboard'
 import login from './pages/login'
 import items from './pages/items'
 import register from './pages/register'
+import support from './pages/support'
 
 class App extends Component {
   render() {
@@ -17,6 +18,7 @@ class App extends Component {
               <Route exact path="/items" component={ items }/>
               <Route exact path="/login" component={ login }/>
               <Route exact path="/register" component={ register }/>
+              <Route exact path="/support" component={ support }/>
             </Switch>
         </Router>
     );
