@@ -107,38 +107,65 @@ class AddItemForm extends Component {
         })
     }
 
-    // handles item creation
-    handleCreate = async data => {
-        try {
-            const res = await axios({
-                method: "post",
-                url: 'http://localhost:5000/comp30022app/us-central1/api/items/new',
-                data: data
-            }).then((res)=> {
-                return res.data;
-            })
-            return res;
-        } catch (err) {
-            throw err;
-        }
-    };
+    handleCreate = async (data) => {
+        console.log("item create started");
+        let id = await axios({
+                                method: 'post',
+                                url: 'http://localhost:5000/comp30022app/us-central1/api/items/new',
+                                data: data
+                            })
+                            .then(res => {
+                                return res.data();
+                            })
+                            .catch(err => {
+                                this.handleErrors(err);
+                            })
+        console.log("item create ended");
+        return id;
+    }
 
-    // handles image uploads for a specific item
+    // handleCreate = async (data) => {
+    //     return await axios({
+    //                         method: 'post',
+    //                         url: 'http://localhost:5000/comp30022app/us-central1/api/items/new',
+    //                         data: data
+    //                         })
+    //                         .then(res => {
+    //                             return res.data();
+    //                         })
+    //                         .catch(err => {
+    //                             throw err;
+    //                         });
+    // }
+
     handleUpload = async (fd, itemId) => {
-        try {
-            await axios({
-                            method: "post",
-                            url: `http://localhost:5000/comp30022app/us-central1/api/items/${itemId}/img_upload`,
-                            headers: {
-                                "content-type": "multipart/form-data"
-                            },
-                            data: fd
+        console.log("start");
+        let response = await axios({
+                        method: 'post',
+                        url: `http://localhost:5000/comp30022app/us-central1/api/items/${itemId}/img_upload`,
+                        headers: {
+                            'content-type': 'multipart/form-data'
+                        },
+                        data: fd
+                    })
+                    .then(res => {
+                        return res;
+                    })
+                    .catch(err => {
 
-                        })
-            return;
-        } catch (err) {
-            throw err.response.data;
-        }
+                        // if there is an error, delete the item
+                        axios({
+                                method: 'delete',
+                                url: `http://localhost:5000/comp30022app/us-central1/api/items/${itemId}`
+                            })
+                            .catch(err => {
+                                this.handleErrors(err.response.data);
+                            })
+
+                        this.handleErrors(err.response.data);
+                    });
+        console.log("finish");
+        return response;
     }
 
     // prepares and sends the data to the server to create a new item
@@ -187,26 +214,32 @@ class AddItemForm extends Component {
             photos     : []
         }
 
-        this._asyncSubmit(itemData);
-	}
+        // create a new item using the data
+        let itemId = this.handleCreate(itemData);
 
-    _asyncSubmit = async itemData => {
-        try {
-          // create a new item using the data
-          const itemId = await this.handleCreate(itemData);
+        // upload the photos
+        if (!this.state.errors){
+            for (let i=0; i < this.state.uploadedFiles.length; i++) {
+                let file = this.state.uploadedFiles[i];
+                let fd = new FormData();
+                fd.append('file', file, file.name);
 
-          for (let i = 0; i < this.state.uploadedFiles.length; i++) {
-            const file = this.state.uploadedFiles[i];
-            let fd = new FormData();
-            fd.append("file", file, file.name);
-            // send each file as its own upload request
-            await this.handleUpload(fd, itemId);
-          }
-        } catch(err) {
-          this.handleErrors(err);
+                // send each file as its own upload request
+                // send the data to the server
+                await this.handleUpload(fd, itemId);
+
+                if (this.state.errors) break;
+            }
         }
-        this.setState({ loading: false });
-    }
+
+        // submission was successful
+        if (!this.state.errors){
+            this.setState({ loading : false });
+
+            // go back to items page
+            // this.props.history.push('/items');
+        }
+	}
 
     // handles state updates to uploaded files
     handleFileSelect = event => {

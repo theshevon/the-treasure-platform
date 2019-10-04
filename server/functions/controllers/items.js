@@ -40,7 +40,7 @@ exports.createItem =
             visibleTo  : req.body.visibleTo,
             assignedTo : req.body.assignedTo,
             intUsers   : [],
-            photos     : req.body.photos,
+            photos     : [],
             createdOn  : admin.firestore.FieldValue.serverTimestamp()
         }
 
@@ -117,10 +117,7 @@ exports.uploadImg =
                         // determine the imageURL and add it to the item's database entry
                         const imageUrl = `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${imageFileName}?alt=media`;
                         photos.push(imageUrl);
-                        console.log("printing photos")
-                        for (var i=0; i<photos.length; i++){
-                            console.log(photos[i]);
-                        }
+
                         // update databse entry
                         // eslint-disable-next-line promise/no-nesting
                         return db
