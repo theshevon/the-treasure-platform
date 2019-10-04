@@ -13,6 +13,10 @@ router.post("/items/new", itemController.createItem);
 
 router.post("/items/:id/img_upload", itemController.uploadImg);
 
+/*===============================DELETE ROUTES================================*/
+
+router.delete("/items/:id", itemController.deleteItem);
+
 /*===========================================================================*/
 
 module.exports = router;

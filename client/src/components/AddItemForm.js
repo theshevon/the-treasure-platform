@@ -24,7 +24,6 @@ class AddItemForm extends Component {
         desc              : null,
         coverImgIndex     : 0,
         uploadedFiles     : [],
-        val               : null,
         assignedto        : null,
         stage             : 0,
         allUsers          : [],
@@ -98,6 +97,15 @@ class AddItemForm extends Component {
         this.setState({ selectedUsers : value })
     }
 
+    // handles state updates for errors during submission
+    handleErrors = err => {
+        this.setState({
+            errors    : err,
+            stage     : 0,
+            loading   : false,
+            validated : true
+        })
+    }
     // prepares and sends the data to the server to create a new item
     handleSubmit = event => {
 
@@ -125,7 +133,7 @@ class AddItemForm extends Component {
         }
 
         // replace assignedto with the uid of the corresponding user
-        let assignedTo = null;
+        let assignedTo = '';
         for (var i=0; i<this.state.allUsers.length; i++){
             let user = this.state.allUsers[i];
             if (user.name === this.state.assignedto){
@@ -139,9 +147,9 @@ class AddItemForm extends Component {
             name       : this.state.name,
             desc       : this.state.desc,
             cover      : this.state.coverImgIndex,
-            val        : this.state.val,
             visibleTo  : visibleTo,
             assignedTo : assignedTo,
+            photos     : []
         }
 
         // create a new item using the data
@@ -154,15 +162,14 @@ class AddItemForm extends Component {
 
                     let itemId = res.data;
 
-                    // add all the photos to the form data
-                    let fd = new FormData();
+                    // upload the photos
                     this.state.uploadedFiles.forEach(file => {
+                        let fd = new FormData();
                         fd.append('file', file, file.name);
-                    });
 
-                    // send each file as its own upload request
-                    // send the data to the server
-                    return axios({
+                        // send each file as its own upload request
+                        // send the data to the server
+                        axios({
                                 method: 'post',
                                 url: `http://localhost:5000/comp30022app/us-central1/api/items/${itemId}/img_upload`,
                                 headers: {
@@ -170,26 +177,33 @@ class AddItemForm extends Component {
                                 },
                                 data: fd
                                 })
-                                .then(res => {
-                                    this.setState({ loading : false });
-                                    this.props.history.push('/items');
-                                })
                                 .catch(err => {
-                                    this.setState({
-                                        errors    : err.response.data,
-                                        stage     : 0,
-                                        loading   : false,
-                                        validated : true
-                                    })
+
+                                    // if there is an error, delete the item
+                                    axios({
+                                            method: 'delete',
+                                            url: `http://localhost:5000/comp30022app/us-central1/api/items/${itemId}`
+                                        })
+                                        .catch(err => {
+                                            this.handleErrors(err.response.data);
+                                        })
+
+                                    this.handleErrors(err.response.data);
                                 })
+
+                    });
+
+                    return
+                })
+                .then(() => {
+
+                    // submission has been successful so go back to items page
+                    this.setState({ loading : false });
+                    this.props.history.push('/items');
                 })
                 .catch(err => {
-                    this.setState({
-                        errors    : err.response.data,
-                        stage     : 0,
-                        loading   : false,
-                        validated : true
-                    })
+                    console.log(err);
+                    // this.handleErrors(err.response.data);
                 })
 	}
 
@@ -300,32 +314,6 @@ class AddItemForm extends Component {
                                 onChange={this.handleChange}/>
                             <Form.Control.Feedback type="invalid">
                                 Please enter a description of the item.
-                            </Form.Control.Feedback>
-                        </Col>
-                    </Form.Group>
-
-                    {/* Item value field */}
-                    <Form.Group
-                        as={Row}
-                        className={this.state.stage ===  0 ? "" : "hidden-field"}>
-                        <Form.Label
-                            column
-                            sm="3">
-                            Value{" "}
-                                <span
-                                    className="text-muted">
-                                    (Optional)
-                                </span>
-                        </Form.Label>
-                        <Col
-                            sm="9">
-                            <Form.Control
-                                type="text"
-                                name="val"
-                                onChange={this.handleChange}
-                                className="optional-field"/>
-                            <Form.Control.Feedback type="invalid">
-                                {/* Error message for item value */}
                             </Form.Control.Feedback>
                         </Col>
                     </Form.Group>

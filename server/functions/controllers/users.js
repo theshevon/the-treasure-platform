@@ -91,8 +91,8 @@ exports.registerNewUser =
                     lname: newUser.lname,
                     email: newUser.email,
                     utype: 1,
-                    createdon: admin.firestore.FieldValue.serverTimestamp(),
-                    intitems: []
+                    createdOn: admin.firestore.FieldValue.serverTimestamp(),
+                    intItems: []
                 }
 
                 // eslint-disable-next-line promise/no-nesting

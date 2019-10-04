@@ -59,7 +59,7 @@ export class Item extends Component {
 							<Card.Img
 								className="item-card-img-top"
 								variant="top"
-								src={item.cover} />
+								src={item.photos[item.cover]} />
 						</Col>
 
 						<Col

@@ -34,13 +34,12 @@ exports.createItem =
             name       : req.body.name,
             desc       : req.body.desc,
             cover      : req.body.cover,
-            val        : req.body.val,
             visibleTo  : req.body.visibleTo,
-            assignedTo : req.body.assignedTo
+            assignedTo : req.body.assignedTo,
+            intUsers   : [],
+            photos     : req.body.photos,
+            createdOn  : admin.firestore.FieldValue.serverTimestamp()
         }
-
-        // remove fields with null values
-        Object.keys(item).forEach((key) => (item[key] === null) && delete item[key]);
 
         // add item to collection
         db
@@ -121,7 +120,7 @@ exports.uploadImg =
                         return db
                                 .collection('items')
                                 .doc(doc.id)
-                                .update({photos : photos })
+                                .update({ photos : photos })
                                 .then(() => {
                                     return res.status(200).json("Success");
                                 })
@@ -140,4 +139,26 @@ exports.uploadImg =
             .catch(err => {
                 return res.status(400).json({ Error : err });
             })
+    }
+
+// deletes an item from the database
+exports.deleteItem =
+
+    (req, res) => {
+
+        // delete images
+
+        // delete database entry
+        db
+            .collection('items')
+            .doc(req.params.id)
+            .delete()
+            .then(() => {
+                return res.status(200).json("Successfully deleted item");
+            })
+            .catch(err => {
+                return res.status(400).json({ Error : err });
+            })
+
+
     }
