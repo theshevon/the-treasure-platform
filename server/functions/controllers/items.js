@@ -65,6 +65,14 @@ exports.createItem =
 // uploads a single image to firebase storage
 exports.uploadImg =
 
+    // Response codes:
+    // 200 :- No Error
+    // 101 :- Error : Document does not exist
+    // 102 :- Error : Incorrect file type
+    // 103 :- Error : Failed to link image URI to database entry
+    // 104 :- Error : Failed to upload image to firebase storage
+    // 105 :- Error : Other error
+
     (req, res) => {
 
         // find the database entry for the required item
@@ -76,7 +84,7 @@ exports.uploadImg =
 
                 // eslint-disable-next-line promise/always-return
                 if (!doc.exists){
-                    return res.status(400).json({ Error : "Document does not exist!" });
+                    return res.status(400).json({ code : 101 });
                 }
 
                 let photos = doc.data()["photos"];
@@ -91,7 +99,7 @@ exports.uploadImg =
 
                     // check if the file type is that of an image
                     if (mimetype !== 'image/jpeg' && mimetype !== 'image/png') {
-                        return res.status(400).json({ typeError: 'Wrong file type submitted' });
+                        return res.status(400).json({ code : 102 });
                     }
 
                     // create a unique name for the image
@@ -106,6 +114,7 @@ exports.uploadImg =
 
                 // store the image on firebase storage
                 busboy.on('finish', () => {
+
                     // eslint-disable-next-line promise/no-nesting
                     admin
                     .storage()
@@ -131,22 +140,25 @@ exports.uploadImg =
                                 .doc(doc.id)
                                 .update({ photos : photos })
                                 .then(() => {
-                                    return res.status(200).json("Success");
+                                    return res.status(200).json({ code : 200 });
                                 })
+                                // eslint-disable-next-line handle-callback-err
                                 .catch(err => {
-                                    return res.status(200).json({ Error : err});
+                                    return res.status(400).json({ code : 103 });
                                 })
 
                     })
+                    // eslint-disable-next-line handle-callback-err
                     .catch(err => {
-                        return res.status(500).json({ uploadError : err });
+                        return res.status(400).json({ code : 104 });
                     });
                 });
 
                 busboy.end(req.rawBody);
             })
+            // eslint-disable-next-line handle-callback-err
             .catch(err => {
-                return res.status(400).json({ Error : err });
+                return res.status(400).json({ code : 105 });
             })
     }
 
