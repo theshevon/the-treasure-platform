@@ -187,23 +187,26 @@ class AddItemForm extends Component {
             photos     : []
         }
 
-        this._asyncSubmit(itemData);
+        this.submitData(itemData);
 	}
 
-    _asyncSubmit = async itemData => {
+    submitData = async itemData => {
         try {
-          // create a new item using the data
-          const itemId = await this.handleCreate(itemData);
+            // create a new item using the data
+            const itemId = await this.handleCreate(itemData);
 
-          for (let i = 0; i < this.state.uploadedFiles.length; i++) {
-            const file = this.state.uploadedFiles[i];
-            let fd = new FormData();
-            fd.append("file", file, file.name);
-            // send each file as its own upload request
-            await this.handleUpload(fd, itemId);
-          }
+            for (let i = 0; i < this.state.uploadedFiles.length; i++) {
+                const file = this.state.uploadedFiles[i];
+                let fd = new FormData();
+                fd.append("file", file, file.name);
+                // send each file as its own upload request
+                await this.handleUpload(fd, itemId);
+            }
         } catch(err) {
-          this.handleErrors(err);
+            this.handleErrors(err);
+
+            // TODO: if an image upload failed, then delete the item and provide
+            // an appropriate response to the user.
         }
         this.setState({ loading: false });
     }
