@@ -1,3 +1,4 @@
+const functions = require('firebase-functions');
 const { admin, db } = require("../util/admin"),
       BusBoy        = require('busboy'),
       config        = require("../util/config"),
@@ -104,7 +105,7 @@ exports.uploadImg =
 
                     // create a unique name for the image
                     const imageExtension = filename.split('.')[filename.split('.').length - 1];
-                    imageFileName = `photo_${Math.round(Math.random() * 10000000).toString()}.${imageExtension}`;
+                    imageFileName = `${req.params.id}_photo_${Math.round(Math.random() * 10000000).toString()}.${imageExtension}`;
 
                     // upload the image
                     const filepath = path.join(os.tmpdir(), imageFileName);
@@ -162,25 +163,36 @@ exports.uploadImg =
             })
     }
 
+// firebase function to automatically delete image files from firebase storage
+// when an item's database entry is deleted
+// THIS ISN'T WORKING
+exports.deleteImages = functions.firestore
+    .document('items/{itemId}')
+    .onDelete((snap, context) => {
+
+        const { itemId } = context.params;
+
+        // delete images
+        const bucket = admin.storage().bucket(config.storageBucket);
+        return bucket.deleteFiles({
+            prefix: `${itemId}`
+        });
+    });
+
 // deletes an item from the database
 exports.deleteItem =
 
-    (req, res) => {
+  (req, res) => {
 
-        // delete images
-
-
-        // delete database entry
-        db
-            .collection('items')
-            .doc(req.params.id)
-            .delete()
-            .then(() => {
-                return res.status(200).json("Successfully deleted item");
-            })
-            .catch(err => {
-                return res.status(400).json({ Error : err });
-            })
-
-
-    }
+      // delete database entry
+      db
+          .collection('items')
+          .doc(req.params.id)
+          .delete()
+          .then(() => {
+              return res.status(200).json("Successfully deleted item");
+          })
+          .catch(err => {
+              return res.status(400).json({ Error : err });
+          });
+  }
