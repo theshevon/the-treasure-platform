@@ -1,9 +1,11 @@
-const BusBoy = require('busboy');
-    const path = require('path');
-    const os = require('os');
-    const fs = require('fs');
-    const { admin, db } = require("../util/admin");
-    const config = require("../util/config");
+const { admin, db } = require("../util/admin"),
+      BusBoy        = require('busboy'),
+      config        = require("../util/config"),
+      path          = require('path'),
+      fs            = require('fs'),
+      os            = require('os');
+
+const { validateItemData } = require("../util/validators");
 
 // returns all the items from firestore
 exports.getItems =
@@ -44,6 +46,10 @@ exports.createItem =
             createdOn  : admin.firestore.FieldValue.serverTimestamp()
         }
 
+        // carry out validation
+        const { valid, errors } = validateItemData(item);
+        if (!valid) return res.status(400).json(errors);
+
         // add item to collection
         db
             .collection('items')
@@ -52,7 +58,7 @@ exports.createItem =
                 return res.status(200).json(doc.id);
             })
             .catch((err) => {
-                res.status(500).json({ Error : err });
+                res.status(400).json({ Error : err });
             });
     }
 
