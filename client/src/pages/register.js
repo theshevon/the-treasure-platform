@@ -75,11 +75,11 @@ class Register extends Component {
         this.setState({ loading: true });
 
         const registrationData = {
-            fname: this.state.fname,
-            lname: this.state.lname,
-            email: this.state.email,
-            pw:    this.state.pw,
-            pw_c:  this.state.pw_c
+            fname : this.state.fname,
+            lname : this.state.lname,
+            email : this.state.email,
+            pw    : this.state.pw,
+            pw_c  : this.state.pw_c
         }
 
         axios({

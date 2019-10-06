@@ -189,7 +189,7 @@ exports.deleteItem =
           .collection('items')
           .doc(req.params.id)
           .delete()
-          .then(() => {
+          .then(res => {
               return res.status(200).json("Successfully deleted item");
           })
           .catch(err => {
