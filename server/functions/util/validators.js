@@ -1,6 +1,6 @@
 exports.validateInviteeData =
 
-    invitee => {
+    (invitee) => {
 
         let errors = {};
 
@@ -22,7 +22,7 @@ exports.validateInviteeData =
 
 exports.validateRegistrationData =
 
-    newUser => {
+    (newUser) => {
 
         let errors = {};
 
@@ -49,13 +49,36 @@ exports.validateRegistrationData =
 
 exports.validateLoginData =
 
-    user => {
+    (user) => {
 
         let errors = {};
         if (isEmpty(user.email) || !isEmail(user.email)) errors.email = "Please enter a valid email address.";
         if (isEmpty(user.password)) errors.password = "Please enter a password.";
 
         return  {
+            errors,
+            valid: Object.keys(errors).length === 0
+        }
+    }
+
+exports.validateItemData =
+
+    (item, users) => {
+
+        let errors = {};
+
+        // check if name and desc are valid
+        if (isEmpty(item.name)) errors.name = "Please enter a name for the item.";
+        if (isEmpty(item.desc)) errors.desc = "Please enter a name for the item.";
+
+        // check if 'assignedTo' user is a valid user
+        if (item.assignedTo && !users.includes(item.assignedTo)) errors.assignedTo = "Please select a valid user from the dropdown";
+
+        // No need to check the 'visibleTo' users because the front-end does work
+        // to determine the list of users. Tampering with that field shouldn't
+        // result in any issues.
+
+        return {
             errors,
             valid: Object.keys(errors).length === 0
         }

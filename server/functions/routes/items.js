@@ -7,11 +7,15 @@ const itemController = require("../controllers/items");
 
 router.get("/items", itemController.getItems);
 
-// app.get("/item/:id", getSpecificItem)
-
 /*================================POST ROUTES=================================*/
 
-router.post("/items", itemController.createItem);
+router.post("/items/new", itemController.createItem);
+
+router.post("/items/:id/img_upload", itemController.uploadImg);
+
+/*===============================DELETE ROUTES================================*/
+
+router.delete("/items/:id", itemController.deleteItem);
 
 /*===========================================================================*/
 
