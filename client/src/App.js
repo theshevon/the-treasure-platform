@@ -29,11 +29,28 @@ render() {
 	return (
 		<Router>
 			<Switch>
-			<Route exact path="/"          component={ login }/>
-			<Route exact path="/dashboard" component={ dashboard }/>
-			<Route exact path="/items"     component={ items }/>
-			<Route exact path="/login"     component={ login }/>
-			<Route exact path="/register"  component={ register }/>
+			<Route
+				exact
+				path="/"
+				component={ login }/>
+			<Route
+				exact
+				path="/dashboard"
+				component={ dashboard }/>
+			<Route
+				exact
+				path="/items"
+				component={ items }/>
+			<AuthRoute
+				exact
+				path="/login"
+				component={ login }
+				authenticated={ authenticated }/>
+			<AuthRoute
+				exact
+				path="/register"
+				component={ register }
+				authenticated={ authenticated }/>
 			</Switch>
 		</Router>
 	);
