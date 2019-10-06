@@ -1,9 +1,53 @@
 const { admin, db } = require('../util/admin');
 const firebase      = require('firebase');
+const fb_functions  = require('firebase-functions');
+const nodemailer    = require('nodemailer');
+const cors          = require('cors')({origin: true});
 const config        = require('../util/config');
-const { validateRegistrationData, validateLoginData, validateInviteeData } = require("../util/validators");
+const { validateRegistrationData,
+        validateLoginData,
+        validateInviteeData } = require("../util/validators");
+
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: '',
+        pass: ''
+    }
+});
 
 firebase.initializeApp(config);
+
+exports.sendMail =
+
+    (req, res) => {
+        cors(req, res, () => {
+
+            // getting dest email by query string
+            const dest = req.query.dest;
+
+            const mailOptions = {
+                from: 'User <>', // Something like: Jane Doe <janedoe@gmail.com>
+                to: dest,
+                subject: 'IM A PICKLE!!!', // email subject
+                html: `<p style="font-size: 16px;">Pickle Riiiiiiiiiiiiiiiick!!</p>
+                    <br />
+                    <img src="https://images.prod.meredith.com/product/fc8754735c8a9b4aebb786278e7265a5/1538025388228/l/rick-and-morty-pickle-rick-sticker" />
+                ` // email content in HTML
+            };
+
+            // returning result
+            //console.log('works');
+            //return res.send('valid');
+
+            return transporter.sendMail(mailOptions, (errors, info) => {
+                if(errors){
+                    return res.send(errors.toString());
+                }
+                return res.send('Sended');
+            });
+        });
+};
 
 exports.checkInvitee =
 
@@ -257,12 +301,12 @@ exports.inviteNewUsers =
                     code: key
                 });
 
-            //// TODO: Check that key is unique. If not, use substring(0+i, 8+i)
-
             console.log("Invitee added: " + invitee.email + ", code: " + key);
 
             // Send invitation email with key code to new invitee
             //// TODO: mailgun send email
+
+
 
         }
 
