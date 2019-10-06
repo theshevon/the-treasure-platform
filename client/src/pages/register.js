@@ -75,11 +75,11 @@ class Register extends Component {
         this.setState({ loading: true });
 
         const registrationData = {
-            fname: this.state.fname,
-            lname: this.state.lname,
-            email: this.state.email,
-            pw:    this.state.pw,
-            pw_c:  this.state.pw_c
+            fname : this.state.fname,
+            lname : this.state.lname,
+            email : this.state.email,
+            pw    : this.state.pw,
+            pw_c  : this.state.pw_c
         }
 
         axios({
@@ -88,7 +88,12 @@ class Register extends Component {
                 data: registrationData
             })
             .then(res => {
-                this.setState({loading:false});
+
+                // ensure that access to the token is still available even
+                // if the user refreshes the page or closes their browser
+                localStorage.setItem('TreasureIDToken', `Bearer ${res.data.token}`);
+
+                this.setState({ loading:false });
                 this.props.history.push('/items');
             })
             .catch(err => {
