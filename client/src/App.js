@@ -25,6 +25,7 @@ const token = localStorage.TreasureIDToken;
 }
 
 class App extends Component {
+
 render() {
 	return (
 		<Router>
@@ -55,6 +56,7 @@ render() {
 		</Router>
 	);
 }
+
 }
 
 export default App;

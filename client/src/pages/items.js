@@ -3,15 +3,16 @@ import axios from "axios";
 
 // boostrap imports
 import Button from 'react-bootstrap/Button'
-import Modal from 'react-bootstrap/Modal'
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
+import Alert  from 'react-bootstrap/Alert'
+import Modal  from 'react-bootstrap/Modal'
+import Row    from 'react-bootstrap/Row'
+import Col    from 'react-bootstrap/Col'
 
 // custom components
-import ItemSkeleton from '../components/ItemSkeleton'
-import AddItemForm from '../components/AddItemForm'
-import Navbar from '../components/Navbar'
-import Item from '../components/Item'
+import ItemSkeleton from '../components/Items/ItemSkeleton'
+import AddItemForm  from '../components/Items/AddItemForm'
+import Navbar       from '../components/Navbar'
+import ItemCard     from '../components/Items/ItemCard'
 
 // custom css
 import '../stylesheets/items.css'
@@ -25,26 +26,59 @@ class Items extends Component {
     state = {
         items: null,
         showAddItemModal: false,
-        loading: true
+        loading: true,
+        showAlert: false,
+        alertMsg : ''
+    }
+
+    constructor(props) {
+        super(props)
     }
 
     // fetch item data from database
     componentDidMount(){
-        axios({
-                method: 'get',
-                url: 'http://localhost:5000/comp30022app/us-central1/api/items'
-            })
-            .then(res => {
-                this.setState({
-                    items: res.data,
-                    loading: false
-                })
-            })
-            .catch(
-                err => console.log(err)
-            );
-    };
+        this.fetchItemsData();
+    }
 
+    fetchItemsData = () => {
+        axios({
+            method: 'get',
+            url: 'http://localhost:5000/comp30022app/us-central1/api/items'
+        })
+        .then(res => {
+            this.setState({
+                items: res.data,
+                loading: false
+            })
+        })
+        .catch(
+            err => console.log(err)
+        );
+    }
+
+    // scrollToBottom = () => {
+    //     this.itemsEnd.scrollIntoView({ behavior: "smooth" });
+    // }
+
+    // refreshes the page
+    handleRefresh = (msg) => {
+        this.handleClose();
+        this.setState({
+                        showAlert : true,
+                        alertMsg  : msg
+                       });
+        this.fetchItemsData();
+        // this.scrollToBottom();
+        // window.location.reload(true);
+    }
+
+    // clears an alert message
+    clearAlert = () => {
+        this.setState({
+                        showAlert : false,
+                        alertMsg  : '',
+        });
+    }
     // handle modal close
     handleClose = () => {
 		this.setState({ showAddItemModal : false })
@@ -61,13 +95,36 @@ class Items extends Component {
 
         if (!this.state.loading){
             itemListContent = (
-                <Row className="my-3 justify-content-center">
+                <Row
+                    className="my-3 justify-content-center">
                     { this.state.items.map((item, index) => (
-                        <Col key={index} className='item-col' xs={12} md={6}>
-                            <Item className="my-5" item={ item }/>
+                        <Col
+                            key={index}
+                            className='item-col'
+                            xs={12}
+                            md={6}>
+                            <ItemCard
+                                className="my-5"
+                                item={ item }/>
                         </Col>
                     ))}
                 </Row>
+            )
+        }
+
+        let alert = null;
+        if (this.state.showAlert){
+            console.log(this.state)
+            alert = (
+                <Alert
+                    variant="success"
+                    style={{textAlign : "center"}}
+                    onClose={ this.clearAlert }
+                    dismissible>
+                <p>
+                   { this.state.alertMsg }
+                </p>
+            </Alert>
             )
         }
 
@@ -76,18 +133,40 @@ class Items extends Component {
 
                 <Navbar />
 
-                <div id="content" className="container">
+                <div
+                    id="content"
+                    className="container">
 
-                    <h1 className="page-title"> ITEMS </h1>
+                    <h1
+                        className="page-title">
+                        ITEMS
+                    </h1>
 
-                    <Button className="mt-2 mb-3 add-btn btn" variant="light" onClick={this.handleShow}>Add Item</Button>
+                    { alert }
 
-                    <Modal className="add-item-modal" show={this.state.showAddItemModal} size="lg" onHide={this.handleClose} centered scrollable>
-                        <Modal.Header closeButton>
-                            <Modal.Title>Add A New Item</Modal.Title>
+                    <Button
+                        className="mt-2 mb-3 add-btn btn"
+                        variant="light"
+                        onClick={this.handleShow}>
+                        Add Item
+                    </Button>
+
+                    <Modal
+                        className="add-item-modal"
+                        show={this.state.showAddItemModal}
+                        size="xl"
+                        onHide={this.handleClose}
+                        centered
+                        scrollable>
+                        <Modal.Header
+                            closeButton>
+                            <Modal.Title>
+                                Add A New Item
+                            </Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
-                            <AddItemForm />
+                            <AddItemForm
+                                handleRefresh={this.handleRefresh}/>
                         </Modal.Body>
                     </Modal>
 
