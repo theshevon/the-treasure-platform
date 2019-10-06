@@ -3,10 +3,10 @@ import axios from "axios";
 
 // boostrap imports
 import Button from 'react-bootstrap/Button'
-import Alert from 'react-bootstrap/Alert'
-import Modal from 'react-bootstrap/Modal'
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
+import Alert  from 'react-bootstrap/Alert'
+import Modal  from 'react-bootstrap/Modal'
+import Row    from 'react-bootstrap/Row'
+import Col    from 'react-bootstrap/Col'
 
 // custom components
 import ItemSkeleton from '../components/Items/ItemSkeleton'
@@ -56,6 +56,10 @@ class Items extends Component {
         );
     }
 
+    // scrollToBottom = () => {
+    //     this.itemsEnd.scrollIntoView({ behavior: "smooth" });
+    // }
+
     // refreshes the page
     handleRefresh = (msg) => {
         this.handleClose();
@@ -64,6 +68,7 @@ class Items extends Component {
                         alertMsg  : msg
                        });
         this.fetchItemsData();
+        // this.scrollToBottom();
         // window.location.reload(true);
     }
 
@@ -112,7 +117,8 @@ class Items extends Component {
             console.log(this.state)
             alert = (
                 <Alert
-                    variant="info"
+                    variant="success"
+                    style={{textAlign : "center"}}
                     onClose={ this.clearAlert }
                     dismissible>
                 <p>
