@@ -12,7 +12,7 @@ import Col     from 'react-bootstrap/Col'
 import { Dropdown } from 'semantic-ui-react'
 
 // custom css
-import '../stylesheets/add-item-form.css'
+import '../../stylesheets/add-item-form.css'
 
 // stub data
 // import users from '../data/users'
@@ -30,7 +30,8 @@ class AddItemForm extends Component {
         selectingWatchers : true,
         selectedUsers     : [],
         loading           : false,
-        validated         : false
+        validated         : false,
+        success           : false
     }
 
     componentDidMount(){
@@ -208,7 +209,8 @@ class AddItemForm extends Component {
             // TODO: if an image upload failed, then delete the item and provide
             // an appropriate response to the user.
         }
-        this.setState({ loading: false });
+
+        this.props.handleRefresh("Successfully created new item!");
     }
 
     // handles state updates to uploaded files
