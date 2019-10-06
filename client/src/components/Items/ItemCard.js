@@ -1,6 +1,8 @@
 import React, {Component} from 'react'
 // import ReactDOM from 'react-dom'
 
+import axios from 'axios'
+
 // bootstrap imports
 import Carousel from 'react-bootstrap/Carousel'
 import Button from 'react-bootstrap/Button'
@@ -26,6 +28,30 @@ export class ItemCard extends Component {
 	handleShow = () => {
 		this.setState({ show : true })
 	};
+
+	handleDelete = async (itemId) => {
+		console.log("hello", itemId);
+
+		try {
+				const url = `http://localhost:5000/comp30022app/us-central1/api/items/${itemId}`
+			    const res = await axios.delete(url)
+				.then(res => {
+				    console.log(res)
+					return res.data;
+			})
+			this.handleDeleteSuccess();
+			return res;
+		} catch (err) {
+			throw err;
+		}
+	};
+
+	handleDeleteSuccess = () => {
+		this.handleClose();
+		window.location.reload();
+
+	}
+
 
 	// TO DO: remove mouse down animation when modal has been scrolled
     // componentDidMount() {
@@ -137,15 +163,23 @@ export class ItemCard extends Component {
 
 							<Row>
 								<Col
-									xs="6">
+									xs="2">
 									<Button
 										className="btn"
 										variant="light">
 										Edit
 									</Button>
+									<Button
+										variant="danger"
+										onClick={()=> this.handleDelete(item.id)}
+										className="btn"
+										itemId = {item.id}
+										disabled={this.state.loading}>
+										Delete
+									</Button>
 								</Col>
 								<Col
-									xs="6"
+									xs="10"
 									className="d-flex justify-content-end">
 									<Button
 										className="btn"
@@ -170,4 +204,3 @@ export class ItemCard extends Component {
 }
 
 export default ItemCard;
-
