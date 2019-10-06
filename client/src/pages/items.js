@@ -3,15 +3,16 @@ import axios from "axios";
 
 // boostrap imports
 import Button from 'react-bootstrap/Button'
+import Alert from 'react-bootstrap/Alert'
 import Modal from 'react-bootstrap/Modal'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
 // custom components
 import ItemSkeleton from '../components/Items/ItemSkeleton'
-import AddItemForm from '../components/Items/AddItemForm'
-import Navbar from '../components/Navbar'
-import ItemCard from '../components/Items/ItemCard'
+import AddItemForm  from '../components/Items/AddItemForm'
+import Navbar       from '../components/Navbar'
+import ItemCard     from '../components/Items/ItemCard'
 
 // custom css
 import '../stylesheets/items.css'
@@ -25,38 +26,54 @@ class Items extends Component {
     state = {
         items: null,
         showAddItemModal: false,
-        loading: true
+        loading: true,
+        showAlert: false,
+        alertMsg : ''
     }
 
     constructor(props) {
         super(props)
-        this.handleRefresh = this.handleRefresh.bind(this);
     }
 
     // fetch item data from database
     componentDidMount(){
-        axios({
-                method: 'get',
-                url: 'http://localhost:5000/comp30022app/us-central1/api/items'
-            })
-            .then(res => {
-                this.setState({
-                    items: res.data,
-                    loading: false
-                })
-            })
-            .catch(
-                err => console.log(err)
-            );
-    };
-
-    // refreshes the page
-    handleRefresh = () => {
-        console.log("Refreshing page!");
-        this.handleClose();
-        window.location.reload(true);
+        this.fetchItemsData();
     }
 
+    fetchItemsData = () => {
+        axios({
+            method: 'get',
+            url: 'http://localhost:5000/comp30022app/us-central1/api/items'
+        })
+        .then(res => {
+            this.setState({
+                items: res.data,
+                loading: false
+            })
+        })
+        .catch(
+            err => console.log(err)
+        );
+    }
+
+    // refreshes the page
+    handleRefresh = (msg) => {
+        this.handleClose();
+        this.setState({
+                        showAlert : true,
+                        alertMsg  : msg
+                       });
+        this.fetchItemsData();
+        // window.location.reload(true);
+    }
+
+    // clears an alert message
+    clearAlert = () => {
+        this.setState({
+                        showAlert : false,
+                        alertMsg  : '',
+        });
+    }
     // handle modal close
     handleClose = () => {
 		this.setState({ showAddItemModal : false })
@@ -90,6 +107,21 @@ class Items extends Component {
             )
         }
 
+        let alert = null;
+        if (this.state.showAlert){
+            console.log(this.state)
+            alert = (
+                <Alert
+                    variant="info"
+                    onClose={ this.clearAlert }
+                    dismissible>
+                <p>
+                   { this.state.alertMsg }
+                </p>
+            </Alert>
+            )
+        }
+
         return (
             <div>
 
@@ -101,14 +133,16 @@ class Items extends Component {
 
                     <h1
                         className="page-title">
-                            ITEMS
+                        ITEMS
                     </h1>
+
+                    { alert }
 
                     <Button
                         className="mt-2 mb-3 add-btn btn"
                         variant="light"
                         onClick={this.handleShow}>
-                            Add Item
+                        Add Item
                     </Button>
 
                     <Modal

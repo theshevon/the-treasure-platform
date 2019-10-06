@@ -8,6 +8,7 @@ import items from './pages/items'
 import register from './pages/register'
 
 class App extends Component {
+
   render() {
     return (
         <Router>

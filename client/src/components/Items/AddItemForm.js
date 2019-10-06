@@ -30,7 +30,8 @@ class AddItemForm extends Component {
         selectingWatchers : true,
         selectedUsers     : [],
         loading           : false,
-        validated         : false
+        validated         : false,
+        success           : false
     }
 
     componentDidMount(){
@@ -209,7 +210,7 @@ class AddItemForm extends Component {
             // an appropriate response to the user.
         }
 
-        this.props.handleRefresh();
+        this.props.handleRefresh("Successfully created new item!");
     }
 
     // handles state updates to uploaded files
