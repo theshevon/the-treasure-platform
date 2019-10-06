@@ -8,10 +8,10 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
 // custom components
-import ItemSkeleton from '../components/ItemSkeleton'
-import AddItemForm from '../components/AddItemForm'
+import ItemSkeleton from '../components/Items/ItemSkeleton'
+import AddItemForm from '../components/Items/AddItemForm'
 import Navbar from '../components/Navbar'
-import Item from '../components/Item'
+import ItemCard from '../components/Items/ItemCard'
 
 // custom css
 import '../stylesheets/items.css'
@@ -26,6 +26,11 @@ class Items extends Component {
         items: null,
         showAddItemModal: false,
         loading: true
+    }
+
+    constructor(props) {
+        super(props)
+        this.handleRefresh = this.handleRefresh.bind(this);
     }
 
     // fetch item data from database
@@ -45,6 +50,13 @@ class Items extends Component {
             );
     };
 
+    // refreshes the page
+    handleRefresh = () => {
+        console.log("Refreshing page!");
+        this.handleClose();
+        window.location.reload(true);
+    }
+
     // handle modal close
     handleClose = () => {
 		this.setState({ showAddItemModal : false })
@@ -61,10 +73,17 @@ class Items extends Component {
 
         if (!this.state.loading){
             itemListContent = (
-                <Row className="my-3 justify-content-center">
+                <Row
+                    className="my-3 justify-content-center">
                     { this.state.items.map((item, index) => (
-                        <Col key={index} className='item-col' xs={12} md={6}>
-                            <Item className="my-5" item={ item }/>
+                        <Col
+                            key={index}
+                            className='item-col'
+                            xs={12}
+                            md={6}>
+                            <ItemCard
+                                className="my-5"
+                                item={ item }/>
                         </Col>
                     ))}
                 </Row>
@@ -76,18 +95,38 @@ class Items extends Component {
 
                 <Navbar />
 
-                <div id="content" className="container">
+                <div
+                    id="content"
+                    className="container">
 
-                    <h1 className="page-title"> ITEMS </h1>
+                    <h1
+                        className="page-title">
+                            ITEMS
+                    </h1>
 
-                    <Button className="mt-2 mb-3 add-btn btn" variant="light" onClick={this.handleShow}>Add Item</Button>
+                    <Button
+                        className="mt-2 mb-3 add-btn btn"
+                        variant="light"
+                        onClick={this.handleShow}>
+                            Add Item
+                    </Button>
 
-                    <Modal className="add-item-modal" show={this.state.showAddItemModal} size="lg" onHide={this.handleClose} centered scrollable>
-                        <Modal.Header closeButton>
-                            <Modal.Title>Add A New Item</Modal.Title>
+                    <Modal
+                        className="add-item-modal"
+                        show={this.state.showAddItemModal}
+                        size="xl"
+                        onHide={this.handleClose}
+                        centered
+                        scrollable>
+                        <Modal.Header
+                            closeButton>
+                            <Modal.Title>
+                                Add A New Item
+                            </Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
-                            <AddItemForm />
+                            <AddItemForm
+                                handleRefresh={this.handleRefresh}/>
                         </Modal.Body>
                     </Modal>
 

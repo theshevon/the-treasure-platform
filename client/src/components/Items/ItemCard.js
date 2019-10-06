@@ -10,9 +10,9 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
 // custom css
-import '../stylesheets/item.css'
+import '../../stylesheets/item.css'
 
-export class Item extends Component {
+export class ItemCard extends Component {
 
 	state = {
 		show : false,
@@ -169,5 +169,5 @@ export class Item extends Component {
     }
 }
 
-export default Item;
+export default ItemCard;
 
