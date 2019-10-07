@@ -3,13 +3,12 @@ import { Route, Redirect } from 'react-router-dom'
 
 
 const AuthRoute = ({ component: Component, authenticated, ...rest }) => (
-    <Route
-      {...rest}
-      render={(props) =>
-        authenticated === true ? <Redirect to="/items" /> : <Component {...props} />
-      }
-    />
+	<Route
+		{...rest}
+		render={(props) =>
+			authenticated === true ? <Redirect to="/login" /> : <Component {...props} />
+		}
+	/>
 );
-
 export default AuthRoute;
 
