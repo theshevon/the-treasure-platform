@@ -95,20 +95,14 @@ class Items extends Component {
 
         if (!this.state.loading){
             itemListContent = (
-                <Row
-                    className="my-3 justify-content-center">
+                <container className='all-items-container'>
                     { this.state.items.map((item, index) => (
-                        <Col
-                            key={index}
-                            className='item-col'
-                            xs={12}
-                            md={6}>
-                            <ItemCard
-                                className="my-5"
-                                item={ item }/>
-                        </Col>
-                    ))}
-                </Row>
+                        <ItemCard
+                            className="my-5"
+                            item={ item }/>
+                        )
+                    )}
+                </container>
             )
         }
 
