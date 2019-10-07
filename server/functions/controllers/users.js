@@ -17,70 +17,6 @@ const transporter = nodemailer.createTransport({
 
 firebase.initializeApp(config);
 
-exports.sendMail =
-
-    async (req, res) => {
-
-            // getting dest email by query string
-
-            const mailOptions = {
-                from: 'User <>', // Something like: Jane Doe <janedoe@gmail.com>
-                to: req.dest,
-                subject: 'IM A PICKLE!!!', // email subject
-                html: `<p style="font-size: 16px;">Pickle Riiiiiiiiiiiiiiiick!!</p>
-                    <br />
-                    <img src="https://images.prod.meredith.com/product/fc8754735c8a9b4aebb786278e7265a5/1538025388228/l/rick-and-morty-pickle-rick-sticker" />
-                ` // email content in HTML
-            };
-
-            // returning result
-            //console.log('works');
-            //return res.send('valid');
-
-            console.log('start');
-            try {
-                await sendMail2(mailOptions);
-            } catch (err) {
-                console.log('2error:' + err);
-                // throw err;
-            }
-
-            // try {
-            //     await transporter.sendMail(mailOptions, (errors, info) => {
-            //         if(errors){
-            //
-            //         }
-            //         console.log('printing');
-            //     });
-            // } catch (errors) {
-            //     throw.errors;
-            // }
-            //
-            //
-            console.log('end');
-            return res.send('Sended');
-            return res.send(errors.toString());
-};
-
-sendMail2 = (mailOptions) => {
-
-   try {
-       return new Promise(function (resolve, reject){
-          transporter.sendMail(mailOptions, (err, info) => {
-             if (err) {
-                console.log("error: ", err);
-                reject(err);
-             } else {
-                console.log(`Mail sent successfully!`);
-                resolve(info);
-             }
-          });
-       });
-   } catch (err) {
-       console.log('error: ' + err);
-   }
-
-}
 
 exports.checkInvitee =
 
@@ -336,34 +272,29 @@ exports.inviteNewUsers =
 
             console.log("Invitee added: " + invitee.email + ", code: " + key);
 
-            // Send invitation email with key code to new invitee
-            //// TODO: send email
-
+            // Generate invitation email with key code
             const mailOptions = {
-                from: 'User <>', // Something like: Jane Doe <janedoe@gmail.com>
+                from: 'Treasure App <>', // Something like: Jane Doe <janedoe@gmail.com>
                 to: invitee.email,
-                subject: 'IM A PICKLE!!!', // email subject
-                html: `<p style="font-size: 16px;">Pickle Riiiiiiiiiiiiiiiick!!</p>
+                subject: 'Welcome to Treasure', // email subject
+                html: `<p style="font-size: 16px;">Welcome!</p>
                     <br />
-                    <img src="https://images.prod.meredith.com/product/fc8754735c8a9b4aebb786278e7265a5/1538025388228/l/rick-and-morty-pickle-rick-sticker" />
-                ` // email content in HTML
+                    <p style="font-size: 16px;">You have been invited to join
+                    Treasure.</p>
+                    <p style="font-size: 16px;">Go to localhost:5000/register
+                    and enter the invite
+                    code ${key} to set up your account.</p>` // email content
             };
 
-            // returning result
-            //console.log('works');
-            //return res.send('valid');
-
-            console.log('start');
+            // Send invitation email to new invitee
             try {
-                await sendMail2(mailOptions);
+                await sendMail(mailOptions);
             } catch (err) {
-                console.log('2error:' + err);
+                errors.sending = "Email could not be sent";
             }
-
-
-
         }
 
+        // Check for errors
         if (Object.keys(errors).length === 0) {
             return res.status(200).json("Success: Invites sent");
         }
@@ -372,6 +303,33 @@ exports.inviteNewUsers =
             valid: Object.keys(errors).length === 0
         }
 
+    }
+
+
+exports.sendMailToAddress =
+
+    async (req, res) => {
+
+        // getting dest email by query string
+
+        const mailOptions = {
+            from: 'User <>', // Something like: Jane Doe <janedoe@gmail.com>
+            to: req.dest,
+            subject: 'Subject', // email subject
+            html: `<p style="font-size: 16px;">Message</p>
+                <br />
+            ` // email content in HTML
+        };
+
+        console.log('start');
+        try {
+            await sendMail(mailOptions);
+        } catch (err) {
+            return res.send(err.toString());
+            // throw err;
+        }
+
+        return res.send('Email sent');
     }
 
 /*=============================HELPER FUNCTIONS===============================*/
@@ -405,5 +363,28 @@ generateUniqueInviteCode =
 
         // Key generation failed
         return null;
+
+    }
+
+
+sendMail
+
+    = (mailOptions) => {
+
+       try {
+           return new Promise(function (resolve, reject){
+              transporter.sendMail(mailOptions, (err, info) => {
+                 if (err) {
+                    console.log("error: ", err);
+                    reject(err);
+                 } else {
+                    console.log(`Mail sent successfully!`);
+                    resolve(info);
+                 }
+              });
+           });
+       } catch (err) {
+           console.log('error: ' + err);
+       }
 
     }

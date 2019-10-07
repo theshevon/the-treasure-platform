@@ -19,7 +19,7 @@ router.post("/login", userController.logInUser);
 
 router.post("/invite", userController.inviteNewUsers);
 
-router.post("/email", userController.sendMail);
+//router.post("/email", userController.sendMailToAddress);
 /*===========================================================================*/
 
 module.exports = router;
