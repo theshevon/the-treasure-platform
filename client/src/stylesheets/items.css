@@ -121,3 +121,9 @@ div.mouse span.scroll-down {
 .scrolled{
     opacity: 0;
 }
+
+.all-items-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly
+}
