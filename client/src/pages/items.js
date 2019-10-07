@@ -31,10 +31,6 @@ class Items extends Component {
         alertMsg : ''
     }
 
-    constructor(props) {
-        super(props)
-    }
-
     // fetch item data from database
     componentDidMount(){
         this.fetchItemsData();
