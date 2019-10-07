@@ -2,7 +2,6 @@ const { admin, db } = require('../util/admin');
 const firebase      = require('firebase');
 const fb_functions  = require('firebase-functions');
 const nodemailer    = require('nodemailer');
-const cors          = require('cors')({origin: true});
 const config        = require('../util/config');
 const { validateRegistrationData,
         validateLoginData,
@@ -21,7 +20,6 @@ firebase.initializeApp(config);
 exports.sendMail =
 
     (req, res) => {
-        cors(req, res, () => {
 
             // getting dest email by query string
             const dest = req.query.dest;
@@ -46,7 +44,6 @@ exports.sendMail =
                 }
                 return res.send('Sended');
             });
-        });
 };
 
 exports.checkInvitee =
