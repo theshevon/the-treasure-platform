@@ -19,14 +19,13 @@ firebase.initializeApp(config);
 
 exports.sendMail =
 
-    (req, res) => {
+    async (req, res) => {
 
             // getting dest email by query string
-            const dest = req.query.dest;
 
             const mailOptions = {
                 from: 'User <>', // Something like: Jane Doe <janedoe@gmail.com>
-                to: dest,
+                to: req.dest,
                 subject: 'IM A PICKLE!!!', // email subject
                 html: `<p style="font-size: 16px;">Pickle Riiiiiiiiiiiiiiiick!!</p>
                     <br />
@@ -38,13 +37,50 @@ exports.sendMail =
             //console.log('works');
             //return res.send('valid');
 
-            return transporter.sendMail(mailOptions, (errors, info) => {
-                if(errors){
-                    return res.send(errors.toString());
-                }
-                return res.send('Sended');
-            });
+            console.log('start');
+            try {
+                await sendMail2(mailOptions);
+            } catch (err) {
+                console.log('2error:' + err);
+                // throw err;
+            }
+
+            // try {
+            //     await transporter.sendMail(mailOptions, (errors, info) => {
+            //         if(errors){
+            //
+            //         }
+            //         console.log('printing');
+            //     });
+            // } catch (errors) {
+            //     throw.errors;
+            // }
+            //
+            //
+            console.log('end');
+            return res.send('Sended');
+            return res.send(errors.toString());
 };
+
+sendMail2 = (mailOptions) => {
+
+   try {
+       return new Promise(function (resolve, reject){
+          transporter.sendMail(mailOptions, (err, info) => {
+             if (err) {
+                console.log("error: ", err);
+                reject(err);
+             } else {
+                console.log(`Mail sent successfully!`);
+                resolve(info);
+             }
+          });
+       });
+   } catch (err) {
+       console.log('error: ' + err);
+   }
+
+}
 
 exports.checkInvitee =
 
@@ -222,7 +258,7 @@ exports.getUsers =
 
 exports.inviteNewUsers =
 
-    (req, res) => {
+    async (req, res) => {
 
         // Creates new invitee from an array of JSON objects containing
         // names and emails, and emails each invitee a unique invite code
@@ -301,7 +337,28 @@ exports.inviteNewUsers =
             console.log("Invitee added: " + invitee.email + ", code: " + key);
 
             // Send invitation email with key code to new invitee
-            //// TODO: mailgun send email
+            //// TODO: send email
+
+            const mailOptions = {
+                from: 'User <>', // Something like: Jane Doe <janedoe@gmail.com>
+                to: invitee.email,
+                subject: 'IM A PICKLE!!!', // email subject
+                html: `<p style="font-size: 16px;">Pickle Riiiiiiiiiiiiiiiick!!</p>
+                    <br />
+                    <img src="https://images.prod.meredith.com/product/fc8754735c8a9b4aebb786278e7265a5/1538025388228/l/rick-and-morty-pickle-rick-sticker" />
+                ` // email content in HTML
+            };
+
+            // returning result
+            //console.log('works');
+            //return res.send('valid');
+
+            console.log('start');
+            try {
+                await sendMail2(mailOptions);
+            } catch (err) {
+                console.log('2error:' + err);
+            }
 
 
 
