@@ -5,8 +5,6 @@ import axios from "axios";
 import Button from 'react-bootstrap/Button'
 import Alert  from 'react-bootstrap/Alert'
 import Modal  from 'react-bootstrap/Modal'
-import Row    from 'react-bootstrap/Row'
-import Col    from 'react-bootstrap/Col'
 
 // custom components
 import ItemSkeleton from '../components/Items/ItemSkeleton'
@@ -29,10 +27,6 @@ class Items extends Component {
         loading: true,
         showAlert: false,
         alertMsg : ''
-    }
-
-    constructor(props) {
-        super(props)
     }
 
     // fetch item data from database

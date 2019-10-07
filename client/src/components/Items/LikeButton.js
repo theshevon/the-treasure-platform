@@ -1,9 +1,6 @@
 // react imports
 import React, { Component } from "react";
 
-// react-boostrap imports
-import Button from "react-bootstrap/Button";
-
 // custom stylesheets
 import "../../stylesheets/item.css";
 
@@ -23,16 +20,15 @@ class LikeButton extends Component {
     this.setState({
       liked: !this.state.liked
     });
-    uri: require("../icons/like.svg");
   }
 
   render() {
-    const text = this.state.liked ? "liked" : "haven't liked";
     const label = this.state.liked ? "like" : "unlike";
     return (
       <div className="customContainer">
         <button className="like-btn">
           <img
+            alt="item"
             src={require("../icons/" + label + ".svg")}
             onClick={this.handleClick}
             width="25"
