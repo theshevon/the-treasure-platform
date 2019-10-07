@@ -28,7 +28,7 @@ class LikeButton extends Component {
 
   render() {
     const text = this.state.liked ? "liked" : "haven't liked";
-    const label = this.state.liked ? "unlike" : "like";
+    const label = this.state.liked ? "like" : "unlike";
     return (
       <div className="customContainer">
         <button className="like-btn">
