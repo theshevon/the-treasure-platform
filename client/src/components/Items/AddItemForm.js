@@ -210,7 +210,8 @@ class AddItemForm extends Component {
             // an appropriate response to the user.
         }
 
-        this.props.handleRefresh("Successfully created new item!");
+        this.props.handleAlert("Successfully created new item!");
+        this.props.handleClose();
     }
 
     // handles state updates to uploaded files

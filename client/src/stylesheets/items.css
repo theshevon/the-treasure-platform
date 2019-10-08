@@ -1,15 +1,5 @@
 /* @import url('https://fonts.googleapis.com/css?family=Muli&display=swap'); */
 
-#content{
-    margin-top: 10vh;
-    min-height: 90vh;
-}
-
-.add-btn{
-    margin-left: 50%;
-    transform: translateX(-50%);
-}
-
 .item-col{
     padding-right: 0px;
 }

@@ -191,7 +191,8 @@ class Register extends Component {
 
                     {/* Submit button */}
                     <Button
-                        className="login-btn btn mt-3"
+                        className="centered-btn btn mt-3"
+                        variant="light"
                         type="submit"
                         onClick={this.handleValidation}
                         disabled={this.state.loading}>

@@ -24,7 +24,7 @@ export class FormModal extends Component {
         return (
             <div>
                 <Button
-                    className="mt-2 mb-3 add-btn btn"
+                    className="mt-2 mb-3 centered-btn btn"
                     variant="light"
                     onClick={this.handleShow}>
                     { this.props.triggerBtnText }
@@ -44,7 +44,7 @@ export class FormModal extends Component {
                         </Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        { this.props.form }
+                        { React.cloneElement(this.props.form, { handleClose : this.handleClose }) }
                     </Modal.Body>
                 </Modal>
 

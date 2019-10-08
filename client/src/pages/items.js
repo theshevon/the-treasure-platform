@@ -2,15 +2,11 @@ import React, { Component } from 'react'
 import axios from "axios";
 
 // boostrap imports
-import Button from 'react-bootstrap/Button'
-import Alert  from 'react-bootstrap/Alert'
-import Modal  from 'react-bootstrap/Modal'
 import Row    from 'react-bootstrap/Row'
 import Col    from 'react-bootstrap/Col'
 
 // custom components
 import ItemSkeleton from '../components/items/ItemSkeleton'
-import AddItemForm  from '../components/items/AddItemForm'
 import Navbar       from '../components/util/Navbar'
 import ItemCard     from '../components/items/ItemCard'
 
@@ -52,29 +48,7 @@ class Items extends Component {
         );
     }
 
-    // scrollToBottom = () => {
-    //     this.itemsEnd.scrollIntoView({ behavior: "smooth" });
-    // }
 
-    // refreshes the page
-    handleRefresh = (msg) => {
-        this.handleClose();
-        this.setState({
-                        showAlert : true,
-                        alertMsg  : msg
-                       });
-        this.fetchItemsData();
-        // this.scrollToBottom();
-        // window.location.reload(true);
-    }
-
-    // clears an alert message
-    clearAlert = () => {
-        this.setState({
-                        showAlert : false,
-                        alertMsg  : '',
-        });
-    }
     // handle modal close
     handleClose = () => {
 		this.setState({ showAddItemModal : false })
@@ -92,7 +66,7 @@ class Items extends Component {
         if (!this.state.loading){
             itemListContent = (
                 <Row
-                    className="my-3 justify-content-center">
+                    className="justify-content-center">
                     { this.state.items.map((item, index) => (
                         <Col
                             key={index}
@@ -108,22 +82,6 @@ class Items extends Component {
             )
         }
 
-        let alert = null;
-        if (this.state.showAlert){
-            console.log(this.state)
-            alert = (
-                <Alert
-                    variant="success"
-                    style={{textAlign : "center"}}
-                    onClose={ this.clearAlert }
-                    dismissible>
-                <p>
-                   { this.state.alertMsg }
-                </p>
-            </Alert>
-            )
-        }
-
         return (
             <div>
 
@@ -133,37 +91,9 @@ class Items extends Component {
                     id="content"
                     className="container">
                     <h1
-                        className="page-title">
+                        className="page-title mb-5">
                         ITEMS
                     </h1>
-
-                    { alert }
-
-                    <Button
-                        className="mt-2 mb-3 add-btn btn"
-                        variant="light"
-                        onClick={this.handleShow}>
-                        Add Item
-                    </Button>
-
-                    <Modal
-                        className="add-item-modal"
-                        show={this.state.showAddItemModal}
-                        size="xl"
-                        onHide={this.handleClose}
-                        centered
-                        scrollable>
-                        <Modal.Header
-                            closeButton>
-                            <Modal.Title>
-                                Add A New Item
-                            </Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
-                            <AddItemForm
-                                handleRefresh={this.handleRefresh}/>
-                        </Modal.Body>
-                    </Modal>
 
                     { itemListContent }
                 </div>

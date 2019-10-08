@@ -144,11 +144,13 @@ class Login extends Component {
             					</Form.Control.Feedback>
 							</Row>
 							<Button
-								className="login-btn btn mt-3"
+								className="centered-btn btn mt-3"
+								variant="light"
 								type="submit"
 								onClick={this.handleSubmit}
-								disabled={this.state.loading}
-							>{loginBtnContent}</Button>
+								disabled={this.state.loading}>
+								{loginBtnContent}
+							</Button>
 						</Form>
 					</Col>
 				</Row>
