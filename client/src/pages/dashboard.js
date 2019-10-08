@@ -11,7 +11,12 @@ import FormModal    from '../components/util/FormModal'
 import Navbar       from '../components/util/Navbar'
 
 // custom css
+import '../stylesheets/common.css'
 import '../stylesheets/dashboard.css'
+
+// custom icons
+import inviteIcon from '../icons/invite.svg'
+import itemIcon   from '../icons/item.svg'
 
 export class Dashboard extends Component {
     render() {
@@ -28,13 +33,17 @@ export class Dashboard extends Component {
                         DASHBOARD
                     </h1>
                     <Row
-                        className="dashboard-option-container mt-5">
+                        className="mt-5 d-flex justify-content-center">
                         <Col
                             xs="12"
                             md="4"
                             className="dashboard-option-container">
                             <Col
                                 className="dashboard-option">
+                                <img
+                                    className="img-fluid icon invite-icon mb-3"
+                                    alt="invite-icon"
+                                    src={ inviteIcon }/>
                                 <FormModal
                                     triggerBtnText="Invite New Users"
                                     title="Invite New Users"
@@ -47,22 +56,14 @@ export class Dashboard extends Component {
                             className="dashboard-option-container">
                             <Col
                                 className="dashboard-option">
+                                <img
+                                    className="img-fluid icon item-icon mb-3"
+                                    alt="item-icon"
+                                    src={ itemIcon }/>
                                 <FormModal
-                                    triggerBtnText="Add New Item"
+                                    triggerBtnText="Add A New Item"
                                     title="Add A New Item"
                                     form={ < AddItemForm /> }/>
-                            </Col>
-                        </Col>
-                        <Col
-                            xs="12"
-                            md="4"
-                            className="dashboard-option-container">
-                            <Col
-                                className="dashboard-option">
-                                <FormModal
-                                    triggerBtnText="Invite New Users"
-                                    title="Invite New Users"
-                                    form={ < InviteForm /> }/>
                             </Col>
                         </Col>
                     </Row>

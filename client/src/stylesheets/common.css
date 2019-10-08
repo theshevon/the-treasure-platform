@@ -1,0 +1,26 @@
+@import url('https://fonts.googleapis.com/css?family=Playfair+Display&display=swap');
+
+body{
+    background-image: linear-gradient(to top, #dad4ec 0%, #dad4ec 1%, #f3e7e9 100%) !important;
+    background-size: contain !important;
+}
+
+.page-title {
+    font-weight: 100;
+    text-align: center;
+    letter-spacing: 3px;
+}
+
+.modal-title, .page-title {
+    font-family: 'Playfair Display', serif;
+}
+
+.modal-dialog-scrollable .modal-body{
+    overflow-x: hidden !important;
+}
+
+.btn:hover{
+    color: white !important;
+    border-color:  #fed766 !important;
+    background:  #fed766 !important;
+}
