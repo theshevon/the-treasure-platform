@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import axios from 'axios'
+import axios                from 'axios'
 
 // bootstrap imports
 import Spinner from 'react-bootstrap/Spinner'
@@ -8,40 +8,48 @@ import Form    from 'react-bootstrap/Form'
 import Row     from 'react-bootstrap/Row'
 import Col     from 'react-bootstrap/Col'
 
+// custom css
+import '../stylesheets/invite-form.css';
+
 class InviteForm extends Component {
 
+    minRows = 5;
+    maxRows = 10;
+
     state = {
-        noRows   : 5,                       // the default no of rows will be 5
-        invitees : [{}, {}, {}, {}, {}],
+        noRows   : this.minRows,
+        invitees : Array(this.minRows).fill(''),
         loading  : false,
-        errors   : null
+		errors   : null,
+		validated: false
     }
 
     // adds rows to the form
     addRows = () => {
-        let invitees = [...this.state.invitees];
-        invitees.push({});
-        this.setState({
-                        noRows : (this.state.noRows + 1),
-                        invitees: invitees
-                    });
+        // only allow row addition if its below the threshold
+        if (this.state.noRows < this.maxRows){
+            let invitees = [...this.state.invitees];
+            invitees.push('');
+            this.setState({
+                            noRows : (this.state.noRows + 1),
+                            invitees: invitees
+                        });
+        }
     }
 
     // handles changes made to input fields
-    // when the value of an input field changes, its corresponding entry
-    // in the state changes too
+    // when the value of an input field changes, its corresponding entry in the
+    // state changes too
     handleChange = event => {
 
-        let target_name = event.target.name;
-        let dash_index = target_name.indexOf("-");
-        let array_index = target_name.substring(0, dash_index);
-        let field_name = target_name.substring(dash_index+1);
+        let dash_index  = event.target.name.indexOf("-");
+        let array_index = event.target.name.substring(0, dash_index);
 
         let invitees = [...this.state.invitees]
-        invitees[array_index][field_name] = event.target.value;
+        invitees[array_index] = event.target.value;
 
         this.setState({ invitees : invitees });
-	}
+    }
 
     // sends the form data to the server
     handleSubmit = event => {
@@ -49,23 +57,24 @@ class InviteForm extends Component {
         event.preventDefault();
 
         this.setState({
-			loading: true
+			loading  : true,
+			validated: true
         });
 
         // send the data to the server
-		axios({
+        axios({
             method: 'post',
             url: 'http://localhost:5000/comp30022app/us-central1/api/invite',
-            data: this.state.invitees
+            data: { invitees : this.state.invitees }
         })
         .then(res => {
             this.setState({ loading : false });
         })
         .catch(err => {
+
             this.setState({
-                errors    : {"1-name" : "yo", "2-name": "bruh"},
+                errors    : err.response.data,
                 loading   : false,
-                validated : true,
             })
         })
     }
@@ -74,45 +83,40 @@ class InviteForm extends Component {
 
         let formContent = [];
         for (var i=0; i< this.state.noRows; i++ ){
-            let field1 = i + "-name";
-            let field2 = i + "-email";
 
-            // check for errors
-            let field1Error, field2Error;
-            if (this.state.errors){
+			let fieldName = i + "-email";
+			let feedback  = null;
+			let classes   = "invite-email-field mb-1";
 
-                if (this.state.errors[field1]){
-                    field1Error = this.state.errors[field1];
-                }
-                if (this.state.errors[field2]){
-                    field2Error = this.state.errors[field2];
-                }
-            }
+			if (this.state.validated){
+				if (this.state.errors && this.state.errors[i]){
+					feedback = (
+						<p
+							className="invalid-feedback-msg">
+							{ this.state.errors[i] }
+						</p>
+					)
+					classes += " invalid-field"
+				} else {
+					classes += " valid-field";
+				}
+			}
 
             formContent.push((
                                 <Row
                                     key={"row-" + i}
-                                    className="my-2">
-                                    <Col xs="6">
-                                        <Form.Control
-                                            name={ field1 }
-                                            placeholder="name"
-                                            onChange={this.handleChange}/>
-                                        <Form.Control.Feedback
-                                            type="invalid">
-                                            {field1Error}
-                                        </Form.Control.Feedback>
-                                    </Col>
-                                    <Col xs="6">
-                                        <Form.Control
-                                            name={ field2 }
-                                            type="email"
-                                            placeholder="email"
-                                            onChange={this.handleChange}/>
-                                        <Form.Control.Feedback
-                                            type="invalid">
-                                            {field2Error}
-                                        </Form.Control.Feedback>
+                                    className="mt-1 mb-2 d-flex justify-content-center">
+                                    <Col
+                                        xs="12"
+                                        md="10">
+
+										<Form.Control
+											className={ classes }
+											name={ fieldName }
+											type="email"
+											placeholder="email"
+											onChange={this.handleChange}/>
+										{ feedback }
                                     </Col>
                                 </Row>
                             ));
@@ -128,19 +132,19 @@ class InviteForm extends Component {
 
         return (
                 <Form
-                    noValidate
-                    // validated={this.state.validated}
                     onSubmit={this.handleSubmit}>
                     {formContent}
                     <Button
-                        className="add-row-btn float-left mt-4"
+                        className="add-row-btn mt-2"
                         variant="light"
+                        disabled={this.state.loading || this.state.noRows === this.maxRows}
                         onClick={this.addRows}>
-                        <span>
-                            + Add Another
-                        </span>
+                        + Add Another
                     </Button>
-                    <hr className="mt-5"/>
+
+                    <hr
+                        className="mt-3"/>
+
                     <Button
                         className="float-right"
                         variant="dark"
@@ -150,8 +154,8 @@ class InviteForm extends Component {
                     </Button>
                 </Form>
         )
-
     }
 }
 
 export default InviteForm;
+
