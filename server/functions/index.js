@@ -1,13 +1,16 @@
 const functions = require('firebase-functions'),
       express   = require('express'),
+      cors      = require('cors'),
       app       = express();
+
+app.use(cors());
+
+/*==================================routing===================================*/
 
 // import routes
 const userRoutes  = require("./routes/users"),
       itemRoutes  = require("./routes/items"),
       indexRoutes = require("./routes/index");
-
-/*==================================routing===================================*/
 
 app.use(userRoutes);
 app.use(itemRoutes);
