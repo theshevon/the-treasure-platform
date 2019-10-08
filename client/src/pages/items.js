@@ -132,7 +132,6 @@ class Items extends Component {
                 <div
                     id="content"
                     className="container">
-
                     <h1
                         className="page-title">
                         ITEMS
@@ -167,7 +166,6 @@ class Items extends Component {
                     </Modal>
 
                     { itemListContent }
-
                 </div>
             </div>
         )

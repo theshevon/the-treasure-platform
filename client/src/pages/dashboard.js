@@ -1,14 +1,28 @@
 import React, { Component } from 'react';
 
 // custom components
-import InviteModal from "../components/InviteModal";
+import AddItemModal from '../components/AddItemModal'
+import InviteModal  from '../components/InviteModal'
+import Navbar       from '../components/Navbar'
 
 export class Dashboard extends Component {
     render() {
         return (
+
             <div>
-                <h1>Dashboard</h1>
-                <InviteModal />
+                <Navbar/>
+
+                <div
+                    id="content"
+                    className="container">
+                    <h1
+                        className="page-title">
+                        DASHBOARD
+                    </h1>
+                    <AddItemModal />
+                    <InviteModal />
+                </div>
+
             </div>
         )
     }
