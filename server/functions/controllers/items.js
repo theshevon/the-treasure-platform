@@ -183,16 +183,25 @@ exports.deleteImages = functions.firestore
 exports.deleteItem =
 
   (req, res) => {
-
-      // delete database entry
-      db
-          .collection('items')
-          .doc(req.params.id)
-          .delete()
-          .then(res => {
-              return res.status(200).json("Successfully deleted item");
-          })
-          .catch(err => {
-              return res.status(400).json({ Error : err });
-          });
+      
+        // delete item
+        db.collection('items').doc(req.params.id).get().then(doc => {
+            var imgName = doc.data().photos[0].split(/\/o\/|\?/)[1];
+            console.log(imgName);
+            admin.storage().bucket(config.storageBucket).deleteFiles({
+                prefix: `${imgName}`
+            });
+        });
+        
+        // delete database entry
+        db
+            .collection('items')
+            .doc(req.params.id)
+            .delete()
+            .then(res => {
+                return res.status(200).json("Successfully deleted item");
+            })
+            .catch(err => {
+                return res.status(400).json({ Error : err });
+            });
   }

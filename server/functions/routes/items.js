@@ -16,7 +16,7 @@ router.post("/items/:id/img_upload", isLoggedIn, itemController.uploadImg);
 
 /*===============================DELETE ROUTES================================*/
 
-router.delete("/items/:id", isLoggedIn, itemController.deleteItem);
+router.delete("/items/:id", itemController.deleteItem);
 
 /*===========================================================================*/
 

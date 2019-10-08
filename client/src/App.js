@@ -32,11 +32,11 @@ class App extends Component {
 		return (
 			<Router>
 				<Switch>
-
-					{/* landing page - item catalogue  */}
-					<Redirect
+					
+					{/* landing page - item catalogue  */}					
+					{/* <Redirect
 						from="/"
-						to="/items"/>
+						to="/login"/> */}
 
 					{/* login page */}
 					<Route
@@ -51,18 +51,15 @@ class App extends Component {
 						component={ register }/>
 
 					{/* dashboard */}
-					<AuthRoute
-						exact
-						path="/dashboard"
-						component={ dashboard }
-						authenticated={ authenticated }/>
-
-					{/* item catalogue */}
-					<AuthRoute
-						exact
-						path="/items"
-						component={ items }
-						authenticated={ authenticated }/>
+                    <Route
+                        exact
+                        path="/dashboard"
+                        component={ dashboard }/>
+                    {/* item catalogue */}
+                    <Route
+                        exact
+                        path="/items"
+                        component={ items }/>
 				</Switch>
 			</Router>
 		);
