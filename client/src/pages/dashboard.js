@@ -88,6 +88,7 @@ export class Dashboard extends Component {
                                     alt="invite-icon"
                                     src={ inviteIcon }/>
                                 <FormModal
+                                    modalSize="md"
                                     triggerBtnText="Invite New Users"
                                     title="Invite New Users"
                                     form={ < InviteForm /> }/>
@@ -104,6 +105,7 @@ export class Dashboard extends Component {
                                     alt="item-icon"
                                     src={ itemIcon }/>
                                 <FormModal
+                                    modalSize="lg"
                                     triggerBtnText="Add A New Item"
                                     title="Add A New Item"
                                     form={

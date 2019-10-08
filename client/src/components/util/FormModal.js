@@ -32,7 +32,7 @@ export class FormModal extends Component {
 
                 <Modal
                     className="invite-user-modal"
-                    size="lg"
+                    size={ this.props.modalSize }
                     scrollable
                     centered
                     show={this.state.show}

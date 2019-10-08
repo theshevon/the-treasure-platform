@@ -9,7 +9,7 @@ import Row     from 'react-bootstrap/Row'
 import Col     from 'react-bootstrap/Col'
 
 // custom css
-import '../stylesheets/invite-form.css';
+import '../../stylesheets/invite-form.css';
 
 class InviteForm extends Component {
 
