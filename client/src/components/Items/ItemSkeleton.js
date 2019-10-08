@@ -31,12 +31,12 @@ class ItemSkeleton extends Component {
                             </Card.Title>
                             <Card.Body
                                 className="item-card-body py-2">
-                                <Card.Text
+                                <div
                                     className="item-card-text">
                                     <div className="empty-line empty-line-2 mb-2"></div>
                                     <div className="empty-line empty-line-2 my-2"></div>
                                     <div className="empty-line empty-line-2 my-2"></div>
-                                </Card.Text>
+                                </div>
                                 <div className="d-flex justify-content-center">
                                     <div className="empty-btn"></div>
                                 </div>

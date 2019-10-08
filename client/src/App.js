@@ -11,21 +11,6 @@ import register  from './pages/register'
 // custom components
 import AuthRoute from './components/util/AuthRoute'
 
-let authenticated;
-const token = localStorage.TreasureIDToken;
-
-if (token){
-	const decodedToken = jwtDecode(token);
-
-	// check if token has expired
-	if (decodedToken * 1000 < Date.now()){
-		authenticated = false;
-		window.location.href = '/login';
-	} else {
-		authenticated = true;
-	}
-}
-
 class App extends Component {
 
 	render() {
@@ -33,10 +18,11 @@ class App extends Component {
 			<Router>
 				<Switch>
 
-					{/* landing page - item catalogue  */}
-					<Redirect
-						from="/"
-						to="/items"/>
+					{/* landing page */}
+					<Route
+						exact
+						path="/"
+						component={ items }/>
 
 					{/* login page */}
 					<Route
@@ -51,18 +37,16 @@ class App extends Component {
 						component={ register }/>
 
 					{/* dashboard */}
-					<AuthRoute
+					<Route
 						exact
 						path="/dashboard"
-						component={ dashboard }
-						authenticated={ authenticated }/>
+						component={ dashboard }/>
 
 					{/* item catalogue */}
-					<AuthRoute
+					<Route
 						exact
 						path="/items"
-						component={ items }
-						authenticated={ authenticated }/>
+						component={ items }/>
 				</Switch>
 			</Router>
 		);

@@ -105,11 +105,12 @@ export class ItemCard extends Component {
 							<Carousel
 								controls={false}>
 								{ item.photos.map((photo, index) => (
-									<Carousel.Item>
+									<Carousel.Item
+										key={index}>
 										<img
-										className="d-block w-100 img-fluid"
-										src={photo}
-										alt={item.name + "-img-" + index}
+											className="d-block w-100 img-fluid"
+											src={photo}
+											alt={item.name + "-img-" + index}
 										/>
 									</Carousel.Item>
 								))}

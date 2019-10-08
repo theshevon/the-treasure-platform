@@ -1,4 +1,4 @@
-const functions = require('firebase-functions');
+const functions     = require('firebase-functions');
 const { admin, db } = require("../util/admin"),
       BusBoy        = require('busboy'),
       config        = require("../util/config"),

@@ -89,10 +89,6 @@ class Register extends Component {
             })
             .then(res => {
 
-                // ensure that access to the token is still available even
-                // if the user refreshes the page or closes their browser
-                localStorage.setItem('TreasureIDToken', `Bearer ${res.data.token}`);
-
                 this.setState({ loading:false });
                 this.props.history.push('/items');
             })

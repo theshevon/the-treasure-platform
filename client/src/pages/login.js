@@ -3,27 +3,23 @@ import axios from 'axios'
 
 // bootstrap imports
 import Spinner from 'react-bootstrap/Spinner'
-import Button from 'react-bootstrap/Button'
-import Form from 'react-bootstrap/Form'
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
+import Button  from 'react-bootstrap/Button'
+import Form    from 'react-bootstrap/Form'
+import Row     from 'react-bootstrap/Row'
+import Col     from 'react-bootstrap/Col'
 
 // custom css
 import '../stylesheets/login.css'
 
 class Login extends Component {
 
-	constructor(props) {
-		super(props);
-
-		this.state = {
-			email: "",
-			password: "",
-			loading: false,
-			errors: {},
-			validated: false
-		};
-	}
+	state = {
+		email: "",
+		password: "",
+		loading: false,
+		errors: {},
+		validated: false
+	};
 
 	handleChange = event => {
 		this.setState({ [event.target.name] : event.target.value });
@@ -42,16 +38,14 @@ class Login extends Component {
 			password: this.state.password
 		}
 
+		console.log(userData);
+
 		axios({
 				method: 'post',
 				url: 'http://localhost:5000/comp30022app/us-central1/api/login',
 				data: userData
 			})
 			.then(res => {
-
-				// ensure that access to the token is still available even
-                // if the user refreshes the page or closes their browser
-				localStorage.setItem('TreasureIDToken', `Bearer ${res.data.token}`);
 
 				this.setState({ loading:false });
 				this.props.history.push('/items');
