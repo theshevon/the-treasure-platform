@@ -4,31 +4,30 @@ import React, { Component } from 'react'
 import Button from 'react-bootstrap/Button'
 import Modal  from 'react-bootstrap/Modal'
 
-// custom components
-import InviteFrom from './users/InviteForm'
-
-// custom stylesheets
-import '../stylesheets/invite-modal.css'
-
-class InviteModal extends Component {
+export class FormModal extends Component {
 
     state = {
-        show : false
+        show: false,
     }
 
-    handleClose = () => this.setState({ show : false });
-    handleShow = () => this.setState({ show : true });
+    // handle modal close
+    handleClose = () => {
+		this.setState({ show : false })
+	}
+
+    // handle modal show
+	handleShow = () => {
+		this.setState({ show : true })
+    }
 
     render() {
-
         return (
             <div>
-
                 <Button
-                    className="mt-2 mb-3 add-btn btn"
+                    className="mt-2 mb-3 centered-btn btn"
                     variant="light"
                     onClick={this.handleShow}>
-                    Invite Users
+                    { this.props.triggerBtnText }
                 </Button>
 
                 <Modal
@@ -40,10 +39,12 @@ class InviteModal extends Component {
                     onHide={this.handleClose}>
                     <Modal.Header
                         closeButton>
-                        <Modal.Title>Invite Users</Modal.Title>
+                        <Modal.Title>
+                            { this.props.title }
+                        </Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <InviteFrom/>
+                        { React.cloneElement(this.props.form, { handleClose : this.handleClose }) }
                     </Modal.Body>
                 </Modal>
 
@@ -52,4 +53,4 @@ class InviteModal extends Component {
     }
 }
 
-export default InviteModal
+export default FormModal
