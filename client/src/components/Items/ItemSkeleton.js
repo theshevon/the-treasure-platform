@@ -12,23 +12,24 @@ class ItemSkeleton extends Component {
 
     render() {
 
-        const skeletons = Array.from({ length : 6 }).map((item, index) => (
+        const skeletons = Array.from({ length : 8 }).map((item, index) => (
 
-            <Col key={index} className='item-col' xs={12} md={6}>
+            <Col key={index} className='item-col' xs={12} md={6} lg={3}>
                 <Card
                     className="item-card">
                     <Row>
                         <Col
-                            sm={6}
+                            sm={12}
                             className="pb-0">
-                            <div className="empty-img"></div>
-                        </Col>
-                        <Col
-                            sm={6}>
                             <Card.Title
                                 className="item-card-title d-flex justify-content-center">
                                 <div className="empty-line empty-title my-2"></div>
                             </Card.Title>
+                            <div className="empty-img"></div>
+                        </Col>
+                        <Col
+                            sm={12}>
+
                             <Card.Body
                                 className="item-card-body py-2">
                                 <Card.Text
@@ -59,6 +60,3 @@ class ItemSkeleton extends Component {
 }
 
 export default ItemSkeleton
-
-
-
