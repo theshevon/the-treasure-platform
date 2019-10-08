@@ -10,17 +10,17 @@ import AddItemForm from './AddItemForm'
 class AddItemModal extends Component {
 
     state = {
-        showAddItemModal: false,
+        show: false,
     }
 
     // handle modal close
     handleClose = () => {
-		this.setState({ showAddItemModal : false })
+		this.setState({ show : false })
 	}
 
     // handle modal show
 	handleShow = () => {
-		this.setState({ showAddItemModal : true })
+		this.setState({ show : true })
 	}
 
     render() {
@@ -35,7 +35,7 @@ class AddItemModal extends Component {
 
                 <Modal
                     className="add-item-modal"
-                    show={this.state.showAddItemModal}
+                    show={this.state.show}
                     size="lg"
                     onHide={this.handleClose}
                     centered

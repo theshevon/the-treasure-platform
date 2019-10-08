@@ -1,13 +1,12 @@
 import React, {Component} from 'react'
-// import ReactDOM from 'react-dom'
 
 // bootstrap imports
 import Carousel from 'react-bootstrap/Carousel'
-import Button from 'react-bootstrap/Button'
-import Modal from 'react-bootstrap/Modal'
-import Card from 'react-bootstrap/Card'
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
+import Button   from 'react-bootstrap/Button'
+import Modal    from 'react-bootstrap/Modal'
+import Card     from 'react-bootstrap/Card'
+import Row      from 'react-bootstrap/Row'
+import Col      from 'react-bootstrap/Col'
 
 // custom css
 import '../../stylesheets/item.css'

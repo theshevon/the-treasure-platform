@@ -1,31 +1,31 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react'
 import axios from 'axios'
 
 // bootstrap imports
 import Spinner from 'react-bootstrap/Spinner'
-import Button  from 'react-bootstrap/Button'
-import Form    from 'react-bootstrap/Form'
-import Row     from 'react-bootstrap/Row'
-import Col     from 'react-bootstrap/Col'
+import Button  from 'react-bootstrap/Button'
+import Form    from 'react-bootstrap/Form'
+import Row     from 'react-bootstrap/Row'
+import Col     from 'react-bootstrap/Col'
 
-class InviteForm extends Component {
+class InviteForm extends Component {
 
-    state = {
-        noRows   : 5,                       // the default no of rows will be 5
+    state = {
+        noRows   : 5,                       // the default no of rows will be 5
         invitees : [{}, {}, {}, {}, {}],
         loading  : false,
         errors   : null
-    }
+    }
 
     // adds rows to the form
-    addRows = () => {
+    addRows = () => {
         let invitees = [...this.state.invitees];
         invitees.push({});
-        this.setState({ 
-                        noRows : (this.state.noRows + 1), 
+        this.setState({
+                        noRows : (this.state.noRows + 1),
                         invitees: invitees
                     });
-    }
+    }
 
     // handles changes made to input fields
     // when the value of an input field changes, its corresponding entry
@@ -70,10 +70,10 @@ class InviteForm extends Component {
         })
     }
 
-    render() {
+    render() {
 
-        let formContent = [];
-        for (var i=0; i< this.state.noRows; i++ ){
+        let formContent = [];
+        for (var i=0; i< this.state.noRows; i++ ){
             let field1 = i + "-name";
             let field2 = i + "-email";
 
@@ -89,7 +89,7 @@ class InviteForm extends Component {
                 }
             }
 
-            formContent.push((
+            formContent.push((
                                 <Row
                                     key={"row-" + i}
                                     className="my-2">
@@ -116,7 +116,7 @@ class InviteForm extends Component {
                                     </Col>
                                 </Row>
                             ));
-        }
+        }
 
         // if loading, replace button text with a spinner
         let btnContent;
@@ -126,16 +126,16 @@ class InviteForm extends Component {
             btnContent = ("Send Invitations");
         }
 
-        return (
-                <Form
+        return (
+                <Form
                     noValidate
                     // validated={this.state.validated}
                     onSubmit={this.handleSubmit}>
-                    {formContent}
-                    <Button
-                        className="add-row-btn float-left mt-4"
-                        variant="light"
-                        onClick={this.addRows}>
+                    {formContent}
+                    <Button
+                        className="add-row-btn float-left mt-4"
+                        variant="light"
+                        onClick={this.addRows}>
                         <span>
                             + Add Another
                         </span>
@@ -148,10 +148,10 @@ class InviteForm extends Component {
                         disabled={this.state.loading}>
                         { btnContent }
                     </Button>
-                </Form>
-        )
-    
+                </Form>
+        )
+
     }
 }
 
-export default InviteForm;
+export default InviteForm;

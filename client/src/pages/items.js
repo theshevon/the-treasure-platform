@@ -9,10 +9,10 @@ import Row    from 'react-bootstrap/Row'
 import Col    from 'react-bootstrap/Col'
 
 // custom components
-import ItemSkeleton from '../components/Items/ItemSkeleton'
-import AddItemForm  from '../components/Items/AddItemForm'
+import ItemSkeleton from '../components/items/ItemSkeleton'
+import AddItemForm  from '../components/items/AddItemForm'
 import Navbar       from '../components/util/Navbar'
-import ItemCard     from '../components/Items/ItemCard'
+import ItemCard     from '../components/items/ItemCard'
 
 // custom css
 import '../stylesheets/items.css'

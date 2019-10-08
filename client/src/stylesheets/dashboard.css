@@ -1,0 +1,20 @@
+.dashboard-option-container{
+    height: 60vh !important;
+}
+
+.dashboard-option {
+    padding: 20px;
+    transition: 500ms;
+    border-width: 0.5px !important;
+    background: white;
+    border: none !important;
+    margin-bottom: 20px;
+    border-radius: 0px !important;
+    box-shadow: 0 6px 15px rgba(36,37,38,0.08);
+    height: 100%;
+}
+
+.dashboard-option:hover{
+    box-shadow:5px 12px 20px rgba(36,37,38,0.13);
+    border: none !important;
+}

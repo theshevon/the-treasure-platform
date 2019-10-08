@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 
 // boostrap imports
 import Card from 'react-bootstrap/Card'
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
+import Row  from 'react-bootstrap/Row'
+import Col  from 'react-bootstrap/Col'
 
 // custom CSS
 import '../../stylesheets/item-skeleton.css'
