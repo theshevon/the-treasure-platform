@@ -11,7 +11,7 @@ import Col    from 'react-bootstrap/Col'
 // custom components
 import ItemSkeleton from '../components/Items/ItemSkeleton'
 import AddItemForm  from '../components/Items/AddItemForm'
-import Navbar       from '../components/Navbar'
+import Navbar       from '../components/util/Navbar'
 import ItemCard     from '../components/Items/ItemCard'
 
 // custom css
