@@ -74,3 +74,7 @@
 .modal-body::-webkit-scrollbar{
     width: 0 !important;
 }
+.edit-btn {
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
