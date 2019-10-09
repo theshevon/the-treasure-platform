@@ -2,11 +2,25 @@ exports.validateInvitationData =
 
     (emails) => {
 
-        let errors = {};
+        let errors       = {};
+        let uniqueEmails = new Set();
 
         emails.forEach((email, index) => {
-            if (!isEmpty(email) && !isEmail){
-                errors[index] = `${email} is not a valid email!`
+            if (!isEmpty(email)){
+
+                // check for duplicate emails
+                if (uniqueEmails.has(email)){
+                    errors[index] = `You've already entered this email before!`
+                } else {
+
+                    // add to unique email set
+                    uniqueEmails.add(email);
+
+                    // check for invalid emails
+                    if (!isEmail(email)){
+                        errors[index] = `${email} is not a valid email!`
+                    }
+                }
             }
         });
 
