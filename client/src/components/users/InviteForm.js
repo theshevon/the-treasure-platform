@@ -87,8 +87,8 @@ class InviteForm extends Component {
 			let feedback  = null;
 			let classes   = "invite-email-field mb-1";
 
-			if (this.state.validated){
-				if (this.state.errors && this.state.errors[i]){
+			if (this.state.validated && this.state.errors){
+				if (this.state.errors[i]){
 					feedback = (
 						<p
 							className="invalid-feedback-msg">

@@ -219,7 +219,7 @@ exports.inviteNewUsers =
         emails.forEach((email, index) => {
 
             // ignore emails which have been flagged for errors
-            if (errors[index]) return;
+            if (errors[index] || email === '') return;
 
             // decide if the user needs to be reinvited
             let reinvite = false;
