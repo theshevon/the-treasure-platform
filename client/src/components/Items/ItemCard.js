@@ -10,6 +10,7 @@ import Modal from "react-bootstrap/Modal";
 import Card from "react-bootstrap/Card";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import Spinner from 'react-bootstrap/Spinner'
 
 // sweetalert
 import SweetAlert from "react-bootstrap-sweetalert";
@@ -19,10 +20,11 @@ import "../../stylesheets/item.css";
 
 export class ItemCard extends Component {
   state = {
-    show: false,
-    scrolled_modal: false,
-    showWarning: false,
-    showDeleteSuccess: false
+    show              : false,
+    scrolled_modal    : false,
+    showWarning       : false,
+    loading           : false,
+    showDeleteSuccess : false
   };
 
   handleClose = () => {
@@ -33,7 +35,12 @@ export class ItemCard extends Component {
     this.setState({ show: true });
   };
 
-  deleteFile = async itemId => {
+  handleDelete = async itemId => {
+    // start the spinner animation
+    this.setState({
+        loading: true
+    });
+
     try {
       const url = `http://localhost:5000/comp30022app/us-central1/api/items/${itemId}`;
       const res = await axios.delete(url).then(res => {
@@ -82,6 +89,13 @@ export class ItemCard extends Component {
 
   render() {
     const { item } = this.props;
+
+    let btnContent;
+    if (this.state.loading){
+        btnContent = (<Spinner className="spinner" animation="border" size="md"/>);
+    } else {
+        btnContent = ("Yes, delete it!");
+    }
 
     return (
       <Card className="item-card">
@@ -190,11 +204,11 @@ export class ItemCard extends Component {
                 warning
                 showCancel
                 show={this.state.showWarning}
-                confirmBtnText="Yes, delete it!"
+                confirmBtnText={btnContent}
                 confirmBtnBsStyle="danger"
                 cancelBtnBsStyle="default"
                 title="Are you sure?"
-                onConfirm={() => this.deleteFile(item.id)}
+                onConfirm={() => this.handleDelete(item.id)}
                 onCancel={this.cancelDelete}
               >
                 You will not be able to recover this imaginary file!
