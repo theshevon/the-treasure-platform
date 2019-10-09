@@ -1,13 +1,12 @@
 import React, {Component} from 'react'
-// import ReactDOM from 'react-dom'
 
 // bootstrap imports
 import Carousel from 'react-bootstrap/Carousel'
-import Button from 'react-bootstrap/Button'
-import Modal from 'react-bootstrap/Modal'
-import Card from 'react-bootstrap/Card'
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
+import Button   from 'react-bootstrap/Button'
+import Modal    from 'react-bootstrap/Modal'
+import Card     from 'react-bootstrap/Card'
+import Row      from 'react-bootstrap/Row'
+import Col      from 'react-bootstrap/Col'
 
 // custom css
 import '../../stylesheets/item.css'
@@ -105,11 +104,12 @@ export class ItemCard extends Component {
 							<Carousel
 								controls={false}>
 								{ item.photos.map((photo, index) => (
-									<Carousel.Item>
+									<Carousel.Item
+										key={index}>
 										<img
-										className="d-block w-100 img-fluid"
-										src={photo}
-										alt={item.name + "-img-" + index}
+											className="d-block w-100 img-fluid"
+											src={photo}
+											alt={item.name + "-img-" + index}
 										/>
 									</Carousel.Item>
 								))}

@@ -1,5 +1,9 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
+import {
+	BrowserRouter as Router,
+	Switch,
+	Route }
+from "react-router-dom";
 import jwtDecode from 'jwt-decode';
 
 // pages
@@ -11,32 +15,17 @@ import register  from './pages/register'
 // custom components
 import AuthRoute from './components/util/AuthRoute'
 
-let authenticated;
-const token = localStorage.TreasureIDToken;
-
-if (token){
-	const decodedToken = jwtDecode(token);
-
-	// check if token has expired
-	if (decodedToken * 1000 < Date.now()){
-		authenticated = false;
-		window.location.href = '/login';
-	} else {
-		authenticated = true;
-	}
-}
-
 class App extends Component {
 
 	render() {
 		return (
 			<Router>
 				<Switch>
-					
-					{/* landing page - item catalogue  */}					
-					{/* <Redirect
-						from="/"
-						to="/login"/> */}
+					{/* landing page */}
+					<Route
+						exact
+						path="/"
+						component={ items }/>
 
 					{/* login page */}
 					<Route
@@ -51,15 +40,17 @@ class App extends Component {
 						component={ register }/>
 
 					{/* dashboard */}
-                    <Route
-                        exact
-                        path="/dashboard"
-                        component={ dashboard }/>
-                    {/* item catalogue */}
-                    <Route
-                        exact
-                        path="/items"
-                        component={ items }/>
+
+					<Route
+						exact
+						path="/dashboard"
+						component={ dashboard }/>
+
+					{/* item catalogue */}
+					<Route
+						exact
+						path="/items"
+						component={ items }/>
 				</Switch>
 			</Router>
 		);
