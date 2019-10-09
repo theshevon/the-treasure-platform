@@ -93,132 +93,11 @@ export class ItemCard extends Component {
     if (this.state.loading){
         btnContent = (<Spinner className="spinner" animation="border" size="md"/>);
     } else {
-        btnContent = ("Yes, delete it!");
-
-        return (
-
-				<Card
-					className="item-card">
-
-					<Row>
-
-						<Col
-							sm={6}
-							className="pb-0">
-							<Card.Img
-								className="item-card-img-top"
-								variant="top"
-								src={item.photos[item.cover]} />
-						</Col>
-
-						<Col
-							sm={6}>
-							<Card.Title
-								className="item-card-title">
-								{item.name}
-							</Card.Title>
-							<Card.Body
-								className="item-card-body pb-0">
-								<Card.Text
-									className="item-card-text">
-									{item.desc.length > 100 ? item.desc.substring(0,100).trim() + "..." : item.desc}
-								</Card.Text>
-								<Button
-									className="item-view-btn btn"
-									variant="light"
-									onClick={this.handleShow}>
-									more info
-								</Button>
-							</Card.Body>
-						</Col>
-
-					</Row>
-
-					<Modal
-						size="xl"
-						scrollable show={this.state.show}
-						onHide={this.handleClose}
-						centered
-						ref={view_modal => this.view_modal = view_modal}>
-
-						<Modal.Header
-							closeButton>
-							<Modal.Title>
-								{item.name}
-							</Modal.Title>
-						</Modal.Header>
-
-						<Modal.Body
-							className="info-modal-body px-5 pb-5 pt-0">
-
-							<Carousel
-								controls={false}>
-								{ item.photos.map((photo, index) => (
-									<Carousel.Item
-										key={index}>
-										<img
-											className="d-block w-100 img-fluid"
-											src={photo}
-											alt={item.name + "-img-" + index}
-										/>
-									</Carousel.Item>
-								))}
-							</Carousel>
-
-							<div
-								id="scroll-anim"
-								className="d-flex justify-content-center"
-								display={this.state.scrolled_modal ? "none": "block"}>
-								<div
-									className='mouse-container'>
-									<div
-										className='mouse'>
-										<span
-											className='scroll-down'>
-										</span>
-									</div>
-								</div>
-							</div>
-
-							<p
-								className="my-5 text-justify">
-								{item.desc}
-							</p>
-
-							<Row>
-								<Col
-									xs="6">
-									<Button
-										className="btn"
-										variant="light">
-										Edit
-									</Button>
-								</Col>
-								<Col
-									xs="6"
-									className="d-flex justify-content-end">
-									<Button
-										className="btn"
-										variant="light">
-										View Interested
-									</Button>
-									<Button
-										className="btn ml-2"
-										variant="light">
-										Assign Item
-									</Button>
-								</Col>
-							</Row>
-
-						</Modal.Body>
-
-					</Modal>
-
-            </Card>
-        )
-    }
+		btnContent = ("Yes, delete it!");
+	}
 
     return (
+
       <Card className="item-card">
         <Row>
           <Col sm={6} className="pb-0">
@@ -240,8 +119,7 @@ export class ItemCard extends Component {
               <Button
                 className="item-view-btn btn"
                 variant="light"
-                onClick={this.handleShow}
-              >
+                onClick={this.handleShow}>
                 more info
               </Button>
             </Card.Body>
@@ -254,8 +132,8 @@ export class ItemCard extends Component {
           show={this.state.show}
           onHide={this.handleClose}
           centered
-          ref={view_modal => (this.view_modal = view_modal)}
-        >
+          ref={view_modal => (this.view_modal = view_modal)}>
+
           {/* item name */}
           <Modal.Header closeButton>
             <Modal.Title>{item.name}</Modal.Title>
@@ -279,8 +157,7 @@ export class ItemCard extends Component {
             <div
               id="scroll-anim"
               className="d-flex justify-content-center"
-              display={this.state.scrolled_modal ? "none" : "block"}
-            >
+              display={this.state.scrolled_modal ? "none" : "block"}>
               <div className="mouse-container">
                 <div className="mouse">
                   <span className="scroll-down"></span>
@@ -293,6 +170,7 @@ export class ItemCard extends Component {
 
             <Row>
               <Col lg="2">
+
                 {/* edit button */}
                 <Button className="btn edit-btn " variant="light">
                   Edit
@@ -300,18 +178,17 @@ export class ItemCard extends Component {
 
                 {/* delete button */}
                 <Button
-                  variant="danger"
-                  onClick={this.handleDeleteRequest}
-                  className="btn"
-                  itemId={item.id}
-                  disabled={this.state.loading}
-                >
-                  Delete
+					variant="danger"
+					onClick={this.handleDeleteRequest}
+					className="btn"
+					itemId={item.id}
+					disabled={this.state.loading}>
+                  	Delete
                 </Button>
               </Col>
               <Col lg="10" className="d-flex justify-content-end">
                 <Button className="btn" variant="light">
-                  View Interested
+                	View Interested
                 </Button>
                 <Button className="btn ml-2" variant="light">
                   Assign Item
@@ -330,9 +207,8 @@ export class ItemCard extends Component {
                 cancelBtnBsStyle="default"
                 title="Are you sure?"
                 onConfirm={() => this.handleDelete(item.id)}
-                onCancel={this.cancelDelete}
-              >
-                You will not be able to recover this imaginary file!
+                onCancel={this.cancelDelete}>
+                Are you sure you want to delete this item?
               </SweetAlert>
 
               {/* successful deletion notification */}
@@ -340,9 +216,8 @@ export class ItemCard extends Component {
                 success
                 title="Done!"
                 show={this.state.showDeleteSuccess}
-                onConfirm={this.hideConrfimationAlert}
-              >
-                Item was successfully deleted!
+                onConfirm={this.hideConrfimationAlert}>
+                The item was successfully deleted!
               </SweetAlert>
             </div>
           </Modal.Body>
