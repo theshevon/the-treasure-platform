@@ -208,7 +208,6 @@ exports.inviteNewUsers =
 
             // loop over all users to check for duplicate email
 
-            var emailIndex = 0; // tracks which email causes error
             db.collection('users')
                 .get()
                 .then((data) => {
@@ -216,20 +215,15 @@ exports.inviteNewUsers =
                         if (doc.data().email === invitee.email) {
 
                             // Duplicate email; abort and return error
-                            errors[emailIndex]
+                            errors[i]
                                 =`Email ${invitee.email} is already registered`;
 
                             return {
-                                errors,
-                                valid: Object.keys(errors).length === 0
+                                errors
                             };
                         }
                     });
-                     // Increment 'entered email' index
-                     emailIndex++;
                 });
-
-            emailIndex = 0;
 
             //// TODO: Delete all previous invites to the same email address
             //
@@ -246,63 +240,58 @@ exports.inviteNewUsers =
             //         });
             //     });
 
-            // Terminate if errors found                                            //DONT WANT TO TERMINATE HERE!!!
-            if (Object.keys(errors).length !== 0) {
-                return errors
-            }
+            emailIndex = 0;
 
-            // Create new invitee doc
-            const newUser = db.collection('invitees').doc();
+            // Check for error
+            if (!errors[i]) {
+                // Create new invitee doc
+                const newUser = db.collection('invitees').doc();
 
-            // Generate unique invite code for invitee
-            const key = generateUniqueInviteCode(newUser.id);
-            if (key === null) {
-                errors.key = "Unique code generation failed";
+                // Generate unique invite code for invitee
+                const key = generateUniqueInviteCode(newUser.id);
+                if (key === null) {
+                    errors[i] = "Unique code generation failed. Try again.";
+                }
+                else {
+                    // Assign data to invitee doc
+                    newUser.set({
+                            email: invitee.email,
+                            accepted: false,
+                            code: key
+                        });
 
-                return {
-                    errors,
-                    valid: Object.keys(errors).length === 0
-                };
-            }
+                    console.log("Invitee added: " + invitee.email + ", code: " + key);
 
-            // Assign data to invitee doc
-            newUser.set({
-                    email: invitee.email,
-                    accepted: false,
-                    code: key
-                });
+                    // Generate invitation email with key code
+                    const mailOptions = {
+                        from: 'Treasure App <treasureapp.au@gmail.com>',
+                        to: invitee.email,
+                        subject: 'Welcome to Treasure', // email subject
+                        html: `<p style="font-size: 16px;">Welcome!</p>
+                            <br />
+                            <p style="font-size: 16px;">You have been invited to join
+                            Treasure.</p>
+                            <p style="font-size: 16px;">Go to localhost:5000/register
+                            and enter the invite
+                            code ${key} to set up your account.</p>` // email content
+                    };
 
-            console.log("Invitee added: " + invitee.email + ", code: " + key);
-
-            // Generate invitation email with key code
-            const mailOptions = {
-                from: 'Treasure App <treasureapp.au@gmail.com>',
-                to: invitee.email,
-                subject: 'Welcome to Treasure', // email subject
-                html: `<p style="font-size: 16px;">Welcome!</p>
-                    <br />
-                    <p style="font-size: 16px;">You have been invited to join
-                    Treasure.</p>
-                    <p style="font-size: 16px;">Go to localhost:5000/register
-                    and enter the invite
-                    code ${key} to set up your account.</p>` // email content
-            };
-
-            // Send invitation email to new invitee
-            try {
-                await sendMail(mailOptions);
-            } catch (err) {
-                errors.sending = "Email could not be sent";
+                    // Send invitation email to new invitee
+                    try {
+                        await sendMail(mailOptions);
+                    } catch (err) {
+                        errors[i] = `Email could not be sent to ${invitee.email}`;
+                    }
+                }
             }
         }
 
         // Check for errors
         if (Object.keys(errors).length === 0) {
-            return res.status(200).json("Success: Invites sent");
+            return res.status(200).json("Success: All invites sent");
         }
         return {
-            errors,
-            valid: Object.keys(errors).length === 0
+            errors
         }
 
     }
