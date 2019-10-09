@@ -75,11 +75,11 @@ class Register extends Component {
         this.setState({ loading: true });
 
         const registrationData = {
-            fname: this.state.fname,
-            lname: this.state.lname,
-            email: this.state.email,
-            pw:    this.state.pw,
-            pw_c:  this.state.pw_c
+            fname : this.state.fname,
+            lname : this.state.lname,
+            email : this.state.email,
+            pw    : this.state.pw,
+            pw_c  : this.state.pw_c
         }
 
         axios({
@@ -88,7 +88,8 @@ class Register extends Component {
                 data: registrationData
             })
             .then(res => {
-                this.setState({loading:false});
+
+                this.setState({ loading:false });
                 this.props.history.push('/items');
             })
             .catch(err => {
@@ -190,7 +191,8 @@ class Register extends Component {
 
                     {/* Submit button */}
                     <Button
-                        className="login-btn btn mt-3"
+                        className="centered-btn btn mt-3"
+                        variant="light"
                         type="submit"
                         onClick={this.handleValidation}
                         disabled={this.state.loading}>

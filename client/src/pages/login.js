@@ -3,27 +3,23 @@ import axios from 'axios'
 
 // bootstrap imports
 import Spinner from 'react-bootstrap/Spinner'
-import Button from 'react-bootstrap/Button'
-import Form from 'react-bootstrap/Form'
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
+import Button  from 'react-bootstrap/Button'
+import Form    from 'react-bootstrap/Form'
+import Row     from 'react-bootstrap/Row'
+import Col     from 'react-bootstrap/Col'
 
 // custom css
 import '../stylesheets/login.css'
 
 class Login extends Component {
 
-	constructor(props) {
-		super(props);
-
-		this.state = {
-			email: "",
-			password: "",
-			loading: false,
-			errors: {},
-			validated: false
-		};
-	}
+	state = {
+		email: "",
+		password: "",
+		loading: false,
+		errors: {},
+		validated: false
+	};
 
 	handleChange = event => {
 		this.setState({ [event.target.name] : event.target.value });
@@ -42,13 +38,16 @@ class Login extends Component {
 			password: this.state.password
 		}
 
+		console.log(userData);
+
 		axios({
 				method: 'post',
 				url: 'http://localhost:5000/comp30022app/us-central1/api/login',
 				data: userData
 			})
 			.then(res => {
-				this.setState({loading:false});
+
+				this.setState({ loading:false });
 				this.props.history.push('/items');
 			})
 			.catch(err => {
@@ -145,11 +144,13 @@ class Login extends Component {
             					</Form.Control.Feedback>
 							</Row>
 							<Button
-								className="login-btn btn mt-3"
+								className="centered-btn btn mt-3"
+								variant="light"
 								type="submit"
 								onClick={this.handleSubmit}
-								disabled={this.state.loading}
-							>{loginBtnContent}</Button>
+								disabled={this.state.loading}>
+								{loginBtnContent}
+							</Button>
 						</Form>
 					</Col>
 				</Row>
