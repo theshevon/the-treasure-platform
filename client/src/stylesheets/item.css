@@ -103,6 +103,7 @@
 .item-row{
     display: flex;
     justify-content: space-between;
+}
 
 .edit-btn {
     margin-right: 5px;

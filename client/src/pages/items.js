@@ -1,16 +1,8 @@
 import React, { Component } from 'react'
 import axios from "axios";
 
-// boostrap imports
-import Button from 'react-bootstrap/Button'
-import Alert  from 'react-bootstrap/Alert'
-import Modal  from 'react-bootstrap/Modal'
-import Row    from 'react-bootstrap/Row'
-import Col    from 'react-bootstrap/Col'
-
 // custom components
 import ItemSkeleton from '../components/items/ItemSkeleton'
-import AddItemForm  from '../components/items/AddItemForm'
 import Navbar       from '../components/util/Navbar'
 import ItemCard     from '../components/items/ItemCard'
 
@@ -69,14 +61,16 @@ class Items extends Component {
 
         if (!this.state.loading){
             itemListContent = (
-                <container className='all-items-container'>
+                <div
+                    className='all-items-container'>
                     { this.state.items.map((item, index) => (
                         <ItemCard
+                            key={index}
                             className="my-5"
                             item={ item }/>
                         )
                     )}
-                </container>
+                </div>
             )
         }
 

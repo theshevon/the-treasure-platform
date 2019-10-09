@@ -1,6 +1,6 @@
 // react imports
 import React, { Component } from "react"
-import axios from 'axios'
+// import axios from 'axios'
 
 // custom stylesheets
 import "../../stylesheets/item.css"
@@ -48,8 +48,8 @@ class LikeButton extends Component {
 					alt="item"
 					src= { label === "liked" ? likedBtn : unlikedBtn }
 					onClick={ this.handleClick }
-					width={this.props.size == "sm" ? "25" : "35"}
-					height={this.props.size == "sm" ? "25" : "35"}
+					width={this.props.size === "sm" ? "25" : "35"}
+					height={this.props.size === "sm" ? "25" : "35"}
 				/>
 				</button>
 			</div>
