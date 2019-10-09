@@ -18,7 +18,7 @@ class InviteForm extends Component {
 
     state = {
         noRows   : this.minRows,
-        invitees : Array(this.minRows).fill(''),
+        emails   : Array(this.minRows).fill(''),
         loading  : false,
 		errors   : null,
 		validated: false
@@ -28,12 +28,12 @@ class InviteForm extends Component {
     addRows = () => {
         // only allow row addition if its below the threshold
         if (this.state.noRows < this.maxRows){
-            let invitees = [...this.state.invitees];
-            invitees.push('');
+            let emails = [...this.state.emails];
+            emails.push('');
             this.setState({
                             noRows : (this.state.noRows + 1),
-                            invitees: invitees
-                        });
+                            emails: emails
+                         });
         }
     }
 
@@ -45,10 +45,10 @@ class InviteForm extends Component {
         let dash_index  = event.target.name.indexOf("-");
         let array_index = event.target.name.substring(0, dash_index);
 
-        let invitees = [...this.state.invitees]
-        invitees[array_index] = event.target.value;
+        let emails = [...this.state.emails]
+        emails[array_index] = event.target.value;
 
-        this.setState({ invitees : invitees });
+        this.setState({ emails : emails });
     }
 
     // sends the form data to the server
@@ -65,7 +65,7 @@ class InviteForm extends Component {
         axios({
             method: 'post',
             url: 'http://localhost:5000/comp30022app/us-central1/api/invite',
-            data: { invitees : this.state.invitees }
+            data: { emails : this.state.emails }
         })
         .then(res => {
             this.setState({ loading : false });
@@ -128,7 +128,7 @@ class InviteForm extends Component {
         } else {
             btnContent = ("Send Invitations");
         }
-      
+
         return (
                 <Form
                     onSubmit={this.handleSubmit}>

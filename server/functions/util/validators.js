@@ -1,3 +1,22 @@
+exports.validateInvitationData =
+
+    (emails) => {
+
+        let errors = {};
+
+        emails.forEach((email, index) => {
+            if (!isEmpty(email) && !isEmail){
+                errors[index] = `${email} is not a valid email!`
+            }
+        });
+
+        return  {
+            errors,
+            allInvalid: Object.keys(errors).length === emails.length
+        }
+    }
+
+
 exports.validateInviteeData =
 
     (invitee) => {

@@ -4,8 +4,10 @@ const fb_functions  = require('firebase-functions');
 const nodemailer    = require('nodemailer');
 const config        = require('../util/config');
 const { validateRegistrationData,
+        validateInvitationData,
+        validateInviteeData,
         validateLoginData,
-        validateInviteeData } = require("../util/validators");
+        } = require("../util/validators");
 
 const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -207,12 +209,12 @@ exports.inviteNewUsers =
 
     async (req, res) => {
 
-        // Creates new invitee from an array of JSON objects containing
-        // names and emails, and emails each invitee a unique invite code
+        // extract emails from the form
+        let emails = req.body.emails;
 
-        let errors = {};
-
-        //// TODO: Validate input
+        // validate email addresses
+        const { allInvalid, errors } = validateInvitationData(invitee);
+        if (allInvalid) return res.status(400).json(errors);
 
         for (var i = 0; i < req.body.length; i++) {
             var invitee = req.body[i];
@@ -282,9 +284,8 @@ exports.inviteNewUsers =
                             <br />
                             <p style="font-size: 16px;">You have been invited to join
                             Treasure.</p>
-                            <p style="font-size: 16px;">Go to localhost:5000/register
-                            and enter the invite
-                            code ${key} to set up your account.</p>` // email content
+                            <p style="font-size: 16px;">Click on this <a href="https://localhost:5000/register">link</a>
+                            and enter the invite code "${key}" to set up your account.</p>` // email content
                     };
 
                     // Send invitation email to new invitee
