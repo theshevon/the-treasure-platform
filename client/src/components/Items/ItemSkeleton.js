@@ -14,15 +14,8 @@ class ItemSkeleton extends Component {
 
         const skeletons = Array.from({ length : 8 }).map((item, index) => (
 
-            <Col
-                key={index}
-                className='item-col'
-                xs={12}
-                md={6}
-                lg={3}>
                 <Card
-                    className="item-card"
-                    style={{ width: "18.2rem" }}>
+                    className="item-card">
                     <Row>
                         <Col
                             sm={12}
@@ -68,16 +61,12 @@ class ItemSkeleton extends Component {
                         </Col>
                     </Row>
                 </Card>
-            </Col>
         ));
 
         return (
-            <div>
-
-                <Row className="my-3 justify-content-center">
+            <container className="all-skeletons-container">
                     { skeletons }
-                </Row>
-            </div>
+            </container>
         )
     }
 }
