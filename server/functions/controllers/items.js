@@ -179,29 +179,53 @@ exports.deleteImages = functions.firestore
         });
     });
 
-// deletes an item from the database
+// delete database entry
+function deleteItemDatabase (itemId, res) {
+    db
+    .collection('items')
+    .doc(itemId)
+    .delete()
+    .then(response => {
+        console.log("database delete");
+        // need to wait some reason so that the image is deleted
+        setTimeout(function(){
+            res.sendStatus(200);
+        }, 1000);
+        
+    })
+    .catch(err => {
+        setTimeout(function(){
+            res.sendStatus(401);
+        }, 1000);
+    });
+}
+
+// deletes an item and images from database
 exports.deleteItem =
 
   (req, res) => {
-      
-        // delete item
+        var imagesDeleted = 0;
+        // delete images
         db.collection('items').doc(req.params.id).get().then(doc => {
-            var imgName = doc.data().photos[0].split(/\/o\/|\?/)[1];
-            console.log(imgName);
-            admin.storage().bucket(config.storageBucket).deleteFiles({
-                prefix: `${imgName}`
+            photos = doc.data().photos;
+            console.log("image delete");
+            photos.forEach(function(photo) {
+                var imgName = photo.split(/\/o\/|\?/)[1];
+                console.log(imgName);
+                admin.storage().bucket(config.storageBucket).deleteFiles({
+                    prefix: `${imgName}`
+                });
+                imagesDeleted ++;
+                // when all images are deleted, delete from database
+                if (imagesDeleted === photos.length) {
+                    deleteItemDatabase(req.params.id, res);
+                }
             });
+        }).catch(err => {
+            console.log(err);
         });
+
         
-        // delete database entry
-        db
-            .collection('items')
-            .doc(req.params.id)
-            .delete()
-            .then(res => {
-                return res.status(200).json("Successfully deleted item");
-            })
-            .catch(err => {
-                return res.status(400).json({ Error : err });
-            });
   }
+
+  

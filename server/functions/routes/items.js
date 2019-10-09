@@ -10,7 +10,7 @@ router.get("/items", isLoggedIn, itemController.getItems);
 
 /*================================POST ROUTES=================================*/
 
-router.post("/items/new", isLoggedIn, itemController.createItem);
+router.post("/items/new", itemController.createItem);
 
 router.post("/items/:id/img_upload", isLoggedIn, itemController.uploadImg);
 
