@@ -4,6 +4,7 @@ import axios from "axios";
 
 // bootstrap imports
 import Carousel from 'react-bootstrap/Carousel'
+import Spinner  from 'react-bootstrap/Spinner'
 import Button   from 'react-bootstrap/Button'
 import Modal    from 'react-bootstrap/Modal'
 import Card     from 'react-bootstrap/Card'
