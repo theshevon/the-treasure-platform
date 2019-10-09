@@ -207,7 +207,8 @@ exports.inviteNewUsers =
             var invitee = req.body[i];
 
             // loop over all users to check for duplicate email
-            var i = 0;
+
+            var emailIndex = 0; // tracks which email causes error
             db.collection('users')
                 .get()
                 .then((data) => {
@@ -215,7 +216,8 @@ exports.inviteNewUsers =
                         if (doc.data().email === invitee.email) {
 
                             // Duplicate email; abort and return error
-                            errors.email = `Email ${invitee.email} is already registered.`;
+                            errors[emailIndex]
+                                =`Email ${invitee.email} is already registered`;
 
                             return {
                                 errors,
@@ -223,11 +225,13 @@ exports.inviteNewUsers =
                             };
                         }
                     });
+                     // Increment 'entered email' index
+                     emailIndex++;
                 });
 
-            // Delete all previous invites to the same email address
+            emailIndex = 0;
 
-            //// TODO: remove duplicate emails entries
+            //// TODO: Delete all previous invites to the same email address
             //
             //var duplicate_email_ids = [];
             //
@@ -242,12 +246,9 @@ exports.inviteNewUsers =
             //         });
             //     });
 
-            // Terminate if errors found
+            // Terminate if errors found                                            //DONT WANT TO TERMINATE HERE!!!
             if (Object.keys(errors).length !== 0) {
-                return {
-                    errors,
-                    valid: Object.keys(errors).length === 0
-                };
+                return errors
             }
 
             // Create new invitee doc
@@ -275,7 +276,7 @@ exports.inviteNewUsers =
 
             // Generate invitation email with key code
             const mailOptions = {
-                from: 'Treasure App <>', // Something like: Jane Doe <janedoe@gmail.com>
+                from: 'Treasure App <treasureapp.au@gmail.com>',
                 to: invitee.email,
                 subject: 'Welcome to Treasure', // email subject
                 html: `<p style="font-size: 16px;">Welcome!</p>
