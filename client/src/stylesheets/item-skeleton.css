@@ -16,12 +16,20 @@
 
 .empty-img{
     width: 100%;
-    height: 100%;
+    height: 150px;
 }
 
 .empty-btn{
     height: 1.25rem;
+}
+
+.empty-btn-1{
     width: 25%;
+}
+
+.empty-btn-2{
+    width: 12.5%;
+    right: 0%;
 }
 
 .empty-line{
@@ -43,4 +51,11 @@
 
 .empty-line-3{
     width: 70%;
+}
+
+.all-skeletons-container{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: none !important
 }

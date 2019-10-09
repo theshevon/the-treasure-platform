@@ -38,6 +38,7 @@ class InviteModal extends Component {
                     centered
                     show={this.state.show}
                     onHide={this.handleClose}>
+
                     <Modal.Header
                         closeButton>
                         <Modal.Title>Invite Users</Modal.Title>

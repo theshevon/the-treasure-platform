@@ -1,18 +1,15 @@
-import React, {Component} from 'react'
-
-import axios from "axios";
+import React, { Component } from "react"
 
 // bootstrap imports
-import Carousel from 'react-bootstrap/Carousel'
-import Spinner  from 'react-bootstrap/Spinner'
-import Button   from 'react-bootstrap/Button'
-import Modal    from 'react-bootstrap/Modal'
-import Card     from 'react-bootstrap/Card'
-import Row      from 'react-bootstrap/Row'
-import Col      from 'react-bootstrap/Col'
+import Carousel from "react-bootstrap/Carousel"
+import Button   from "react-bootstrap/Button"
+import Modal    from "react-bootstrap/Modal"
+import Card     from "react-bootstrap/Card"
+import Row      from "react-bootstrap/Row"
+import Col      from "react-bootstrap/Col"
 
-// sweetalert
-import SweetAlert from "react-bootstrap-sweetalert";
+// custom components
+import LikeButton from "./LikeButton"
 
 // custom css
 import "../../stylesheets/item.css";
@@ -87,44 +84,57 @@ export class ItemCard extends Component {
   // }
 
   render() {
-    const { item } = this.props;
 
+    const { item } = this.props;
+    
     let btnContent;
     if (this.state.loading){
         btnContent = (<Spinner className="spinner" animation="border" size="md"/>);
     } else {
-		btnContent = ("Yes, delete it!");
+		btnContent = ("Yes");
 	}
 
     return (
 
-      <Card className="item-card">
-        <Row>
-          <Col sm={6} className="pb-0">
-            <Card.Img
-              className="item-card-img-top"
-              variant="top"
-              src={item.photos[item.cover]}
-            />
-          </Col>
+      <Card
+        className="item-card"
+        style={{ width: "18.2rem" }}>
 
-          <Col sm={6}>
-            <Card.Title className="item-card-title">{item.name}</Card.Title>
-            <Card.Body className="item-card-body pb-0">
-              <Card.Text className="item-card-text">
-                {item.desc.length > 100
-                  ? item.desc.substring(0, 100).trim() + "..."
-                  : item.desc}
-              </Card.Text>
-              <Button
-                className="item-view-btn btn"
-                variant="light"
-                onClick={this.handleShow}>
-                more info
-              </Button>
-            </Card.Body>
-          </Col>
+		<Card.Title
+		  className="item-card-title">
+		  {item.name}
+		</Card.Title>
+
+        <Card.Img
+          className="item-card-img-top"
+          variant="top"
+          src={item.photos[item.cover]}/>
+
+		<Row
+			className="justify-content-end">
+        	<LikeButton
+                itemID = { item.id }
+				size="sm"/>
         </Row>
+
+		<Card.Body
+			className="item-card-body pb-0">
+
+		  <Card.Text
+		  	className="item-card-text">
+            { item.desc.length > 100
+              ? item.desc.substring(0, 100).trim() + "..."
+              : item.desc}
+          </Card.Text>
+
+          <Button
+            className="item-view-btn btn"
+            variant="light"
+            size="sm"
+            onClick={this.handleShow}>
+            	more info
+          </Button>
+        </Card.Body>
 
         <Modal
           size="xl"
@@ -133,7 +143,7 @@ export class ItemCard extends Component {
           onHide={this.handleClose}
           centered
           ref={view_modal => (this.view_modal = view_modal)}>
-
+          
           {/* item name */}
           <Modal.Header closeButton>
             <Modal.Title>{item.name}</Modal.Title>
@@ -158,15 +168,31 @@ export class ItemCard extends Component {
               id="scroll-anim"
               className="d-flex justify-content-center"
               display={this.state.scrolled_modal ? "none" : "block"}>
-              <div className="mouse-container">
-                <div className="mouse">
-                  <span className="scroll-down"></span>
+                
+			  <div
+			  	className="mouse-container">
+				<div
+					className="mouse">
+				  	<span
+				  	className="scroll-down">
+					</span>
                 </div>
               </div>
             </div>
+            <div>
+                <div className="item-row">
+                {/* item desciption */}
+            		<p
+            			className="my-5 text-justify">
+            			{item.desc}
+            		</p>
+                </div>
 
-            {/* item desciption */}
-            <p className="my-5 text-justify">{item.desc}</p>
+				<div className="item-row d-flex justify-content-center">
+                    <LikeButton
+                        itemID={ item.id }
+						size="md"/>
+                </div>
 
             <Row>
               <Col lg="2">

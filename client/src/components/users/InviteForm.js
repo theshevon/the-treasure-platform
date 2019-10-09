@@ -71,7 +71,6 @@ class InviteForm extends Component {
             this.setState({ loading : false });
         })
         .catch(err => {
-
             this.setState({
                 errors    : err.response.data,
                 loading   : false,
@@ -129,7 +128,7 @@ class InviteForm extends Component {
         } else {
             btnContent = ("Send Invitations");
         }
-
+      
         return (
                 <Form
                     onSubmit={this.handleSubmit}>
@@ -158,4 +157,3 @@ class InviteForm extends Component {
 }
 
 export default InviteForm;
-

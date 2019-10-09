@@ -1,7 +1,7 @@
 /* @import url('https://fonts.googleapis.com/css?family=Muli&display=swap'); */
 
 .item-col{
-    padding-right: 0px;
+    padding: 0px !important;
 }
 
 .modal-content{
@@ -98,4 +98,10 @@ div.mouse span.scroll-down {
 
 .scrolled{
     opacity: 0;
+}
+
+.all-items-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center
 }

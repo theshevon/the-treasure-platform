@@ -9,6 +9,7 @@
     height: 25vh;
     object-fit: cover;
     border-radius: 0px !important;
+    margin-bottom: 1em;
 }
 
 .item-card {
@@ -17,9 +18,11 @@
     border-width: 0.5px !important;
     background: white;
     border: none !important;
-    margin-bottom: 20px;
+    margin: 0.8em;
+    width: 18.2rem;
     border-radius: 0px !important;
     box-shadow: 0 6px 15px rgba(36,37,38,0.08);
+
 }
 
 .item-card:hover{
@@ -44,6 +47,17 @@
     transition: 500ms !important;
     margin-left: 50%;
     transform: translateX(-50%);
+    align-self: right;
+}
+
+.item-like-btn{
+    color: 	#FFB6C1 !important;
+    background: none !important;
+    border: 1px solid #a8a8a8 ;
+    transition: 500ms !important;
+    margin-left: 50%;
+    transform: translateX(-50%);
+    align-self: right;
 }
 
 .item-view-btn:hover{
@@ -74,6 +88,22 @@
 .modal-body::-webkit-scrollbar{
     width: 0 !important;
 }
+
+.like-btn {
+    background-color: none !important;
+    border: none !important;
+    outline: none !important;
+    padding: 1em;
+}
+.item-row {
+    margin-right: none !important;
+    margin-left: none !important;
+}
+
+.item-row{
+    display: flex;
+    justify-content: space-between;
+
 .edit-btn {
     margin-right: 5px;
     margin-bottom: 5px;

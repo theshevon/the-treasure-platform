@@ -12,53 +12,63 @@ class ItemSkeleton extends Component {
 
     render() {
 
-        const skeletons = Array.from({ length : 6 }).map((item, index) => (
+        const skeletons = Array.from({ length : 8 }).map((item, index) => (
 
-            <Col key={index} className='item-col' xs={12} md={6}>
                 <Card
                     className="item-card">
                     <Row>
                         <Col
-                            sm={6}
+                            sm={12}
                             className="pb-0">
+                            <Card.Title
+                                className="item-card-title d-flex justify-content-center">
+                                <div
+                                    className="empty-line empty-title my-2">
+                                </div>
+                            </Card.Title>
                             <div className="empty-img"></div>
                         </Col>
                         <Col
-                            sm={6}>
-                            <Card.Title
-                                className="item-card-title d-flex justify-content-center">
-                                <div className="empty-line empty-title my-2"></div>
-                            </Card.Title>
+                            sm={12}>
+
                             <Card.Body
                                 className="item-card-body py-2">
                                 <div
                                     className="item-card-text">
-                                    <div className="empty-line empty-line-2 mb-2"></div>
-                                    <div className="empty-line empty-line-2 my-2"></div>
-                                    <div className="empty-line empty-line-2 my-2"></div>
-                                </div>
-                                <div className="d-flex justify-content-center">
-                                    <div className="empty-btn"></div>
+                                    <div
+                                        className="d-flex justify-content-end">
+                                        <div
+                                            className="empty-btn empty-btn-2 mb-2">
+                                        </div>
+                                    </div>
+                                    <div
+                                        className="empty-line empty-line-2 mb-2">
+                                    </div>
+                                    <div
+                                        className="empty-line empty-line-2 my-2">
+                                    </div>
+                                    <div
+                                        className="empty-line empty-line-2 my-2">
+                                    </div>
+                                </Card.Text>
+                                <div
+                                    className="d-flex justify-content-center">
+                                    <div
+                                        className="empty-btn empty-btn-1">
+                                    </div>
                                 </div>
                             </Card.Body>
                         </Col>
                     </Row>
                 </Card>
-            </Col>
         ));
 
         return (
-            <div>
-
-                <Row className="my-3 justify-content-center">
+            <container className="all-skeletons-container">
                     { skeletons }
-                </Row>
-            </div>
+            </container>
         )
     }
 }
 
 export default ItemSkeleton
-
-
-
