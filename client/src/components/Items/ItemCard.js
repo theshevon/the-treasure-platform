@@ -14,10 +14,13 @@ import LikeButton from "./LikeButton"
 // custom css
 import "../../stylesheets/item.css";
 
-class ItemCard extends Component {
+export class ItemCard extends Component {
   state = {
-    show: false,
-    scrolled_modal: false
+    show              : false,
+    scrolled_modal    : false,
+    showWarning       : false,
+    loading           : false,
+    showDeleteSuccess : false
   };
 
   handleClose = () => {
@@ -26,6 +29,43 @@ class ItemCard extends Component {
 
   handleShow = () => {
     this.setState({ show: true });
+  };
+
+  handleDelete = async itemId => {
+    // start the spinner animation
+    this.setState({
+        loading: true
+    });
+
+    try {
+      const url = `http://localhost:5000/comp30022app/us-central1/api/items/${itemId}`;
+      const res = await axios.delete(url).then(res => {
+        console.log(res);
+        return res.data;
+      });
+      this.handleDeleteSuccess();
+      return res;
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  cancelDelete = () => {
+    this.setState({ showWarning: false });
+  };
+
+  handleDeleteRequest = () => {
+    this.setState({ showWarning: true });
+  };
+
+  handleDeleteSuccess = () => {
+    this.setState({ showWarning: false });
+    this.setState({ showDeleteSuccess: true });
+  };
+
+  hideConrfimationAlert = () => {
+    this.handleClose();
+    window.location.reload();
   };
 
   // TO DO: remove mouse down animation when modal has been scrolled
@@ -46,6 +86,13 @@ class ItemCard extends Component {
   render() {
 
     const { item } = this.props;
+    
+    let btnContent;
+    if (this.state.loading){
+        btnContent = (<Spinner className="spinner" animation="border" size="md"/>);
+    } else {
+		btnContent = ("Yes");
+	}
 
     return (
 
@@ -96,12 +143,13 @@ class ItemCard extends Component {
           onHide={this.handleClose}
           centered
           ref={view_modal => (this.view_modal = view_modal)}>
+          
+          {/* item name */}
           <Modal.Header closeButton>
-			<Modal.Title>
-				{item.name}
-			</Modal.Title>
+            <Modal.Title>{item.name}</Modal.Title>
           </Modal.Header>
 
+          {/* item image carousel */}
           <Modal.Body className="info-modal-body px-5 pb-5 pt-0">
             <Carousel controls={false}>
               {item.photos.map((photo, index) => (
@@ -115,10 +163,12 @@ class ItemCard extends Component {
               ))}
             </Carousel>
 
+            {/* animation to let user know that modal is scrollable*/}
             <div
               id="scroll-anim"
               className="d-flex justify-content-center"
               display={this.state.scrolled_modal ? "none" : "block"}>
+                
 			  <div
 			  	className="mouse-container">
 				<div
@@ -131,6 +181,7 @@ class ItemCard extends Component {
             </div>
             <div>
                 <div className="item-row">
+                {/* item desciption */}
             		<p
             			className="my-5 text-justify">
             			{item.desc}
@@ -143,31 +194,57 @@ class ItemCard extends Component {
 						size="md"/>
                 </div>
 
-                <div className="item-row">
-                    <div>
-        				<Button
-        					className="btn"
-        					variant="light">
-                        	Edit
-                        </Button>
-                    </div>
-    			  {/*<Col
-    				xs="6"
-    				className="d-flex justify-content-end">*/}
-                    <div>
-    				<Button
-    					className="btn"
-    					variant="light">
-                    	View Interested
-                    </Button>
-    				<Button
-    					className="btn ml-2"
-    					variant="light">
-                    	Assign Item
-                    </Button>
-                    </div>
-                 {/* </Col>*/}
-                </div>
+            <Row>
+              <Col lg="2">
+
+                {/* edit button */}
+                <Button className="btn edit-btn " variant="light">
+                  Edit
+                </Button>
+
+                {/* delete button */}
+                <Button
+					variant="danger"
+					onClick={this.handleDeleteRequest}
+					className="btn"
+					itemId={item.id}
+					disabled={this.state.loading}>
+                  	Delete
+                </Button>
+              </Col>
+              <Col lg="10" className="d-flex justify-content-end">
+                <Button className="btn" variant="light">
+                	View Interested
+                </Button>
+                <Button className="btn ml-2" variant="light">
+                  Assign Item
+                </Button>
+              </Col>
+            </Row>
+
+            <div>
+              {/* ask user to confirm item deletion */}
+              <SweetAlert
+                warning
+                showCancel
+                show={this.state.showWarning}
+                confirmBtnText={btnContent}
+                confirmBtnBsStyle="danger"
+                cancelBtnBsStyle="default"
+                title="Are you sure?"
+                onConfirm={() => this.handleDelete(item.id)}
+                onCancel={this.cancelDelete}>
+                Are you sure you want to delete this item?
+              </SweetAlert>
+
+              {/* successful deletion notification */}
+              <SweetAlert
+                success
+                title="Done!"
+                show={this.state.showDeleteSuccess}
+                onConfirm={this.hideConrfimationAlert}>
+                The item was successfully deleted!
+              </SweetAlert>
             </div>
           </Modal.Body>
         </Modal>

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 // bootstrap imports
 import Navbar from 'react-bootstrap/Navbar'
-import Nav from 'react-bootstrap/Nav'
+import Nav    from 'react-bootstrap/Nav'
 
 // custom css
 import '../../stylesheets/navbar.css'
@@ -24,15 +24,13 @@ class NavbarComponent extends Component {
 
     render() {
 
-        let navbarClass;
-        let brandClass;
+        let navbarClass = "navbar";
+        let brandClass  = "navbar-brand";
 
+        // update CSS classes if scrolled
         if (this.state.scrolled){
             navbarClass = "navbar-scrolled";
-            brandClass = "navbar-brand navbar-brand-scrolled";
-        } else {
-            navbarClass = "navbar";
-            brandClass = "navbar-brand"
+            brandClass  = "navbar-brand navbar-brand-scrolled";
         }
 
         return (
@@ -44,7 +42,7 @@ class NavbarComponent extends Component {
                 <Navbar.Brand
                     href="/"
                     className={brandClass}>
-                    {'Wildcats'}
+                    Treasure
                 </Navbar.Brand>
 
                 <Navbar.Toggle
@@ -54,6 +52,10 @@ class NavbarComponent extends Component {
                     id="basic-navbar-nav">
                     <Nav
                         className="mr-auto">
+                        <Nav.Link
+                            href="/dashboard">
+                            Dashboard
+                        </Nav.Link>
                         <Nav.Link
                             href="/register">
                             Register

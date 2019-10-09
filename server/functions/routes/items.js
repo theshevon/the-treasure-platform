@@ -1,7 +1,8 @@
 const express        = require("express");
 const router         = express.Router();
 
-const itemController = require("../controllers/items");
+const itemController  = require("../controllers/items");
+const { isLoggedIn }  = require("../util/middleware");
 
 /*=================================GET ROUTES=================================*/
 

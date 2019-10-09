@@ -33,7 +33,7 @@ class ItemSkeleton extends Component {
 
                             <Card.Body
                                 className="item-card-body py-2">
-                                <Card.Text
+                                <div
                                     className="item-card-text">
                                     <div
                                         className="d-flex justify-content-end">

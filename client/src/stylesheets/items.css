@@ -1,27 +1,5 @@
 /* @import url('https://fonts.googleapis.com/css?family=Muli&display=swap'); */
 
-body{
-    background-image: linear-gradient(to top, #dad4ec 0%, #dad4ec 1%, #f3e7e9 100%) !important;
-    background-size: contain !important;
-    /* font-family: 'Muli', sans-serif; */
-    /* background: #f6f6f6 !important; */
-}
-
-#content{
-    margin-top: 10vh;
-    min-height: 90vh;
-}
-
-.page-title{
-    font-weight: 200;
-    text-align: center;
-}
-
-.add-btn{
-    margin-left: 50%;
-    transform: translateX(-50%);
-}
-
 .item-col{
     padding: 0px !important;
 }
