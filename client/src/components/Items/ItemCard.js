@@ -66,7 +66,8 @@ class ItemCard extends Component {
 		<Row
 			className="justify-content-end">
         	<LikeButton
-                itemID = { item.id }/>
+                itemID = { item.id }
+				size="sm"/>
         </Row>
 
 		<Card.Body
@@ -129,15 +130,17 @@ class ItemCard extends Component {
               </div>
             </div>
             <div>
-                <div className="item-row d-flex justify-content-end">
-                    <LikeButton
-                        itemID = { item.id }/>
-                </div>
                 <div className="item-row">
             		<p
             			className="my-5 text-justify">
             			{item.desc}
             		</p>
+                </div>
+
+				<div className="item-row d-flex justify-content-center">
+                    <LikeButton
+                        itemID={ item.id }
+						size="md"/>
                 </div>
 
                 <div className="item-row">

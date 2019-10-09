@@ -48,8 +48,8 @@ class LikeButton extends Component {
 					alt="item"
 					src= { label === "liked" ? likedBtn : unlikedBtn }
 					onClick={ this.handleClick }
-					width="25"
-					height="25"
+					width={this.props.size == "sm" ? "25" : "35"}
+					height={this.props.size == "sm" ? "25" : "35"}
 				/>
 				</button>
 			</div>
