@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 // custom components
-import InviteModal from "../components/InviteModal";
+import InviteModal from "../components/users/InviteModal";
 
 export class Dashboard extends Component {
     render() {

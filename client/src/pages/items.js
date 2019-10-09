@@ -9,7 +9,7 @@ import Modal  from 'react-bootstrap/Modal'
 // custom components
 import ItemSkeleton from '../components/items/ItemSkeleton'
 import AddItemForm  from '../components/items/AddItemForm'
-import Navbar       from '../components/Navbar'
+import Navbar       from '../components/util/Navbar'
 import ItemCard     from '../components/items/ItemCard'
 
 // custom css

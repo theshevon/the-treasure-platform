@@ -5,7 +5,7 @@ import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
 
 // custom css
-import '../stylesheets/navbar.css'
+import '../../stylesheets/navbar.css'
 
 class NavbarComponent extends Component {
 

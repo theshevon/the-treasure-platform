@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import InviteFrom from './InviteForm'
-import '../stylesheets/invite-modal.css'
+import '../../stylesheets/invite-modal.css'
 
 
 class InviteModal extends Component {
