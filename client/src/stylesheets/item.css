@@ -18,9 +18,11 @@
     border-width: 0.5px !important;
     background: white;
     border: none !important;
-    margin: 10px;
+    margin: 0.8em;
+    width: 18.2rem;
     border-radius: 0px !important;
     box-shadow: 0 6px 15px rgba(36,37,38,0.08);
+
 }
 
 .item-card:hover{
@@ -91,5 +93,14 @@
     background-color: none !important;
     border: none !important;
     outline: none !important;
-    padding-right: 15px
+    padding: 1em;
+}
+.item-row {
+    margin-right: none !important;
+    margin-left: none !important;
+}
+
+.item-row{
+    display: flex;
+    justify-content: space-between;
 }

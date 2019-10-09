@@ -23,7 +23,7 @@ body{
 }
 
 .item-col{
-    padding-right: 0px;
+    padding: 0px !important;
 }
 
 .modal-content{
