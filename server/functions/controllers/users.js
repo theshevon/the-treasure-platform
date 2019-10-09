@@ -10,8 +10,8 @@ const { validateRegistrationData,
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: '',
-        pass: ''
+        user: 'treasureapp.au@gmail.com',
+        pass: 'zexePnb9F0lHhk4C1777Tb2YVm'
     }
 });
 
@@ -207,6 +207,7 @@ exports.inviteNewUsers =
             var invitee = req.body[i];
 
             // loop over all users to check for duplicate email
+            var i = 0;
             db.collection('users')
                 .get()
                 .then((data) => {
@@ -214,7 +215,7 @@ exports.inviteNewUsers =
                         if (doc.data().email === invitee.email) {
 
                             // Duplicate email; abort and return error
-                            errors.email = "This email is already registered.";
+                            errors.email = `Email ${invitee.email} is already registered.`;
 
                             return {
                                 errors,
