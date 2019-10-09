@@ -21,7 +21,6 @@ class App extends Component {
 		return (
 			<Router>
 				<Switch>
-
 					{/* landing page */}
 					<Route
 						exact
@@ -41,6 +40,7 @@ class App extends Component {
 						component={ register }/>
 
 					{/* dashboard */}
+
 					<Route
 						exact
 						path="/dashboard"
