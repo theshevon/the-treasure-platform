@@ -66,7 +66,7 @@ class ItemCard extends Component {
 		<Row
 			className="justify-content-end">
         	<LikeButton
-            itemID = { item.id }/>
+                itemID = { item.id }/>
         </Row>
 
 		<Card.Body
@@ -128,36 +128,44 @@ class ItemCard extends Component {
                 </div>
               </div>
             </div>
+            <div>
+                <div className="item-row d-flex justify-content-end">
+                    <LikeButton
+                        itemID = { item.id }/>
+                </div>
+                <div className="item-row">
+            		<p
+            			className="my-5 text-justify">
+            			{item.desc}
+            		</p>
+                </div>
 
-			<p
-				className="my-5 text-justify">
-				{item.desc}
-			</p>
-
-            <Row>
-              <Col xs="6">
-				<Button
-					className="btn"
-					variant="light">
-                	Edit
-                </Button>
-              </Col>
-			  <Col
-				xs="6"
-				className="d-flex justify-content-end">
-				<Button
-					className="btn"
-					variant="light">
-                	View Interested
-                </Button>
-				<Button
-					className="btn ml-2"
-					variant="light">
-                	Assign Item
-                </Button>
-              </Col>
-            </Row>
-
+                <div className="item-row">
+                    <div>
+        				<Button
+        					className="btn"
+        					variant="light">
+                        	Edit
+                        </Button>
+                    </div>
+    			  {/*<Col
+    				xs="6"
+    				className="d-flex justify-content-end">*/}
+                    <div>
+    				<Button
+    					className="btn"
+    					variant="light">
+                    	View Interested
+                    </Button>
+    				<Button
+    					className="btn ml-2"
+    					variant="light">
+                    	Assign Item
+                    </Button>
+                    </div>
+                 {/* </Col>*/}
+                </div>
+            </div>
           </Modal.Body>
         </Modal>
       </Card>
