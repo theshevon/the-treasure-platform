@@ -21,7 +21,15 @@
 
 .empty-btn{
     height: 1.25rem;
+}
+
+.empty-btn-1{
     width: 25%;
+}
+
+.empty-btn-2{
+    width: 12.5%;
+    right: 0%;
 }
 
 .empty-line{

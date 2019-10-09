@@ -1,20 +1,20 @@
-import React, { Component } from "react";
-// import ReactDOM from 'react-dom'
+import React, { Component } from "react"
 
 // bootstrap imports
-import Carousel from "react-bootstrap/Carousel";
-import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";
-import Card from "react-bootstrap/Card";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
+import Carousel from "react-bootstrap/Carousel"
+import Button   from "react-bootstrap/Button"
+import Modal    from "react-bootstrap/Modal"
+import Card     from "react-bootstrap/Card"
+import Row      from "react-bootstrap/Row"
+import Col      from "react-bootstrap/Col"
 
-import LikeButton from "./LikeButton";
+// custom components
+import LikeButton from "./LikeButton"
 
 // custom css
 import "../../stylesheets/item.css";
 
-export class ItemCard extends Component {
+class ItemCard extends Component {
   state = {
     show: false,
     scrolled_modal: false
@@ -44,23 +44,37 @@ export class ItemCard extends Component {
   // }
 
   render() {
+
     const { item } = this.props;
 
     return (
-      <Card className="item-card" style={{ width: "18.2rem" }}>
-        <Card.Title className="item-card-title">{item.name}</Card.Title>
+
+      <Card
+        className="item-card"
+        style={{ width: "18.2rem" }}>
+
+		<Card.Title
+		  className="item-card-title">
+		  {item.name}
+		</Card.Title>
+
         <Card.Img
           className="item-card-img-top"
           variant="top"
-          src={item.photos[item.cover]}
-        />
-        <Row className="justify-content-end ">
-          <LikeButton />
+          src={item.photos[item.cover]}/>
+
+		<Row
+			className="justify-content-end">
+        	<LikeButton
+            itemID = { item.id }/>
         </Row>
 
-        <Card.Body className="item-card-body pb-0">
-          <Card.Text className="item-card-text">
-            {item.desc.length > 100
+		<Card.Body
+			className="item-card-body pb-0">
+
+		  <Card.Text
+		  	className="item-card-text">
+            { item.desc.length > 100
               ? item.desc.substring(0, 100).trim() + "..."
               : item.desc}
           </Card.Text>
@@ -69,9 +83,8 @@ export class ItemCard extends Component {
             className="item-view-btn btn"
             variant="light"
             size="sm"
-            onClick={this.handleShow}
-          >
-            more info
+            onClick={this.handleShow}>
+            	more info
           </Button>
         </Card.Body>
 
@@ -81,10 +94,11 @@ export class ItemCard extends Component {
           show={this.state.show}
           onHide={this.handleClose}
           centered
-          ref={view_modal => (this.view_modal = view_modal)}
-        >
+          ref={view_modal => (this.view_modal = view_modal)}>
           <Modal.Header closeButton>
-            <Modal.Title>{item.name}</Modal.Title>
+			<Modal.Title>
+				{item.name}
+			</Modal.Title>
           </Modal.Header>
 
           <Modal.Body className="info-modal-body px-5 pb-5 pt-0">
@@ -104,30 +118,46 @@ export class ItemCard extends Component {
               id="scroll-anim"
               className="d-flex justify-content-center"
               display={this.state.scrolled_modal ? "none" : "block"}>
-              <div className="mouse-container">
-                <div className="mouse">
-                  <span className="scroll-down"></span>
+			  <div
+			  	className="mouse-container">
+				<div
+					className="mouse">
+				  	<span
+				  	className="scroll-down">
+					</span>
                 </div>
               </div>
             </div>
 
-            <p className="my-5 text-justify">{item.desc}</p>
+			<p
+				className="my-5 text-justify">
+				{item.desc}
+			</p>
 
             <Row>
               <Col xs="6">
-                <Button className="btn" variant="light">
-                  Edit
+				<Button
+					className="btn"
+					variant="light">
+                	Edit
                 </Button>
               </Col>
-              <Col xs="6" className="d-flex justify-content-end">
-                <Button className="btn" variant="light">
-                  View Interested
+			  <Col
+				xs="6"
+				className="d-flex justify-content-end">
+				<Button
+					className="btn"
+					variant="light">
+                	View Interested
                 </Button>
-                <Button className="btn ml-2" variant="light">
-                  Assign Item
+				<Button
+					className="btn ml-2"
+					variant="light">
+                	Assign Item
                 </Button>
               </Col>
             </Row>
+
           </Modal.Body>
         </Modal>
       </Card>
