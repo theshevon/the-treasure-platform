@@ -4,17 +4,6 @@
     padding: 0px !important;
 }
 
-.modal-content{
-    border-radius: 0px !important;
-    border: none !important;
-    padding: 2%;
-}
-
-.modal-title.h4{
-    margin-left: 50% !important;
-    transform: translateX(-50%) !important;
-}
-
 .info-modal-body::-webkit-scrollbar {
     width: 0 !important;
     background: red !important;
