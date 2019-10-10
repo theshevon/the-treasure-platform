@@ -45,3 +45,35 @@ exports.isLoggedIn =
                 return res.status(403).json(err);
             })
     }
+
+// check if user is authorised (primary user) and can view page
+exports.isAuthorised =
+
+    (req, res, next) => {
+        let idToken;
+        if (req.headers.authorization && req.headers.authorization.startsWith('Bearer ')){
+            // extract the token
+            idToken = req.headers.authorization.split('Bearer ')[1];
+        }
+
+        // decode token
+        admin
+            .auth()
+            .verifyIdToken(idToken)
+            .then(decodedToken => {
+                req.user = decodedToken;
+                // get user info with token
+                return db
+                    .collection('users')
+                    .doc(req.user.uid)
+                    .get()
+                    .then(doc => {
+                        // check if user is primary or secondary
+                        if (doc.data().utype == 0) return next();
+                        else return res.status(403).json(err);
+                    })
+                    .catch(err => {
+                        return res.status(403).json(err);
+                    })
+            })
+    }

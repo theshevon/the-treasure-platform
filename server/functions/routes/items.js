@@ -2,11 +2,11 @@ const express        = require("express");
 const router         = express.Router();
 
 const itemController  = require("../controllers/items");
-const { isLoggedIn }  = require("../util/middleware");
+const { isLoggedIn, isAuthorised }  = require("../util/middleware");
 
 /*=================================GET ROUTES=================================*/
 
-router.get("/items", itemController.getItems);
+router.get("/chest", itemController.getItems);
 
 /*================================POST ROUTES=================================*/
 
