@@ -12,9 +12,19 @@
 .navbar-brand{
     font-weight: bold;
     transition: 500ms !important;
+    color: white !important;
+}
+
+.brand-text {
+    font-family: 'Playfair Display', serif !important;
+}
+
+.navbar-brand:hover, .navbar-brand-scrolled:hover {
+    color: #fed766 !important;
 }
 
 .navbar-brand-scrolled{
-    color: #b17797 !important;
+    color: black !important;
     transition: 500ms !important;
 }
+
