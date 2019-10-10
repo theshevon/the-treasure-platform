@@ -39,12 +39,7 @@ getSecondaryUsers = async () => {
                             let users = [];
                             data.forEach((doc) => {
                                 if (doc.data().utype === 1){
-                                    let user = {
-                                                uid : doc.id,
-                                                name : doc.data().fname + " " + doc.data().lname,
-                                                };
-                                    users.push(user);
-                                    console.log(doc.id);
+                                    users.push(doc.id);
                                 }
                             });
                             return users;
@@ -98,7 +93,7 @@ exports.createItem =
     }
 
 // modifies the database entry for an item on firestore
-exports.modifyItem = 
+exports.modifyItem =
 
     (req, res) => {
         // extract the updated item data from form
@@ -182,7 +177,7 @@ exports.uploadImg =
                     .storage()
                     .bucket(config.storageBucket)
                     .upload(imageToBeUploaded.filepath, {
-                        destination: `images/items/${imageFileName}`,
+                        resumable: false,
                         metadata: {
                             metadata: {
                                 contentType: imageToBeUploaded.mimetype
@@ -206,7 +201,7 @@ exports.uploadImg =
                                 })
                                 // eslint-disable-next-line handle-callback-err
                                 .catch(err => {
-                                    return res.status(400).json({ code : 400 });
+                                    return res.status(400).json({ code : 103 });
                                 })
 
                     })
@@ -216,12 +211,9 @@ exports.uploadImg =
                     });
                 });
 
-                busboy.on('error',function(err){
-                    console.log(err);
-                });
-
                 busboy.end(req.rawBody);
             })
+
             // eslint-disable-next-line handle-callback-err
             .catch(err => {
                 return res.status(400).json({ code : 105 });

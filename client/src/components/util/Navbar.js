@@ -79,8 +79,8 @@ class NavbarComponent extends Component {
                             Login
                         </Nav.Link>
                         <Nav.Link
-                            href="/items">
-                            Items
+                            href="/chest">
+                            Chest
                         </Nav.Link>
                     </Nav>
                 </Navbar.Collapse>

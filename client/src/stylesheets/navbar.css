@@ -1,6 +1,6 @@
 .navbar{
     background-color: rgba(0,0,0,0); /* unneeded but helps with transitions */
-    transition: 500ms !important;
+    transition: 300ms !important;
 }
 
 .navbar-scrolled{
@@ -11,7 +11,7 @@
 
 .navbar-brand{
     font-weight: bold;
-    transition: 500ms !important;
+    transition: 300ms !important;
     color: white !important;
 }
 
@@ -25,6 +25,6 @@
 
 .navbar-brand-scrolled{
     color: black !important;
-    transition: 500ms !important;
+    transition: 300ms !important;
 }
 
