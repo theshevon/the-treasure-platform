@@ -42,7 +42,7 @@ class Login extends Component {
 
 		axios({
 				method: 'post',
-				url: 'http://localhost:5000/comp30022app/us-central1/api/login',
+				url: '/login',
 				data: userData
 			})
 			.then(res => {

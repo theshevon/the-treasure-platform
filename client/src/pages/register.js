@@ -45,7 +45,7 @@ class Register extends Component {
 
         axios({
                 method: 'post',
-                url: 'http://localhost:5000/comp30022app/us-central1/api/check_invitee',
+                url: '/check_invitee',
                 data: inviteeData
             })
             .then(res => {
@@ -84,7 +84,7 @@ class Register extends Component {
 
         axios({
                 method: 'post',
-                url: 'http://localhost:5000/comp30022app/us-central1/api/register',
+                url: '/register',
                 data: registrationData
             })
             .then(res => {
