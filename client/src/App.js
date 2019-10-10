@@ -9,7 +9,7 @@ import jwtDecode from 'jwt-decode';
 // pages
 import dashboard from './pages/dashboard'
 import login     from './pages/login'
-import items     from './pages/items'
+import chest     from './pages/chest'
 import register  from './pages/register'
 
 // custom components
@@ -25,7 +25,7 @@ class App extends Component {
 					<Route
 						exact
 						path="/"
-						component={ items }/>
+						component={ chest }/>
 
 					{/* login page */}
 					<Route
@@ -49,8 +49,8 @@ class App extends Component {
 					{/* item catalogue */}
 					<Route
 						exact
-						path="/items"
-						component={ items }/>
+						path="/chest"
+						component={ chest }/>
 				</Switch>
 			</Router>
 		);
