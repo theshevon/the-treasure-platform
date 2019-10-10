@@ -64,7 +64,7 @@ class InviteForm extends Component {
         // send the data to the server
         axios({
             method: 'post',
-            url: 'http://localhost:5000/comp30022app/us-central1/api/invite',
+            url: '/invite',
             data: { invitees : this.state.invitees }
         })
         .then(res => {
@@ -128,7 +128,7 @@ class InviteForm extends Component {
         } else {
             btnContent = ("Send Invitations");
         }
-      
+
         return (
                 <Form
                     onSubmit={this.handleSubmit}>

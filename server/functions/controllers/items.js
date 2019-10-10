@@ -88,7 +88,7 @@ exports.createItem =
                 return res.status(200).json(doc.id);
             })
             .catch((err) => {
-                res.status(400).json({ Error : err });
+                return res.status(400).json({ Error : err });
             });
     }
 
@@ -248,12 +248,13 @@ function deleteItemDatabase (itemId, res) {
         setTimeout(function(){
             res.sendStatus(200);
         }, 1000);
-
+        return;
     })
     .catch(err => {
         setTimeout(function(){
             res.sendStatus(401);
         }, 1000);
+        console.log(err);
     });
 }
 
@@ -278,6 +279,7 @@ exports.deleteItem =
                     deleteItemDatabase(req.params.id, res);
                 }
             });
+            return;
         }).catch(err => {
             console.log(err);
         });

@@ -41,7 +41,7 @@ class AddItemForm extends Component {
         // fetch user IDs and names of all the secondary users on the platform
         axios({
                     method: 'get',
-                    url: 'http://localhost:5000/comp30022app/us-central1/api/users'
+                    url: '/users'
                 })
                 .then(res => {
                     let users = res.data;
@@ -119,7 +119,7 @@ class AddItemForm extends Component {
         try {
             const res = await axios({
                 method: "post",
-                url: 'http://localhost:5000/comp30022app/us-central1/api/items/new',
+                url: '/items/new',
                 data: data
             }).then((res)=> {
                 return res.data;
@@ -135,7 +135,7 @@ class AddItemForm extends Component {
         try {
             await axios({
                             method: "post",
-                            url: `http://localhost:5000/comp30022app/us-central1/api/items/${itemId}/img_upload`,
+                            url: `/items/${itemId}/img_upload`,
                             headers: {
                                 "content-type": "multipart/form-data"
                             },
