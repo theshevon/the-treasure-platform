@@ -8,7 +8,8 @@ import Nav    from 'react-bootstrap/Nav'
 import '../../stylesheets/navbar.css'
 
 // logos
-import logo from '../../logo.svg'
+import logo     from '../../icons/logo.svg'
+import logo_alt from '../../icons/logo-alt.svg'
 
 class NavbarComponent extends Component {
 
@@ -46,10 +47,11 @@ class NavbarComponent extends Component {
                     href="/"
                     className={ brandClass + " d-flex align-items-center"}>
                     <img
-                        src={ logo }
+                        src={ this.state.scrolled ? logo_alt : logo }
                         height="30"
                         width="30"
-                        className="mr-2"/>
+                        className="mr-2"
+                        alt="logo"/>
                     <h2
                         className="brand-text">
                         Treasure
@@ -60,7 +62,8 @@ class NavbarComponent extends Component {
                     aria-controls="basic-navbar-nav" />
 
                 <Navbar.Collapse
-                    id="basic-navbar-nav">
+                    id="basic-navbar-nav"
+                    className="mt-2">
                     <Nav
                         className="mr-auto">
                         <Nav.Link

@@ -84,7 +84,7 @@ class Items extends Component {
                     className="container">
                     <h1
                         className="page-title mb-5">
-                        ITEMS
+                        TREASURE CHEST
                     </h1>
 
                     { itemListContent }

@@ -20,6 +20,18 @@ body{
     font-weight: 100;
     text-align: center;
     letter-spacing: 3px;
+    position: relative;
+}
+
+.page-title::after{
+    content: '';
+    width: 60px;
+    height: 2px;
+    background: #fed766;
+    position: absolute;
+    left: 50%;
+    margin-left: -30px;
+    bottom: -12.5px;
 }
 
 .modal-title, .page-title, .item-card-title {
