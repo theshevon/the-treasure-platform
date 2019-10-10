@@ -31,7 +31,7 @@ class Items extends Component {
     fetchItemsData = () => {
         axios({
             method: 'get',
-            url: 'http://localhost:5000/comp30022app/us-central1/api/chest'
+            url: 'http://localhost:5000/comp30022app/us-central1/api/items'
         })
         .then(res => {
             this.setState({

@@ -6,7 +6,7 @@ const { isLoggedIn, isAuthorised }  = require("../util/middleware");
 
 /*=================================GET ROUTES=================================*/
 
-router.get("/chest", itemController.getItems);
+router.get("/items", itemController.getItems);
 
 /*================================POST ROUTES=================================*/
 
