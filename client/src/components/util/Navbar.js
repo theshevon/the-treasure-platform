@@ -7,6 +7,9 @@ import Nav    from 'react-bootstrap/Nav'
 // custom css
 import '../../stylesheets/navbar.css'
 
+// logos
+import logo from '../../logo.svg'
+
 class NavbarComponent extends Component {
 
     state = {
@@ -41,8 +44,16 @@ class NavbarComponent extends Component {
 
                 <Navbar.Brand
                     href="/"
-                    className={brandClass}>
-                    Treasure
+                    className={ brandClass + " d-flex align-items-center"}>
+                    <img
+                        src={ logo }
+                        height="30"
+                        width="30"
+                        className="mr-2"/>
+                    <h2
+                        className="brand-text">
+                        Treasure
+                    </h2>
                 </Navbar.Brand>
 
                 <Navbar.Toggle

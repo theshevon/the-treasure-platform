@@ -107,14 +107,14 @@ export class ItemCard extends Component {
 				style={{ width: "18.2rem" }}>
 
 				<Card.Title
-				className="item-card-title">
-				{item.name}
+					className="item-card-title">
+					{item.name}
 				</Card.Title>
 
 				<Card.Img
-				className="item-card-img-top"
-				variant="top"
-				src={item.photos[item.cover]}/>
+					className="item-card-img-top"
+					variant="top"
+					src={item.photos[item.cover]}/>
 
 				<Row
 					className="justify-content-end">

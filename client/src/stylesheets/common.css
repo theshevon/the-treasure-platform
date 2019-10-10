@@ -22,7 +22,7 @@ body{
     letter-spacing: 3px;
 }
 
-.modal-title, .page-title {
+.modal-title, .page-title, .item-card-title {
     font-family: 'Playfair Display', serif;
 }
 
