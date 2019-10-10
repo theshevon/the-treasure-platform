@@ -191,9 +191,8 @@ class AddItemForm extends Component {
             cover      : this.state.coverImgIndex,
             visibleTo  : visibleTo,
             assignedTo : assignedTo,
-            photos     : []
         }
-
+        console.log(itemData);
         this.submitData(itemData);
 	}
 
