@@ -18,6 +18,10 @@ router.post("/items/:id/img_upload", itemController.uploadImg);
 
 router.delete("/items/:id", itemController.deleteItem);
 
+/*================================PUT ROUTES==================================*/
+
+router.put("/items/:id/edit", itemController.modifyItem);
+
 /*===========================================================================*/
 
 module.exports = router;

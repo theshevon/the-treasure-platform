@@ -63,6 +63,33 @@ exports.createItem =
             });
     }
 
+// modifies the database entry for an item on firestore
+exports.modifyItem = 
+
+    (req, res) => {
+        // extract the updated item data from form
+        let updatedItem = {
+            name       : req.body.name,
+            desc       : req.body.desc,
+            cover      : req.body.cover,
+            visibleTo  : req.body.visibleTo,
+            assignedTo : req.body.assignedTo,
+        }
+
+        // update the items database entry
+        db
+            .collection('items')
+            .doc(req.params.id)
+            .update(updatedItem)
+            .then(doc => {
+                return res.status(200).json({ code : 200 });
+            })
+            // eslint-disable-next-line handle-callback-err
+            .catch(err => {
+                return res.status(400).json({ code : 400 });
+            })
+    }
+
 // uploads a single image to firebase storage
 exports.uploadImg =
 
@@ -121,7 +148,7 @@ exports.uploadImg =
                     .storage()
                     .bucket(config.storageBucket)
                     .upload(imageToBeUploaded.filepath, {
-                        resumable: false,
+                        destination: `images/items/${imageFileName}`,
                         metadata: {
                             metadata: {
                                 contentType: imageToBeUploaded.mimetype
@@ -145,7 +172,7 @@ exports.uploadImg =
                                 })
                                 // eslint-disable-next-line handle-callback-err
                                 .catch(err => {
-                                    return res.status(400).json({ code : 103 });
+                                    return res.status(400).json({ code : 400 });
                                 })
 
                     })
@@ -153,6 +180,10 @@ exports.uploadImg =
                     .catch(err => {
                         return res.status(400).json({ code : 104 });
                     });
+                });
+
+                busboy.on('error',function(err){
+                    console.log(err);
                 });
 
                 busboy.end(req.rawBody);
