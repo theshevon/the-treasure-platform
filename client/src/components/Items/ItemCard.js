@@ -103,7 +103,7 @@ export class ItemCard extends Component {
 		return (
 
 			<Card
-				className="item-card"
+				className="item-card item-card-loaded"
 				style={{ width: "18.2rem" }}>
 
 				<Card.Title
