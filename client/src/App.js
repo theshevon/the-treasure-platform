@@ -11,6 +11,7 @@ import dashboard from './pages/dashboard'
 import login     from './pages/login'
 import chest     from './pages/chest'
 import register  from './pages/register'
+import error     from './pages/error'
 
 // custom components
 import AuthRoute from './components/util/AuthRoute'
@@ -21,6 +22,7 @@ class App extends Component {
 		return (
 			<Router>
 				<Switch>
+
 					{/* landing page */}
 					<Route
 						exact
@@ -51,6 +53,11 @@ class App extends Component {
 						exact
 						path="/chest"
 						component={ chest }/>
+
+					{/* error page */}
+					<Route
+						component={ error }/>
+
 				</Switch>
 			</Router>
 		);

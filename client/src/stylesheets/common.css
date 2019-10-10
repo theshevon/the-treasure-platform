@@ -67,7 +67,11 @@ body{
     transform: translateX(-50%);
 }
 
-.btn:hover{
+.btn{
+    transition: 250ms !important;
+}
+
+.btn:not(.del-btn):hover{
     color: white !important;
     border-color:  #fed766 !important;
     background:  #fed766 !important;

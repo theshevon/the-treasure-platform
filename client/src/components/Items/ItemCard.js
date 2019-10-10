@@ -219,7 +219,7 @@ export class ItemCard extends Component {
 								<Button
 									variant="danger"
 									onClick={this.handleDeleteRequest}
-									className="btn"
+									className="del-btn btn"
 									itemId={item.id}
 									disabled={this.state.loading}>
 									Delete
