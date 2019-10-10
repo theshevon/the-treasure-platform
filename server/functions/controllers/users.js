@@ -190,7 +190,7 @@ exports.getUsers =
                     if (doc.data().utype === 1){
                         let user = {
                                     uid : doc.id,
-                                    name : doc.data().fname + doc.data().lname,
+                                    name : doc.data().fname + " " + doc.data().lname,
                                     };
                         users.push(user);
                     }
