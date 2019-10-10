@@ -30,10 +30,38 @@ exports.getItems =
             });
     }
 
+getSecondaryUsers = async () => {
+    try {
+        const users = db.collection('users')
+                        .get()
+                        .then((data) => {
+                            // extract all userIDs
+                            let users = [];
+                            data.forEach((doc) => {
+                                if (doc.data().utype === 1){
+                                    let user = {
+                                                uid : doc.id,
+                                                name : doc.data().fname + " " + doc.data().lname,
+                                                };
+                                    users.push(user);
+                                    console.log(doc.id);
+                                }
+                            });
+                            return users;
+                        })
+                        .catch((err) => {
+                            res.status(500).json({ error: err.code });
+                        });
+        return users;
+    } catch (err) {
+        return -1;
+    }
+}
+
 // creates a new database entry for a item on firestore
 exports.createItem =
 
-    (req, res) => {
+    async (req, res) => {
 
         // extract the form data
         let item = {
@@ -47,8 +75,14 @@ exports.createItem =
             createdOn  : admin.firestore.FieldValue.serverTimestamp()
         }
 
+        const users = await getSecondaryUsers();
+
+        if (users === -1){
+            return res.status(500).json({"general" : "Sorry, something went wrong."});
+        }
+
         // carry out validation
-        const { valid, errors } = validateItemData(item);
+        const { valid, errors } = validateItemData(item, users);
         if (!valid) return res.status(400).json(errors);
 
         // add item to collection
@@ -222,7 +256,7 @@ function deleteItemDatabase (itemId, res) {
         setTimeout(function(){
             res.sendStatus(200);
         }, 1000);
-        
+
     })
     .catch(err => {
         setTimeout(function(){
@@ -256,7 +290,6 @@ exports.deleteItem =
             console.log(err);
         });
 
-        
+
   }
 
-  

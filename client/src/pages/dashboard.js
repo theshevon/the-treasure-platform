@@ -80,7 +80,7 @@ export class Dashboard extends Component {
                         <Col
                             xs="12"
                             md="4"
-                            className="dashboard-option-container">
+                            className="dashboard-option-container mb-4">
                             <Col
                                 className="dashboard-option">
                                 <img

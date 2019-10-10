@@ -42,6 +42,26 @@ body{
     overflow-x: hidden !important;
 }
 
+.modal-content{
+    border-radius: 5px !important;
+    border: none !important;
+    padding: 2%;
+}
+
+.modal-title.h4{
+    margin-left: 50% !important;
+    transform: translateX(-50%) !important;
+}
+
+.modal-title.h4{
+    margin-left: 50% !important;
+    transform: translateX(-50%) !important;
+}
+
+.modal-header{
+    border-bottom: none !important;
+}
+
 .centered-btn{
     margin-left: 50%;
     transform: translateX(-50%);

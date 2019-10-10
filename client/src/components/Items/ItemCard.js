@@ -124,7 +124,7 @@ export class ItemCard extends Component {
 				</Row>
 
 				<Card.Body
-					className="item-card-body pb-0">
+					className="item-card-body">
 
 				<Card.Text
 					className="item-card-text">
@@ -134,7 +134,7 @@ export class ItemCard extends Component {
 				</Card.Text>
 
 				<Button
-					className="item-view-btn btn"
+					className="centered-btn btn"
 					variant="light"
 					size="sm"
 					onClick={this.handleShow}>
