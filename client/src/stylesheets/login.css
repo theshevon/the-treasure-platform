@@ -1,10 +1,9 @@
-body{
-    overflow-x: hidden;
+.main-container{
+    width: "100vw";
+    height: "100vh";
 }
 
-/* .main-container{
-    background: #87e3e5;
-} */
+
 
 .login-form-container{
     padding-top: 50vh !important;
@@ -27,7 +26,6 @@ body{
     transition: 250ms !important;
 }
 
-
 .login-form-body{
     background: white;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.2);
@@ -35,4 +33,11 @@ body{
 
 .was-validated .form-control:valid {
     background-image: none !important;
+}
+
+.alert-window{
+    padding-top: 50vh !important;
+}
+.login-alert{
+    z-index: 100;
 }

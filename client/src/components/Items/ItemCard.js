@@ -45,10 +45,12 @@ export class ItemCard extends Component {
 
 		try {
 			const url = `/items/${itemId}`;
-			const res = await axios.delete(url).then(res => {
-				console.log(res);
-				return res.data;
-		});
+			const res = await axios
+									.delete(url)
+									.then(res => {
+												console.log(res);
+												return res.data;
+										});
 			this.handleDeleteSuccess();
 			return res;
 		} catch (err) {

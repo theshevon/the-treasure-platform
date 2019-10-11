@@ -15,13 +15,13 @@ import register  from './pages/register'
 import error     from './pages/error'
 
 // custom components
-import AuthRoute from './components/util/AuthRoute'
+import AuthenticatedRoute from './components/util/AuthenticatedRoute'
 
 // local server URL (for dev)
-// axios.defaults.baseURL = 'http://localhost:5000/comp30022app/us-central1/api'
+axios.defaults.baseURL = 'http://localhost:5000/comp30022app/us-central1/api'
 
 // global server URL
-axios.defaults.baseURL = 'https://us-central1-comp30022app.cloudfunctions.net/api';
+// axios.defaults.baseURL = 'https://us-central1-comp30022app.cloudfunctions.net/api';
 
 class App extends Component {
 
@@ -49,14 +49,13 @@ class App extends Component {
 						component={ register }/>
 
 					{/* dashboard */}
-
 					<Route
 						exact
 						path="/dashboard"
 						component={ dashboard }/>
 
 					{/* item catalogue */}
-					<Route
+					<AuthenticatedRoute
 						exact
 						path="/chest"
 						component={ chest }/>
