@@ -89,7 +89,7 @@ class Register extends Component {
             })
             .then(res => {
                 this.setState({ loading : false });
-                this.props.history.push('/chest');
+                this.props.history.push('/login');
             })
             .catch(err => {
                 this.setState({

@@ -1,21 +1,26 @@
-import React from 'react'
-import { Route, Redirect } from 'react-router-dom'
+import React               from 'react';
+import { Route, Redirect } from 'react-router-dom';
+import { useAuth }         from "../../context/auth";
 
+function AuthenticatedRoute({ component: Component, ...rest }) {
 
-const AuthenticatedRoute = ({ component: Component, authenticated, ...rest }) => (
-	<Route
-		{...rest}
-		render={ props => {
-			console.log(authenticated);
-			return  authenticated === true
-					? <Component {...props} {...rest} />
-					: <Redirect
-						to={{ pathname:'/login',
-							  state: {
-								  		showAlert : true,
-								  		alertMsg  : 'Please log in first!' }}}/>
-		}}
-	/>
-);
+	const authToken = useAuth();
+
+	return (
+		<Route
+			{...rest}
+			render={props =>
+					authToken ? (
+						<Component {...props}/>
+					)	:	(
+						<Redirect
+							to={{ pathname:'/login',
+								state: {
+											showAlert : true,
+											alertMsg  : 'Please log in first!'
+										}}}/>
+					)}/>
+	);
+}
+
 export default AuthenticatedRoute;
-

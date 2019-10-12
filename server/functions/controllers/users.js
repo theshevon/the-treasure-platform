@@ -156,7 +156,7 @@ exports.logInUser =
             })
             .catch(err => {
                 console.log("Error: " + err);
-                return res.status(403).json({ general: "Sorry, the email address or password you entered is incorrect." });
+                return res.status(400).json({ general: "Sorry, the email address or password you entered is incorrect." });
             });
     }
 

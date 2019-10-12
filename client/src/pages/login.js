@@ -12,6 +12,10 @@ import Col     from 'react-bootstrap/Col'
 // custom css
 import '../stylesheets/login.css'
 
+// auth stuff
+import { useAuth } from "../context/auth";
+
+// TODO: find out how to use the hook here
 class Login extends Component {
 
 	state = {
@@ -51,37 +55,14 @@ class Login extends Component {
 
 		event.preventDefault();
 
-		this.setState({
-			loading: true
-		});
+		// this.setState({
+		// 	loading: true
+		// });
 
 		const userData = {
 			email: this.state.email,
 			password: this.state.password
 		}
-
-		axios({
-				method: 'post',
-				url: '/login',
-				data: userData
-			})
-			.then(token => {
-
-				// set token as in all request headers
-				axios.defaults.headers.common['Authorization'] = token;
-
-				this.setState({ loading : false });
-				this.props.history.push('/login');
-			})
-			.catch(err => {
-				this.setState({
-					email: "",
-					password: "",
-					errors: err.response.data,
-					loading: false,
-					validated: true
-				})
-			})
 	}
 
 	render() {
@@ -130,10 +111,10 @@ class Login extends Component {
 								className="mt-1 login-alert"
 								variant="danger"
 								style={{textAlign : "center"}}
-								onClose={ this.clearAlert }
+								onClose={this.clearAlert}
 								dismissible>
 								<p>
-									{ this.state.alertMsg }
+									{this.state.alertMsg}
 								</p>
 							</Alert>
 						</Col>
@@ -149,7 +130,7 @@ class Login extends Component {
 				<div
 					className = "login-form-container">
 
-					{ alert }
+					{alert}
 
 					<Row
 						className="d-flex justify-content-center">
