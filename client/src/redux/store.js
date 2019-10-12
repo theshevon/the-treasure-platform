@@ -4,9 +4,9 @@ import {
     applyMiddleware,
     compose
 } from 'redux';
-import thunk       from 'thunk';
+import thunk       from 'redux-thunk';
 
-import userReducer from './userReducer';
+import userReducer from './reducers/userReducer';
 
 const initialState = {};
 const middleware = [thunk];

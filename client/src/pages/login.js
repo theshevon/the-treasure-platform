@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import axios from 'axios'
 
 // bootstrap imports
@@ -12,10 +13,10 @@ import Col     from 'react-bootstrap/Col'
 // custom css
 import '../stylesheets/login.css'
 
-// auth stuff
-import { useAuth } from "../context/auth";
+// redux stuff
+import { connect }   from 'react-redux'
+import { loginUser } from '../redux/actions/userActions'
 
-// TODO: find out how to use the hook here
 class Login extends Component {
 
 	state = {
@@ -40,6 +41,12 @@ class Login extends Component {
 		}
 	}
 
+	componentWillReceiveProps(nextProps){
+		if (nextProps.UI.errors){
+			this.setState({ errors : nextProps.UI.errors });
+		}
+	}
+
 	clearAlert = () => {
         this.setState({
                         showAlert : false,
@@ -55,24 +62,25 @@ class Login extends Component {
 
 		event.preventDefault();
 
-		// this.setState({
-		// 	loading: true
-		// });
-
 		const userData = {
 			email: this.state.email,
 			password: this.state.password
 		}
+
+		this.props.loginUser(userData, this.props.history);
 	}
 
 	render() {
 
+		const { UI: { loading }} = this.props;
+		const errors = this.state.errors;
+
 		let emailError, pwError, loginBtnContent;
 
 		// check for email errors
-		if (this.state.errors && (this.state.errors.email || this.state.errors.general)){
+		if (errors && (errors.email || errors.general)){
 			if (this.state.errors.email){
-				emailError = (this.state.errors.email);
+				emailError = (errors.email);
 			} else {
 				emailError = ("");
 			}
@@ -81,18 +89,18 @@ class Login extends Component {
 		}
 
 		// check for password errors
-		if (this.state.errors && (this.state.errors.password || this.state.errors.general)){
+		if (errors && (errors.password || errors.general)){
 			if (this.state.errors.password){
-				pwError = (this.state.errors.password);
+				pwError = (errors.password);
 			} else {
-				pwError = (this.state.errors.general);
+				pwError = (errors.general);
 			}
 		} else {
 			pwError = ("Please enter a password.");
 		}
 
 		// if loading, replace button text with spinner
-		if (this.state.loading){
+		if (loading){
 			loginBtnContent = (<Spinner animation="border" size="sm"/>);
 		} else {
 			loginBtnContent = ("Log In");
@@ -201,4 +209,20 @@ class Login extends Component {
 	}
 }
 
-export default Login;
+Login.propTypes = {
+	classes: PropTypes.object.isRequired,
+	loginUser: PropTypes.func.isRequired,
+	user: PropTypes.object.isRequired,
+	UI: PropTypes.object.isRequired
+}
+
+const mapStatesToProps = (state) => ({
+	user : state.user,
+	UI   : state.UI
+});
+
+const mapActionsToProps = {
+	loginUser
+}
+
+export default connect(mapStatesToProps, mapActionsToProps)(Login);

@@ -3,8 +3,10 @@ import {
     SET_USER,
     SET_ERRORS,
     CLEAR_ERRORS,
-    LOADING_UI
-} from './types';
+    LOADING_UI,
+    SET_UNAUTHENTICATED,
+    LOADING_USER
+} from '../types';
 
 export const loginUser = (userData, history) => (dispatch) => {
 
@@ -28,8 +30,9 @@ export const loginUser = (userData, history) => (dispatch) => {
 
         dispatch(getUserData());
         dispatch({ type : CLEAR_ERRORS});
+
         // stop loading and redirect to catalogue
-        this.props.history.push('/chest');
+        history.push('/chest');
     })
     .catch(err => {
         dispatch({
@@ -53,4 +56,10 @@ export const getUserData = () => (dispatch) => {
     .catch(err => {
         console.log(err);
     });
+}
+
+export const logoutUser = () => (dispatch) => {
+    localStorage.removeItem('TreasureIDToken');
+    delete axios.defaults.headers.common['Authorization'];
+    dispatch({ type: SET_UNAUTHENTICATED });
 }

@@ -1,26 +1,30 @@
 import React               from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import { useAuth }         from "../../context/auth";
+import { connect }         from 'react-redux';
+import PropTypes           from 'prop-types';
 
-function AuthenticatedRoute({ component: Component, ...rest }) {
+const AuthenticatedRoute = ({ component: Component, authenticated, ...rest }) => (
+	<Route
+		{...rest}
+		render={props =>
+				authenticated === true
+				?	<Component {...props}/>
+				:	<Redirect
+						to={{ pathname:'/login',
+							  state: {
+										showAlert : true,
+										alertMsg  : 'Please log in first!'
+									}}}/>
+				}
+	/>
+);
 
-	const authToken = useAuth();
+const mapStateToProps = (state) => ({
+	authenticated: state.user.authenticated
+});
 
-	return (
-		<Route
-			{...rest}
-			render={props =>
-					authToken ? (
-						<Component {...props}/>
-					)	:	(
-						<Redirect
-							to={{ pathname:'/login',
-								state: {
-											showAlert : true,
-											alertMsg  : 'Please log in first!'
-										}}}/>
-					)}/>
-	);
+AuthenticatedRoute.propTypes = {
+	user: PropTypes.object
 }
 
-export default AuthenticatedRoute;
+export default connect(mapStateToProps)(AuthenticatedRoute);

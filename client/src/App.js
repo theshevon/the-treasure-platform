@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Component } from 'react';
 import {
 	BrowserRouter as Router,
 	Switch,
@@ -20,12 +20,27 @@ import AuthenticatedRoute from './components/util/AuthenticatedRoute'
 // redux stuff
 import { Provider } from 'react-redux';
 import store        from './redux/store';
+import { SET_AUTHENTICATED } from './redux/types';
+import { logoutUser, getUserData } from './redux/actions/userActions';
 
 // local server URL (for dev)
 axios.defaults.baseURL = 'http://localhost:5000/comp30022app/us-central1/api'
 
 // global server URL
 // axios.defaults.baseURL = 'https://us-central1-comp30022app.cloudfunctions.net/api';
+
+const token = localStorage.FBIdToken;
+if (token) {
+	const decodedToken = jwtDecode(token);
+if (decodedToken.exp * 1000 < Date.now()) {
+	store.dispatch(logoutUser());
+	window.location.href = '/login';
+} else {
+	store.dispatch({ type: SET_AUTHENTICATED });
+	axios.defaults.headers.common['Authorization'] = token;
+	store.dispatch(getUserData());
+}
+}
 
 class App extends Component{
 
@@ -55,7 +70,7 @@ class App extends Component{
 							component={ register }/>
 
 						{/* dashboard */}
-						<Route
+						<AuthenticatedRoute
 							exact
 							path="/dashboard"
 							component={ dashboard }/>
