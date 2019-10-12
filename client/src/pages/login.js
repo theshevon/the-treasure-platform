@@ -35,7 +35,7 @@ class Login extends Component {
 			this.setState({
 							showAlert : this.props.location.state.showAlert,
 							alertMsg  : this.props.location.state.alertMsg
-			})
+			});
 		} catch(err) {
 			return;
 		}
@@ -72,6 +72,7 @@ class Login extends Component {
 
 	render() {
 
+		console.log(this.props);
 		const { UI: { loading }} = this.props;
 		const errors = this.state.errors;
 
@@ -131,7 +132,6 @@ class Login extends Component {
         }
 
 		return (
-
 			<div
 				className="main-container">
 
