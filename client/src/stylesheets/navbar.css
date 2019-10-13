@@ -28,3 +28,8 @@
     transition: 300ms !important;
 }
 
+.user-img{
+    border-radius: 50%;
+    object-fit: scale-down;
+}
+

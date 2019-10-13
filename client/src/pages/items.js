@@ -1,15 +1,14 @@
-import React, { Component } from 'react'
-import PropTypes            from 'prop-types'
-import axios                from 'axios'
+import React, { Component } from 'react';
+import axios                from 'axios';
 
 // custom components
-import ItemSkeleton from '../components/items/ItemSkeleton'
-import Navbar       from '../components/util/Navbar'
-import ItemCard     from '../components/items/ItemCard'
+import ItemSkeleton from '../components/items/ItemSkeleton';
+import ItemCard     from '../components/items/ItemCard';
+import Navbar       from '../components/util/Navbar';
 
 // custom css
-import '../stylesheets/items.css'
-import '../stylesheets/item.css'
+import '../stylesheets/items.css';
+import '../stylesheets/item.css';
 
 class Items extends Component {
 
