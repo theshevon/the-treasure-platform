@@ -53,10 +53,10 @@ export class Dashboard extends Component {
                     style={{textAlign : "center"}}
                     onClose={ this.clearAlert }
                     dismissible>
-                <p>
-                   { this.state.alertMsg }
-                </p>
-            </Alert>
+                    <p>
+                    { this.state.alertMsg }
+                    </p>
+                </Alert>
             )
         }
 

@@ -30,7 +30,8 @@ exports.isLoggedIn =
                         .then(doc => {
                             return {
                                         id   : doc.id,
-                                        name : `${doc.data()['fname']} ${doc.data()['lname']}`
+                                        // name : `${doc.data()['fname']} ${doc.data()['lname']}`
+                                        // img_src : doc.data()['img_src']
                                     }
                         })
                         .catch(err => {
@@ -38,7 +39,7 @@ exports.isLoggedIn =
                         })
             })
             .then(data => {
-                req.user.name = data["name"];
+                req.user.id   = data["id"];
                 return next();
             })
             .catch(err => {
@@ -69,7 +70,7 @@ exports.isAuthorised =
                     .get()
                     .then(doc => {
                         // check if user is primary or secondary
-                        if (doc.data().utype === 0) return next();
+                        if (doc.data().uType === 0) return next();
                         else return res.status(403).json(err);
                     })
                     .catch(err => {

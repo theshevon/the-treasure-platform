@@ -26,6 +26,5 @@
     "eslint-plugin-promise": "^4.0.1",
     "firebase-functions-test": "^0.1.6"
   },
-  "private": true,
-  "proxy": "https://us-central1-comp30022app.cloudfunctions.net/api"
+  "private": true
 }

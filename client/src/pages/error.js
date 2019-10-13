@@ -15,7 +15,8 @@ export class error extends Component {
                     className="img-fluid mr-4"
                     src={errorIcon}
                     height="75"
-                    width="75">
+                    width="75"
+                    alt="error-logo">
                 </img>
                 <h1
                     class="text-center">
