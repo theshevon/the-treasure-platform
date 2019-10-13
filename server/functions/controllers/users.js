@@ -372,7 +372,7 @@ exports.getUsers =
                 // Check for error
                 if (!errors[i]) {
                     // Create new invitee doc
-                    let newUser = db.collection('invitees').doc();
+                    let newUser = db.collection('invitees').doc(inviteeEmail);
                     console.log("new user, id: " + newUser.id);
 
                     // Generate unique invite code for invitee
@@ -385,7 +385,6 @@ exports.getUsers =
                     else {
                         // Assign data to invitee doc
                         newUser.set({
-                                email: inviteeEmail,
                                 accepted: false,
                                 code: key
                             });
