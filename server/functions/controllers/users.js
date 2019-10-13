@@ -313,30 +313,6 @@ exports.getUsers =
 
         async (req, res) => {
 
-
-            // // print all invitee data                                                    DELETE
-            // let invitees1 = [];
-            //
-            // console.log('all invitees');
-            // db.collection('invitees')
-            //     .get()
-            //     .then((data) => {
-            //         // Extract all userIDs
-            //         data.forEach((doc) => {
-            //             let user = doc.email;
-            //             invitees1.push(user);
-            //         });
-            //     })
-            //     .catch((err) => {
-            //         res.status(500).json({ error: err.code });
-            //     });
-            //
-            // for (var j in invitees1) {
-            //     console.log("invitee:" + j);
-            // }
-
-
-
             // Creates new invitee from an array of JSON objects containing
             // names and emails, and emails each invitee a unique invite code
 
@@ -440,27 +416,6 @@ exports.getUsers =
                 }
             }
 
-        //     // print all invitee data                                                                   DELETE
-        //     let invitees2 = [];
-        //
-        //     console.log('all invitees');
-        //     db.collection('invitees')
-        //         .get()
-        //         .then((data) => {
-        //             // Extract all userIDs
-        //             data.forEach((doc) => {
-        //                 let user = doc.email;
-        //                 invitees2.push(user);
-        //             });
-        //         })
-        //         .catch((err) => {
-        //             res.status(500).json({ error: err.code });
-        //         });
-        //
-        //     for (var j in invitees2) {
-        //         console.log(j);
-        //     }
-        //
             // Check for errors
             if (Object.keys(errors).length === 0) {
                 return res.status(200).json("Success: All invites sent");
