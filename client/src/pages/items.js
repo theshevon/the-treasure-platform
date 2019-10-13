@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import axios from "axios";
+import PropTypes            from 'prop-types'
+import axios                from 'axios'
 
 // custom components
 import ItemSkeleton from '../components/items/ItemSkeleton'
@@ -9,9 +10,6 @@ import ItemCard     from '../components/items/ItemCard'
 // custom css
 import '../stylesheets/items.css'
 import '../stylesheets/item.css'
-
-// stub data
-// import itemsData from '../data/items'
 
 class Items extends Component {
 
@@ -84,7 +82,7 @@ class Items extends Component {
                     className="container">
                     <h1
                         className="page-title mb-5">
-                        TREASURE CHEST
+                        ITEMS
                     </h1>
 
                     { itemListContent }

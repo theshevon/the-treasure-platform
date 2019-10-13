@@ -10,7 +10,7 @@ import jwtDecode    from 'jwt-decode';
 // pages
 import dashboard from './pages/dashboard';
 import login     from './pages/login';
-import chest     from './pages/chest';
+import items     from './pages/items';
 import register  from './pages/register';
 import error     from './pages/error';
 
@@ -30,7 +30,7 @@ axios.defaults.baseURL = 'http://localhost:5000/comp30022app/us-central1/api'
 // global server URL
 // axios.defaults.baseURL = 'https://us-central1-comp30022app.cloudfunctions.net/api';
 
-const token = localStorage.FBIdToken;
+const token = localStorage.TreasureIDToken;
 if (token) {
 	const decodedToken = jwtDecode(token);
 	if (decodedToken.exp * 1000 < Date.now()) {
@@ -52,11 +52,11 @@ class App extends Component{
 				<Router>
 					<Switch>
 
-						{/* landing page */}
-						<Route
+						{/* landing page- items */}
+						<AuthenticatedRoute
 							exact
-							path="/"
-							component={ login }/>
+							path="/items"
+							component={ items }/>
 
 						{/* login page */}
 						<Route
@@ -79,8 +79,8 @@ class App extends Component{
 						{/* item catalogue */}
 						<AuthenticatedRoute
 							exact
-							path="/chest"
-							component={ chest }/>
+							path="/items"
+							component={ items }/>
 
 						{/* error page */}
 						<Route

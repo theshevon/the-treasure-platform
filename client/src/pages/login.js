@@ -34,13 +34,6 @@ class Login extends Component {
 		}
 	}
 
-	clearAlert = () => {
-        this.setState({
-                        showAlert : false,
-                        alertMsg  : null,
-        });
-	}
-
 	handleChange = event => {
 		this.setState({ [event.target.name] : event.target.value });
 	}

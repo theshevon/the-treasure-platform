@@ -1,15 +1,19 @@
 import React, { Component } from 'react';
+import PropTypes            from 'prop-types';
 
 // bootstrap imports
-import Navbar from 'react-bootstrap/Navbar'
-import Nav    from 'react-bootstrap/Nav'
+import Navbar from 'react-bootstrap/Navbar';
+import Nav    from 'react-bootstrap/Nav';
+
+// redux stuff
+import { connect }   from 'react-redux';
 
 // custom css
-import '../../stylesheets/navbar.css'
+import '../../stylesheets/navbar.css';
 
 // logos
-import logo     from '../../icons/logo.svg'
-import logo_alt from '../../icons/logo-alt.svg'
+import logo     from '../../icons/logo.svg';
+import logo_alt from '../../icons/logo-alt.svg';
 
 class NavbarComponent extends Component {
 
@@ -79,8 +83,8 @@ class NavbarComponent extends Component {
                             Login
                         </Nav.Link>
                         <Nav.Link
-                            href="/chest">
-                            Chest
+                            href="/items">
+                            Items
                         </Nav.Link>
                     </Nav>
                 </Navbar.Collapse>
@@ -90,4 +94,12 @@ class NavbarComponent extends Component {
     }
 }
 
-export default NavbarComponent;
+NavbarComponent.propTypes = {
+	user: PropTypes.object.isRequired,
+}
+
+const mapStatesToProps = (state) => ({
+	user : state.user,
+});
+
+export default connect(mapStatesToProps)(NavbarComponent);

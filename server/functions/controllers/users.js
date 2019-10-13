@@ -214,7 +214,7 @@ exports.getAuthenticatedUser =
                 user.id      = doc.id;
                 user.name    = `${doc.data()['fname']} ${doc.data()['lname']}`;
                 user.type    = doc.data()['uType'];
-                // user.img_src = doc.data()['img_src'];
+                user.img_src = doc.data()['img_src'];
                 return res.status(200).json(user);
             })
             .catch(err => {

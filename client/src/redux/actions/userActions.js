@@ -4,8 +4,8 @@ import {
     SET_ERRORS,
     CLEAR_ERRORS,
     LOADING_UI,
+    SET_AUTHENTICATED,
     SET_UNAUTHENTICATED,
-    LOADING_USER
 } from '../types';
 
 export const loginUser = (userData, history) => (dispatch) => {
@@ -28,16 +28,17 @@ export const loginUser = (userData, history) => (dispatch) => {
         // set token as in all request headers
         axios.defaults.headers.common['Authorization'] = token;
 
+        dispatch({ type : SET_AUTHENTICATED });
         dispatch(getUserData());
-        dispatch({ type : CLEAR_ERRORS});
+        dispatch({ type : CLEAR_ERRORS });
 
         // stop loading and redirect to catalogue
-        history.push('/chest');
+        history.push('/items');
     })
     .catch(err => {
         dispatch({
-            type: SET_ERRORS,
-            payload: err.response.data
+            type    : SET_ERRORS,
+            payload : err.response.data
         })
     })
 }

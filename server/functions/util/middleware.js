@@ -40,8 +40,6 @@ exports.isLoggedIn =
             })
             .then(data => {
                 req.user.id   = data["id"];
-                // req.user.name = data["name"];
-                // req.user.img_src = data["img_src"]
                 return next();
             })
             .catch(err => {
