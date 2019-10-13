@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import axios from 'axios'
+import PropTypes            from 'prop-types'
 
 // bootstrap imports
 import Spinner from 'react-bootstrap/Spinner'

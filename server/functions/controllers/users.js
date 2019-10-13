@@ -103,7 +103,7 @@ exports.registerNewUser =
                     fname: newUser.fname,
                     lname: newUser.lname,
                     email: newUser.email,
-                    utype: 1,
+                    uType: 1,
                     createdOn: admin.firestore.FieldValue.serverTimestamp(),
                     intItems: []
                 }
@@ -187,7 +187,7 @@ exports.getSecondaryUsers =
                 // Extract all userIDs
                 let users = [];
                 data.forEach((doc) => {
-                    if (doc.data().utype === 1){
+                    if (doc.data().uType === 1){
                         let user = {
                                     uid : doc.id,
                                     name : doc.data().fname + " " + doc.data().lname,
@@ -213,6 +213,7 @@ exports.getAuthenticatedUser =
                 let user = {};
                 user.id      = doc.id;
                 user.name    = `${doc.data()['fname']} ${doc.data()['lname']}`;
+                user.type    = doc.data()['uType'];
                 // user.img_src = doc.data()['img_src'];
                 return res.status(200).json(user);
             })

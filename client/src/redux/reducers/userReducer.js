@@ -7,8 +7,9 @@ import {
 
 const initialState = {
     authenticated : false,
-    uid : '',
+    id : '',
     name : '',
+    type : null
 }
 
 export default function(state = initialState, action){

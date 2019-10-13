@@ -72,7 +72,7 @@ exports.isAuthorised =
                     .get()
                     .then(doc => {
                         // check if user is primary or secondary
-                        if (doc.data().utype === 0) return next();
+                        if (doc.data().uType === 0) return next();
                         else return res.status(403).json(err);
                     })
                     .catch(err => {

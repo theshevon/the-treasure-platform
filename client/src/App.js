@@ -16,11 +16,12 @@ import error     from './pages/error';
 
 // custom components
 import AuthenticatedRoute from './components/util/AuthenticatedRoute'
+import PrivateRoute       from './components/util/PrivateRoute'
 
 // redux stuff
-import { Provider } from 'react-redux';
-import store        from './redux/store';
-import { SET_AUTHENTICATED } from './redux/types';
+import { Provider }                from 'react-redux';
+import store                       from './redux/store';
+import { SET_AUTHENTICATED }       from './redux/types';
 import { logoutUser, getUserData } from './redux/actions/userActions';
 
 // local server URL (for dev)
@@ -32,14 +33,14 @@ axios.defaults.baseURL = 'http://localhost:5000/comp30022app/us-central1/api'
 const token = localStorage.FBIdToken;
 if (token) {
 	const decodedToken = jwtDecode(token);
-if (decodedToken.exp * 1000 < Date.now()) {
-	store.dispatch(logoutUser());
-	window.location.href = '/login';
-} else {
-	store.dispatch({ type: SET_AUTHENTICATED });
-	axios.defaults.headers.common['Authorization'] = token;
-	store.dispatch(getUserData());
-}
+	if (decodedToken.exp * 1000 < Date.now()) {
+		store.dispatch(logoutUser());
+		window.location.href = '/login';
+	} else {
+		store.dispatch({ type: SET_AUTHENTICATED });
+		axios.defaults.headers.common['Authorization'] = token;
+		store.dispatch(getUserData());
+	}
 }
 
 class App extends Component{
@@ -52,7 +53,7 @@ class App extends Component{
 					<Switch>
 
 						{/* landing page */}
-						<Route
+						<AuthenticatedRoute
 							exact
 							path="/"
 							component={ chest }/>
@@ -70,7 +71,7 @@ class App extends Component{
 							component={ register }/>
 
 						{/* dashboard */}
-						<AuthenticatedRoute
+						<PrivateRoute
 							exact
 							path="/dashboard"
 							component={ dashboard }/>
