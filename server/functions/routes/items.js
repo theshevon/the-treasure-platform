@@ -22,6 +22,8 @@ router.delete("/items/:id", isLoggedIn, itemController.deleteItem);
 
 router.put("/items/:id/edit", isLoggedIn, itemController.modifyItem);
 
+router.put("/items/:iid/int/users/:uid", itemController.toggleEOI);
+
 /*===========================================================================*/
 
 module.exports = router;

@@ -12,10 +12,9 @@ router.get("/users", isLoggedIn, userController.getSecondaryUsers);
 
 router.get("/logout", isLoggedIn, userController.logOutUser);
 
-
 /*================================POST ROUTES=================================*/
 
-router.post("/check_invitee", isLoggedIn, userController.checkInvitee);
+router.post("/check_invitee", userController.checkInvitee);
 
 router.post("/register", userController.registerNewUser);
 
@@ -23,7 +22,6 @@ router.post("/login", userController.logInUser);
 
 // router.post("/invite", userController.inviteNewUsers);
 
-//router.post("/email", userController.sendMailToAddress);
 /*===========================================================================*/
 
 module.exports = router;
