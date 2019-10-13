@@ -352,21 +352,6 @@ exports.getUsers =
                         });
                     });
 
-                //// TODO: Delete all previous invites to the same email address
-                //
-                //var duplicate_email_ids = [];
-                //
-                // db.collection('invitees')
-                //     .get()
-                //     .then((data) => {
-                //         data.forEach((doc) => {
-                //             if (doc.data().email === invitee.email) {
-                //                 // duplicate email, add to duplicate_email_ids
-                //                 duplicate_email_ids.push(doc.data().id)
-                //             }
-                //         });
-                //     });
-
                 emailIndex = 0;
 
                 // Check for error
