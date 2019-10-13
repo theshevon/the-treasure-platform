@@ -53,10 +53,10 @@ class App extends Component{
 					<Switch>
 
 						{/* landing page */}
-						<AuthenticatedRoute
+						<Route
 							exact
 							path="/"
-							component={ chest }/>
+							component={ login }/>
 
 						{/* login page */}
 						<Route

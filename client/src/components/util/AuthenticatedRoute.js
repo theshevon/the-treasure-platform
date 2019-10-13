@@ -8,13 +8,9 @@ const AuthenticatedRoute = ({ component: Component, authenticated, ...rest }) =>
 		{...rest}
 		render={props =>
 					authenticated === true
-					? <Redirect
-						to={{ pathname:'/login',
-							state: {
-										showAlert : true,
-										alertMsg  : 'Please log in first!'
-									}}}/>
-					: <Component {...props}/>
+					? <Component {...props}/>
+					: <Redirect
+						to='/login'/>
 				}
 	/>
 );
