@@ -313,6 +313,28 @@ exports.getUsers =
 
         async (req, res) => {
 
+
+            // print all invitee data                                                    DELETE
+            let invitees1 = [];
+
+            console.log('all invitees');
+            db.collection('invitees')
+                .get()
+                .then((data) => {
+                    // Extract all userIDs
+                    data.forEach((doc) => {
+                        let user = doc.email;
+                        invitees1.push(user);
+                    });
+                })
+                .catch((err) => {
+                    res.status(500).json({ error: err.code });
+                });
+
+            for (var j in invitees1) {
+                console.log("invitee:" + j);
+            }
+
             // Creates new invitee from an array of JSON objects containing
             // names and emails, and emails each invitee a unique invite code
 
@@ -348,9 +370,6 @@ exports.getUsers =
                                 errors[i]
                                     =`Email ${inviteeEmail} is already registered`;
 
-                                return {
-                                    errors
-                                };
                             }
                         });
                     });
@@ -375,7 +394,8 @@ exports.getUsers =
                 // Check for error
                 if (!errors[i]) {
                     // Create new invitee doc
-                    const newUser = db.collection('invitees').doc();
+                    let newUser = db.collection('invitees').doc();
+                    console.log("new user, id: " + newUser.id);
 
                     // Generate unique invite code for invitee
                     const key = generateUniqueInviteCode(newUser.id);
@@ -414,6 +434,27 @@ exports.getUsers =
                         }
                     }
                 }
+            }
+
+            // print all invitee data                                                                   DELETE
+            let invitees2 = [];
+
+            console.log('all invitees');
+            db.collection('invitees')
+                .get()
+                .then((data) => {
+                    // Extract all userIDs
+                    data.forEach((doc) => {
+                        let user = doc.email;
+                        invitees2.push(user);
+                    });
+                })
+                .catch((err) => {
+                    res.status(500).json({ error: err.code });
+                });
+
+            for (var j in invitees2) {
+                console.log(j);
             }
 
             // Check for errors
