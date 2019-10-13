@@ -45,7 +45,7 @@ export const loginUser = (userData, history) => (dispatch) => {
 export const getUserData = () => (dispatch) => {
     axios({
         method: 'get',
-        url: 'user/id'
+        url: '/user'
     })
     .then(res => {
         dispatch({

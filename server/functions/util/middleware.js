@@ -30,7 +30,8 @@ exports.isLoggedIn =
                         .then(doc => {
                             return {
                                         id   : doc.id,
-                                        name : `${doc.data()['fname']} ${doc.data()['lname']}`
+                                        // name : `${doc.data()['fname']} ${doc.data()['lname']}`
+                                        // img_src : doc.data()['img_src']
                                     }
                         })
                         .catch(err => {
@@ -38,7 +39,9 @@ exports.isLoggedIn =
                         })
             })
             .then(data => {
-                req.user.name = data["name"];
+                req.user.id   = data["id"];
+                // req.user.name = data["name"];
+                // req.user.img_src = data["img_src"]
                 return next();
             })
             .catch(err => {
