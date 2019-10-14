@@ -22,6 +22,8 @@ router.post("/login", userController.logInUser);
 
 router.post("/invite", userController.inviteNewUsers);
 
+router.post("/users/:uid/support", userController.sendSupportMessage);
+
 /*===========================================================================*/
 
 module.exports = router;

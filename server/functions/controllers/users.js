@@ -352,6 +352,35 @@ exports.sendMailToAddress =
         return res.send('Email sent');
     }
 
+exports.sendSupportMessage = 
+
+    async (req, res) => {
+
+        let subject = req.body.subject;
+        let message = req.body.message;
+        let senderID = req.params.uid;
+
+        const mailOptions = {
+            from: 'Treasure App <treasureapp.au@gmail.com>',
+            to: 'treasureapp.au@gmail.com',
+            subject: `Support Request: ${subject}`, // email subject
+            html: ` <p style="font-size: 16px;">${message}</p>
+                    <br>
+                    <p style="font-size: 10px;"><b>Received from UID:</b> ${senderID}</p>`
+        };
+        
+        // send email
+        /* eslint-disable no-await-in-loop */
+        try {
+            await sendMail(mailOptions);
+        /* eslint-enable no-await-in-loop */
+        } catch (err) {
+            res.status(400).json(err)
+        }
+
+        return res.status(200).json("Success: Support message sent");
+    }
+
 /*=============================HELPER FUNCTIONS===============================*/
 
 generateUniqueInviteCode =
