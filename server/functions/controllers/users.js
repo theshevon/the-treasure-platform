@@ -215,9 +215,6 @@ exports.getUsers =
             //// TODO: Validate input
 
             const emailArray = req.body.emails;
-            console.log(emailArray);
-
-            console.log(emailArray.length);
 
             //ensure that the request is not empty
             if (emailArray.length === 0) {
