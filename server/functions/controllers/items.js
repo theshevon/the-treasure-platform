@@ -161,7 +161,7 @@ exports.uploadImg =
 
                     // create a unique name for the image
                     const imageExtension = filename.split('.')[filename.split('.').length - 1];
-                    imageFileName = `${req.params.id}_photo_${Math.round(Math.random() * 10000000).toString()}.${imageExtension}`;
+                    imageFileName = `items_${req.params.id}_${Math.round(Math.random() * 10000000).toString()}.${imageExtension}`;
 
                     // upload the image
                     const filepath = path.join(os.tmpdir(), imageFileName);
@@ -286,4 +286,72 @@ exports.deleteItem =
 
 
   }
+
+exports.toggleEOI =
+
+    (req, res) => {
+
+        // iid - item id
+        let iid = req.params.iid;
+        // uid - user id
+        let uid = req.params.uid;
+
+        db
+            .collection('items')
+            .doc(iid)
+            .get()
+            .then(itemDoc => {
+
+                if (!itemDoc.exists){
+                    return res.status(400).json("Invalid Item ID");
+                }
+
+                // validate userID
+                // eslint-disable-next-line promise/no-nesting
+                return db.collection('users')
+                        .doc(uid)
+                        .get()
+                        .then(userDoc => {
+
+                            if (!userDoc.exists){
+                                throw new Error("Invalid user id");
+                            }
+
+                            // fetch the intUsers arrays
+                            let intUsers = itemDoc.data()["intUsers"];
+
+                            // toggle the user's interest in the item
+                            if (!intUsers.includes(uid)){
+                                // if not in it, add the uid to the list
+                                intUsers.push(uid);
+                            } else {
+                                // else, remove the uid from the list
+                                let index = intUsers.indexOf(intUsers);
+                                intUsers.splice(index, 1);
+                            }
+
+                            // eslint-disable-next-line promise/no-nesting
+                            return db
+                                    .collection('items')
+                                    .doc(iid)
+                                    .update({ intUsers : intUsers })
+                                    .then(() => {
+                                        return res.status(200).json("Success");
+                                    })
+                                    .catch(err => {
+                                        console.log(err);
+                                        throw new Error(err);
+                                    })
+                        })
+                        .catch (err => {
+                            console.log(err);
+                            return res.status(400).json("Invalid User ID");
+                        });
+
+            })
+            .catch(err => {
+                console.log(err);
+                return res.status(400).json(err);
+            });
+    }
 
