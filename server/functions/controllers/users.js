@@ -241,8 +241,8 @@ exports.getUsers =
                                 // Duplicate email; abort and return error
                                 errors[i]
                                     =`Email ${inviteeEmail} is already registered`;
-
                             }
+                            return null;
                         });
                     })
                     .catch(err => {
@@ -356,6 +356,7 @@ generateUniqueInviteCode =
                     }
                     return null;
                 });
+                return null;
             })
             .catch(err => {
                 console.log(err);
