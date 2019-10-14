@@ -244,12 +244,21 @@ exports.getUsers =
 
                             }
                         });
+                    })
+                    .catch(err => {
+                        errors[i] = "firestore error";
+                        return errors;
                     });
 
                 // Check for error
                 if (!errors[i]) {
                     // Create new invitee doc
-                    let newUser = db.collection('invitees').doc(inviteeEmail);
+                    let newUser = db.collection('invitees').doc(inviteeEmail)
+                        .catch(err => {
+                            errors["general"]
+                                = `firestore error for email ${inviteeEmail}`;
+                            return errors;
+                        });
                     console.log("new user, id: " + newUser.id);
 
                     // Generate unique invite code for invitee
@@ -331,25 +340,30 @@ exports.sendMailToAddress =
 
 generateUniqueInviteCode =
 
-    (id) => {
-        // Generates a unique invite code from the randomly generated id
+    (raw) => {
+        // Generates a unique invite code from the randomly generated raw input
 
         const codeLength = 8;
         let usedCodes = [];
 
         db.collection('invitees')
-        .get()
-        .then((data) => {
-            // Extract all invite codes
-            data.forEach((doc) => {
-                if (doc.data().code){
-                    usedCodes.push(doc.data().code);
-                }
+            .get()
+            .then((data) => {
+                // Extract all invite codes
+                data.forEach((doc) => {
+                    if (doc.data().code){
+                        usedCodes.push(doc.data().code);
+                    }
+                });
+            })
+            .catch(err => {
+                console.log(err);
+                return null;
             });
-        });
-        // Return 'codeLength'-char substring of id
-        for (var i = 0; i + codeLength < id.length; i++) {
-            const code = id.substring(0 + i, codeLength + i);
+
+        // Return 'codeLength'-char substring of raw
+        for (var i = 0; i + codeLength < raw.length; i++) {
+            const code = raw.substring(0 + i, codeLength + i);
 
             if (!(usedCodes.includes(code))) {
                 return code;
@@ -382,4 +396,5 @@ sendMail
            console.log('error: ' + err);
        }
 
+       return null;
     }
