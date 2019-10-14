@@ -57,10 +57,8 @@ class NavbarComponent extends Component {
             </Nav>
         );
 
-        let name = "User";
-        if (user.name)
-            name = user.name.length < 15 ? user.name.padEnd(15, " ") : user.name;
-
+        let name   = localStorage.TreasureUName || user.name;
+        let imgSrc = localStorage.TreasureUImg || user.imgSrc;
 
         if (user.type === 0){
             menuItems = (
@@ -117,7 +115,7 @@ class NavbarComponent extends Component {
                                 href="/items">
                                 <img
                                     className="user-img"
-                                    src={ user.imgSrc }
+                                    src={ imgSrc }
                                     width="25"
                                     height="25"
                                     alt="user_img">

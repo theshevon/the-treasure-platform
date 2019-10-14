@@ -56,6 +56,11 @@ export const getUserData = () => (dispatch) => {
 
         // hacky code to manage private routes
         localStorage.setItem('TreasureUType', res.data.type);
+
+        // data to store between navigating routes
+        localStorage.setItem('TreasureUName', res.data.name);
+        localStorage.setItem('TreasureUImg', res.data.imgSrc);
+
     })
     .catch(err => {
         console.log(err);
@@ -63,8 +68,13 @@ export const getUserData = () => (dispatch) => {
 }
 
 export const logoutUser = () => (dispatch) => {
+
+    // remove local storage data
     localStorage.removeItem('TreasureIDToken');
     localStorage.removeItem('TreasureUType');
+    localStorage.removeItem('TreasureUName');
+    localStorage.removeItem('TreasureUImg');
+
     delete axios.defaults.headers.common['Authorization'];
     dispatch({ type: SET_UNAUTHENTICATED });
 }
