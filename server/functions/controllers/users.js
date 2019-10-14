@@ -293,8 +293,10 @@ exports.getUsers =
                         };
 
                         // Send invitation email to new invitee
+                        /* eslint-disable no-await-in-loop */
                         try {
                             await sendMail(mailOptions);
+                        /* eslint-enable no-await-in-loop */
                         } catch (err) {
                             errors[i] = `Email could not be sent to ${inviteeEmail}`;
                         }
@@ -384,7 +386,7 @@ sendMail
     = (mailOptions) => {
 
        try {
-           return new Promise(function (resolve, reject){
+           return new Promise((resolve, reject) => {
               transporter.sendMail(mailOptions, (err, info) => {
                  if (err) {
                     console.log("error: ", err);
