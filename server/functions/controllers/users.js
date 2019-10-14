@@ -246,7 +246,7 @@ exports.getUsers =
                         });
                     })
                     .catch(err => {
-                        errors[i] = "firestore error";
+                        errors[i] = `firestore error: ${err}`;
                         return errors;
                     });
 
@@ -256,7 +256,7 @@ exports.getUsers =
                     let newUser = db.collection('invitees').doc(inviteeEmail)
                         .catch(err => {
                             errors["general"]
-                                = `firestore error for email ${inviteeEmail}`;
+                                = `firestore error for email ${inviteeEmail}: ${err}`;
                             return errors;
                         });
                     console.log("new user, id: " + newUser.id);
@@ -354,6 +354,7 @@ generateUniqueInviteCode =
                     if (doc.data().code){
                         usedCodes.push(doc.data().code);
                     }
+                    return null;
                 });
             })
             .catch(err => {
