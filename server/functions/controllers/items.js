@@ -306,7 +306,7 @@ exports.toggleEOI =
                     return res.status(400).json("Invalid Item ID");
                 }
 
-                // check if user ID is valid
+                // validate userID
                 // eslint-disable-next-line promise/no-nesting
                 return db.collection('users')
                         .doc(uid)
@@ -322,10 +322,10 @@ exports.toggleEOI =
 
                             // toggle the user's interest in the item
                             if (!intUsers.includes(uid)){
-                                // add to the list
+                                // if not in it, add the uid to the list
                                 intUsers.push(uid);
                             } else {
-                                // remove from the list
+                                // else, remove the uid from the list
                                 let index = intUsers.indexOf(intUsers);
                                 intUsers.splice(index, 1);
                             }

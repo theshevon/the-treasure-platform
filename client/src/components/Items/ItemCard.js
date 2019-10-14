@@ -1,19 +1,24 @@
-import React, { Component } from 'react'
-import axios from 'axios'
+import React, { Component } from 'react';
+import PropTypes            from 'prop-types';
+import axios                from 'axios';
 
 // bootstrap imports
-import Carousel from 'react-bootstrap/Carousel'
-import Spinner  from 'react-bootstrap/Spinner'
-import Button   from 'react-bootstrap/Button'
-import Modal    from 'react-bootstrap/Modal'
-import Card     from 'react-bootstrap/Card'
-import Row      from 'react-bootstrap/Row'
-import Col      from 'react-bootstrap/Col'
+import Carousel from 'react-bootstrap/Carousel';
+import Spinner  from 'react-bootstrap/Spinner';
+import Button   from 'react-bootstrap/Button';
+import Modal    from 'react-bootstrap/Modal';
+import Card     from 'react-bootstrap/Card';
+import Row      from 'react-bootstrap/Row';
+import Col      from 'react-bootstrap/Col';
 
 // sweet alert import
-import SweetAlert from 'react-bootstrap-sweetalert'
+import SweetAlert from 'react-bootstrap-sweetalert';
+
 // custom components
-import LikeButton from './LikeButton'
+import LikeButton from './LikeButton';
+
+// redux stuff
+import { connect } from 'react-redux';
 
 // custom css
 import '../../stylesheets/item.css'
@@ -79,7 +84,7 @@ export class ItemCard extends Component {
 
 	render() {
 
-		const { item } = this.props;
+		const { item, user } = this.props;
 
 		let btnContent;
 		if (this.state.loading){
@@ -108,7 +113,8 @@ export class ItemCard extends Component {
 					className="justify-content-end">
 					<LikeButton
 						itemID={item.id}
-						size="sm"/>
+						size="sm"
+						liked={item.intUsers.includes(user.id)}/>
 				</Row>
 
 				<Card.Body
@@ -190,13 +196,6 @@ export class ItemCard extends Component {
 							</p>
 						</div>
 
-						<div
-							className="item-row d-flex justify-content-center">
-							<LikeButton
-								itemID={ item.id }
-								size="md"/>
-						</div>
-
 						<Row>
 							<Col
 								lg="2">
@@ -269,4 +268,12 @@ export class ItemCard extends Component {
 	}
 }
 
-export default ItemCard;
+ItemCard.propTypes = {
+    user: PropTypes.object.isRequired,
+}
+
+const mapStatesToProps = (state) => ({
+	user : state.user,
+});
+
+export default connect(mapStatesToProps)(ItemCard);

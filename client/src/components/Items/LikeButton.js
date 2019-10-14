@@ -1,13 +1,17 @@
 // react imports
-import React, { Component } from "react"
-// import axios from 'axios'
+import React, { Component } from 'react';
+import PropTypes            from 'prop-types';
+import axios                from 'axios';
 
-// custom stylesheets
-import "../../stylesheets/item.css"
+// redux stuff
+import { connect } from 'react-redux';
+
+// custom css
+import '../../stylesheets/item.css';
 
 // custom icons
-import likedBtn   from "../../icons/liked.svg"
-import unlikedBtn from "../../icons/unliked.svg"
+import likedBtn   from '../../icons/liked.svg';
+import unlikedBtn from '../../icons/unliked.svg';
 
 // A heart button that toggles between filled heart and outlined heart
 class LikeButton extends Component {
@@ -16,25 +20,30 @@ class LikeButton extends Component {
 		liked: false,
 	}
 
+	componentDidMount(){
+		this.setState({ liked : this.props.liked });
+	}
+
 	handleClick = () => {
+
 		this.setState({
-						liked: !this.state.liked
-					});
+			liked: !this.state.liked
+		});
 
 		//  send update request to server
-		// let route = this.state.liked ? "int" : "notint";
-		// axios({
-		// 		method: 'put',
-		// 		url: `/items/${this.props.itemID}/${route}/${this.userId}`,
-		// 	  })
-		// 	  .then(res => {
-		// 		  // do nothing with response
-		// 		  return
-		// 	  })
-		// 	  .catch(err => {
-		// 		  // if there was an error, simply reverse the user's action
-		// 		  this.handleClick();
-		// 	  })
+		axios({
+					method: 'put',
+					url: `/items/${this.props.itemID}/int/users/${this.props.user.id}`,
+				})
+				.then(res => {
+					// do nothing
+				})
+				.catch(err => {
+					// reverse the selection
+					this.setState({
+						liked: !this.state.liked
+					});
+				})
 	}
 
 	render() {
@@ -56,4 +65,13 @@ class LikeButton extends Component {
 		);
 	}
 }
-export default LikeButton;
+
+LikeButton.propTypes = {
+    user: PropTypes.object.isRequired,
+}
+
+const mapStatesToProps = (state) => ({
+	user : state.user,
+});
+
+export default connect(mapStatesToProps)(LikeButton);
