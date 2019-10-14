@@ -26,8 +26,8 @@ To commit changes and deploy the server globally, do the same as mentioned above
 
 Currently, the registration, login, item catalogue, item view and invite users components have been implemented.
 
-If you wish to test the app, you can login using the test account: 
-`username` : "test@email.com", 
+If you wish to test the app, you can login using the test account:
+`username` : "test@email.com",
 `password` : "password"
 
 ## Development Team
@@ -36,5 +36,3 @@ If you wish to test the app, you can login using the test account:
 * Michael Manoussakis
 * Grace Sng
 * Shevon Mendis
-
-
