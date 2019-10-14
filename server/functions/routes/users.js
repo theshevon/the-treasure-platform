@@ -21,7 +21,7 @@ router.post("/register", userController.registerNewUser);
 
 router.post("/login", userController.logInUser);
 
-// router.post("/invite", userController.inviteNewUsers);
+router.post("/invite", userController.inviteNewUsers);
 
 //router.post("/email", userController.sendMailToAddress);
 /*===========================================================================*/
