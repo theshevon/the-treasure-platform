@@ -51,6 +51,28 @@ class NavbarComponent extends Component {
             brandClass  = "navbar-brand navbar-brand-scrolled";
         }
 
+        let menuItems = (
+            <Nav
+                className="mr-auto">
+            </Nav>
+        );
+
+        if (user.type === 0){
+            menuItems = (
+                <Nav
+                    className="mr-auto">
+                    <Nav.Link
+                        href="/dashboard">
+                        Dashboard
+                    </Nav.Link>
+                    <Nav.Link
+                        href="/items">
+                        Items
+                    </Nav.Link>
+                </Nav>
+            );
+        }
+
         return (
 
             <Container
@@ -82,25 +104,7 @@ class NavbarComponent extends Component {
                         id="basic-navbar-nav"
                         className="mt-2">
 
-                        <Nav
-                            className="mr-auto">
-                            <Nav.Link
-                                href="/dashboard">
-                                Dashboard
-                            </Nav.Link>
-                            <Nav.Link
-                                href="/register">
-                                Register
-                            </Nav.Link>
-                            <Nav.Link
-                                href="/login">
-                                Login
-                            </Nav.Link>
-                            <Nav.Link
-                                href="/items">
-                                Items
-                            </Nav.Link>
-                        </Nav>
+                        { menuItems }
 
                         <Nav>
 
