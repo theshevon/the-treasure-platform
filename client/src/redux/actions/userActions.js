@@ -13,9 +13,9 @@ export const loginUser = (userData, history) => (dispatch) => {
     dispatch({ type : LOADING_UI });
 
     axios({
-        method: 'post',
-        url: '/login',
-        data: userData
+        method : 'post',
+        url    : '/login',
+        data   : userData
     })
     .then(res => {
 

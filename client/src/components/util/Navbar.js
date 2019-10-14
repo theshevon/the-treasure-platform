@@ -108,10 +108,10 @@ class NavbarComponent extends Component {
                                 href="/items">
                                 <img
                                     className="user-img"
-                                    src={ user.img_src }
+                                    src={ user.imgSrc }
                                     width="25"
                                     height="25"
-                                    alt="user=img">
+                                    alt="user_img">
                                 </img>
                             </Nav.Link>
 

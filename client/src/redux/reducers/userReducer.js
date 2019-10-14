@@ -7,9 +7,10 @@ import {
 
 const initialState = {
     authenticated : false,
-    id : '',
-    name : '',
-    type : null
+    id            : null,
+    name          : null,
+    imgSrc        : null,
+    type          : null
 }
 
 export default function(state = initialState, action){
