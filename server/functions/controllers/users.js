@@ -244,6 +244,7 @@ exports.getUsers =
                             }
                             return null;
                         });
+                        return null;
                     })
                     .catch(err => {
                         errors[i] = `firestore error: ${err}`;
