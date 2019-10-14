@@ -57,6 +57,11 @@ class NavbarComponent extends Component {
             </Nav>
         );
 
+        let name = "User";
+        if (user.name)
+            name = user.name.length < 15 ? user.name.padEnd(15, " ") : user.name;
+
+
         if (user.type === 0){
             menuItems = (
                 <Nav
@@ -120,7 +125,7 @@ class NavbarComponent extends Component {
                             </Nav.Link>
 
                             <NavDropdown
-                                title={ user.name }
+                                title={ name }
                                 id="collasible-nav-dropdown">
                                 <NavDropdown.Item
                                     href="/support">
