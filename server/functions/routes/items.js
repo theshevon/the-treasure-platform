@@ -24,6 +24,8 @@ router.put("/items/:id/edit", isLoggedIn, itemController.modifyItem);
 
 router.put("/items/:iid/int/users/:uid", itemController.toggleEOI);
 
+router.put("/items/:iid/assign/:uid", itemController.assignItem);
+
 /*===========================================================================*/
 
 module.exports = router;
