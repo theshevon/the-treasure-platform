@@ -19,7 +19,7 @@ export class error extends Component {
                     alt="error-logo">
                 </img>
                 <h1
-                    class="text-center">
+                    className="text-center">
                     Sorry, this page does not exist!
                 </h1>
             </div>

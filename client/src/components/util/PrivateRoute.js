@@ -3,11 +3,11 @@ import { Route, Redirect } from 'react-router-dom';
 import { connect }         from 'react-redux';
 import PropTypes           from 'prop-types';
 
-const PrivateRoute = ({ component: Component, authenticated, type, ...rest }) => (
+const PrivateRoute = ({ component: Component, authenticated, ...rest }) => (
 	<Route
 		{...rest}
 		render={props =>
-					(authenticated === true && type === 0)
+					(authenticated === true && parseInt(localStorage.TreasureUType) === 0)
 					? <Component {...props}/>
 					: <Redirect
 						to='/error'/> // redirects to error page
@@ -17,7 +17,6 @@ const PrivateRoute = ({ component: Component, authenticated, type, ...rest }) =>
 
 const mapStateToProps = (state) => ({
     authenticated : state.user.authenticated,
-    type          : state.user.type
 });
 
 PrivateRoute.propTypes = {

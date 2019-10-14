@@ -25,7 +25,7 @@ export const loginUser = (userData, history) => (dispatch) => {
         // probably a bad idea in terms of security:
         localStorage.setItem('TreasureIDToken', token);
 
-        // set token as in all request headers
+        // set token in all request headers
         axios.defaults.headers.common['Authorization'] = token;
 
         dispatch({ type : SET_AUTHENTICATED });
@@ -52,7 +52,10 @@ export const getUserData = () => (dispatch) => {
         dispatch({
             type: SET_USER,
             payload: res.data
-        })
+        });
+
+        // hacky code to manage private routes
+        localStorage.setItem('TreasureUType', res.data.type);
     })
     .catch(err => {
         console.log(err);
@@ -61,6 +64,7 @@ export const getUserData = () => (dispatch) => {
 
 export const logoutUser = () => (dispatch) => {
     localStorage.removeItem('TreasureIDToken');
+    localStorage.removeItem('TreasureUType');
     delete axios.defaults.headers.common['Authorization'];
     dispatch({ type: SET_UNAUTHENTICATED });
 }
