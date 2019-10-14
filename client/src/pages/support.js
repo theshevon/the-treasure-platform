@@ -10,38 +10,23 @@ import Col  from 'react-bootstrap/Col'
 import axios from 'axios'
 
 // other imports
-import { ReCaptcha } from 'react-recaptcha-google'
+import ReCAPTCHA from "react-google-recaptcha";
+
+// ReCaptcha keys
+const SITE_KEY = "6Ld1er0UAAAAAONvG_XKNAPoMFYkts3_aIaqJslk"
 
 class support extends Component {
 
     state = {
         loading : false,
         topic   : '',
-        message : ''
+        message : '',
+        recaptchaToken: ''
     }
 
-    constructor(props, context) {
-        super(props, context);
-        this.onLoadRecaptcha = this.onLoadRecaptcha.bind(this);
-        this.verifyCallback = this.verifyCallback.bind(this);
-    }
-
-    componentDidMount() {
-        if (this.captchaDemo) {
-            console.log("started, just a second...")
-            this.captchaDemo.reset();
-        }
-    }
-
-    onLoadRecaptcha() {
-        if (this.captchaDemo) {
-            this.captchaDemo.reset();
-        }
-    }
-
-    verifyCallback(recaptchaToken) {
-      // Here you will get the final recaptchaToken!!!
-      console.log(recaptchaToken, "<= your recaptcha token")
+    onCaptchaChange = (value) => {
+      console.log("Captcha value:", value);
+      this.setState({recaptchaToken : value});
     }
 
     handleChange = event => {
@@ -55,6 +40,7 @@ class support extends Component {
         this.setState({ loading : true });
 
         let data = {
+            recaptchaToken: this.state.recaptchaToken,
             topic   : this.state.topic,
             message : this.state.message
         }
@@ -78,82 +64,82 @@ class support extends Component {
             })
     }
 
+
     render() {
+          let btnContent;
+              if (this.state.loading){
+                  btnContent = (<Spinner animation="border" size="sm"/>);
+              } else {
+                  btnContent = ("Send");
+              }
 
-        let btnContent;
-        if (this.state.loading){
-            btnContent = (<Spinner animation="border" size="sm"/>);
-        } else {
-            btnContent = ("Send");
-        }
+              return (
+                  <div
+      				className="main-container"
+      				style={{width:"100vw", height:"100vh"}}>
+      				<Row
+      					className="login-form-container d-flex justify-content-center">
+      					<Col
+      						className="login-form-body p-5"
+      						xs="10"
+      						sm="6"
+      						md="3">
+      						<h1
+      							className="form-title mb-4">
+      							Tell Us What's Wrong
+      						</h1>
+      						<Form
+      							noValidate
+      							validated={this.state.validated}
+      							onSubmit={this.handleSubmit}>
+      							<Row
+      								className="my-1">
+      								<Form.Control
+      									className="login-field"
+      									name="topic"
+      									placeholder="topic"
+      									value={this.state.topic}
+      									onChange={this.handleChange}
+      									required/>
+      								<Form.Control.Feedback
+      									type="invalid">
 
-        return (
-            <div
-				className="main-container"
-				style={{width:"100vw", height:"100vh"}}>
-				<Row
-					className="login-form-container d-flex justify-content-center">
-					<Col
-						className="login-form-body p-5"
-						xs="10"
-						sm="6"
-						md="3">
-						<h1
-							className="form-title mb-4">
-							Tell Us What's Wrong
-						</h1>
-						<Form
-							noValidate
-							validated={this.state.validated}
-							onSubmit={this.handleSubmit}>
-							<Row
-								className="my-1">
-								<Form.Control
-									className="login-field"
-									name="topic"
-									placeholder="topic"
-									value={this.state.topic}
-									onChange={this.handleChange}
-									required/>
-								<Form.Control.Feedback
-									type="invalid">
+                  					</Form.Control.Feedback>
+      							</Row>
+      							<Row
+      								className="my-1">
+      								<Form.Control
+                                          as="textarea"
+                                          name="desc"
+                                          rows="5"
+                                          placeholder="message"
+                                          required
+                                          onChange={this.handleChange}/>
+      								<Form.Control.Feedback
+      									type="invalid">
+                  					</Form.Control.Feedback>
+      							</Row>
+                                <div
+                                    class="d-flex justify-content-center">
 
-            					</Form.Control.Feedback>
-							</Row>
-							<Row
-								className="my-1">
-								<Form.Control
-                                    as="textarea"
-                                    name="desc"
-                                    rows="5"
-                                    placeholder="message"
-                                    required
-                                    onChange={this.handleChange}/>
-								<Form.Control.Feedback
-									type="invalid">
-            					</Form.Control.Feedback>
-							</Row>
-                            <ReCaptcha
-                                ref={(el) => {this.captchaDemo = el;}}
-                                size="normal"
-                                data-theme="dark"
-                                render="explicit"
-                                sitekey="your_site_key"
-                                onloadCallback={this.onLoadRecaptcha}
-                                verifyCallback={this.verifyCallback}
-                            />
-							<Button
-								className="login-btn btn mt-3"
-								type="submit"
-								onClick={this.handleSubmit}
-                                disabled={this.state.loading}>
-                                {btnContent}
-                            </Button>
-						</Form>
-					</Col>
-				</Row>
-			</div>
-        )
+                                <ReCAPTCHA
+                                    sitekey={SITE_KEY}
+                                    onChange={this.onCaptchaChange}
+                                />
+
+                                </div>
+      							<Button
+      								className="login-btn btn mt-3"
+      								type="submit"
+      								onClick={this.handleSubmit}
+                                      disabled={this.state.loading}>
+                                      {btnContent}
+                                  </Button>
+      						</Form>
+      					</Col>
+      				</Row>
+      			</div>
+            )
     }
 }
 
