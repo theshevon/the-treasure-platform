@@ -254,12 +254,7 @@ exports.getUsers =
                 // Check for error
                 if (!errors[i]) {
                     // Create new invitee doc
-                    let newUser = db.collection('invitees').doc(inviteeEmail)
-                        .catch(err => {
-                            errors["general"]
-                                = `firestore error for email ${inviteeEmail}: ${err}`;
-                            return errors;
-                        });
+                    let newUser = db.collection('invitees').doc(inviteeEmail);
                     console.log("new user, id: " + newUser.id);
 
                     // Generate unique invite code for invitee
