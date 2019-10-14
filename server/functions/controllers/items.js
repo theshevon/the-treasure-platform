@@ -300,59 +300,58 @@ exports.toggleEOI =
             .collection('items')
             .doc(iid)
             .get()
-            .then(doc => {
+            .then(itemDoc => {
 
-                if (!doc.exists){
+                if (!itemDoc.exists){
                     return res.status(400).json("Invalid Item ID");
                 }
 
                 // check if user ID is valid
-                try{
-                    // eslint-disable-next-line promise/no-nesting
-                    db.collection('users')
+                // eslint-disable-next-line promise/no-nesting
+                return db.collection('users')
                         .doc(uid)
                         .get()
-                        .then(doc => {
-                            if (!doc.exists){
+                        .then(userDoc => {
+
+                            if (!userDoc.exists){
                                 throw new Error("Invalid user id");
                             }
-                            return;
-                        })
-                        .catch(err => {
-                            throw err;
-                        })
-                } catch (err) {
-                    console.log(err);
-                    res.status(400).json("Invalid User ID");
-                }
 
-                let intUsers = doc.data()["intUsers"];
+                            // fetch the intUsers arrays
+                            let intUsers = itemDoc.data()["intUsers"];
 
-                // toggle the user's interest in the item
-                if (!intUsers.includes(uid)){
-                    // add to the list
-                    intUsers.push(iid);
-                } else {
-                    // remove from the list
-                    let index = intUsers.indexOf(intUsers);
-                    intUsers.splice(index, 1);
-                }
+                            // toggle the user's interest in the item
+                            if (!intUsers.includes(uid)){
+                                // add to the list
+                                intUsers.push(uid);
+                            } else {
+                                // remove from the list
+                                let index = intUsers.indexOf(intUsers);
+                                intUsers.splice(index, 1);
+                            }
 
-                // eslint-disable-next-line promise/no-nesting
-                return db
-                        .collection('items')
-                        .doc(iid)
-                        .update({ intUsers : intUsers })
-                        .then(() => {
-                            return res.status(200).json("Success");
+                            // eslint-disable-next-line promise/no-nesting
+                            return db
+                                    .collection('items')
+                                    .doc(iid)
+                                    .update({ intUsers : intUsers })
+                                    .then(() => {
+                                        return res.status(200).json("Success");
+                                    })
+                                    .catch(err => {
+                                        console.log(err);
+                                        throw new Error(err);
+                                    })
                         })
-                        .catch(err => {
+                        .catch (err => {
                             console.log(err);
-                            return res.status(400).json(err);
-                        })
+                            return res.status(400).json("Invalid User ID");
+                        });
+
             })
             .catch(err => {
                 console.log(err);
                 return res.status(400).json(err);
             });
     }
+
