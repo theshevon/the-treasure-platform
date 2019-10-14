@@ -96,20 +96,25 @@ exports.validateLoginData =
 
 exports.validateItemData =
 
-    (item, users) => {
+    (item, secondaryUsers) => {
 
         let errors = {};
 
         // check if name and desc are valid
         if (isEmpty(item.name)) errors.name = "Please enter a name for the item.";
-        if (isEmpty(item.desc)) errors.desc = "Please enter a name for the item.";
+        if (isEmpty(item.desc)) errors.desc = "Please enter a desciption for the item.";
 
         // check if 'assignedTo' user is a valid user
-        if (item.assignedTo && !users.includes(item.assignedTo)) errors.assignedTo = "Please select a valid user from the dropdown";
+        if (item.assignedTo && !secondaryUsers.includes(item.assignedTo)) errors.assignedTo = "Please select a valid user from the dropdown";
 
-        // No need to check the 'visibleTo' users because the front-end does work
-        // to determine the list of users. Tampering with that field shouldn't
-        // result in any issues.
+        // check if 'visibleTo' field contains valid SUs
+        if (item.visibleTo){
+            for (var i=0; i<item.visibleTo.length; i++){
+                if (!secondaryUsers.includes(item.visibleTo[i])){
+                    errors.secondaryUsers = "Please select valid users from the dropdown";
+                }
+            }
+        }
 
         return {
             errors,
@@ -124,6 +129,6 @@ const isEmpty = (string) => {
 }
 
 const isEmail = (email) => {
-    const regEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const regEx = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return email.match(regEx);
 }

@@ -53,10 +53,10 @@ export class Dashboard extends Component {
                     style={{textAlign : "center"}}
                     onClose={ this.clearAlert }
                     dismissible>
-                <p>
-                   { this.state.alertMsg }
-                </p>
-            </Alert>
+                    <p>
+                    { this.state.alertMsg }
+                    </p>
+                </Alert>
             )
         }
 
@@ -80,7 +80,7 @@ export class Dashboard extends Component {
                         <Col
                             xs="12"
                             md="4"
-                            className="dashboard-option-container">
+                            className="dashboard-option-container mb-4">
                             <Col
                                 className="dashboard-option">
                                 <img

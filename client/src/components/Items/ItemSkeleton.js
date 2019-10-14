@@ -39,9 +39,9 @@ class ItemSkeleton extends Component {
                             </div>
                             <div
                                 className="d-flex justify-content-end">
-                            </div>
-                            <div
-                                className="empty-btn empty-btn-2 mb-2">
+                                <div
+                                    className="empty-btn empty-btn-2 mb-2">
+                                </div>
                             </div>
                             <div
                                 className="empty-line empty-line-2 mb-2">

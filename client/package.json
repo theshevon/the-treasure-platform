@@ -8,13 +8,18 @@
     "bootstrap": "^4.3.1",
     "jwt-decode": "^2.2.0",
     "material-ui": "^0.20.2",
+    "mdbreact": "^4.21.0",
+    "prop-types": "^15.7.2",
     "react": "^16.9.0",
     "react-bootstrap": "^1.0.0-beta.12",
     "react-bootstrap-multiselect": "^2.4.1",
     "react-bootstrap-sweetalert": "^4.4.1",
     "react-dom": "^16.9.0",
+    "react-redux": "^7.1.1",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.1.1",
+    "redux": "^4.0.4",
+    "redux-thunk": "^2.3.0",
     "semantic-ui-react": "^0.88.1"
   },
   "scripts": {

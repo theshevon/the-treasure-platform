@@ -2,16 +2,20 @@ const express        = require("express");
 const router         = express.Router();
 
 const userController = require("../controllers/users")
+const { isLoggedIn } = require("../util/middleware")
 
 /*=================================GET ROUTES=================================*/
 
-router.get("/users", userController.getUsers);
+router.get("/user", isLoggedIn, userController.getAuthenticatedUser);
 
-router.get("/logout", userController.logOutUser);
+router.get("/users", isLoggedIn, userController.getSecondaryUsers);
+
+router.get("/logout", isLoggedIn, userController.logOutUser);
+
 
 /*================================POST ROUTES=================================*/
 
-router.post("/check_invitee", userController.checkInvitee);
+router.post("/check_invitee", isLoggedIn, userController.checkInvitee);
 
 router.post("/register", userController.registerNewUser);
 

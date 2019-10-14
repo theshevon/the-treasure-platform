@@ -30,7 +30,8 @@ exports.isLoggedIn =
                         .then(doc => {
                             return {
                                         id   : doc.id,
-                                        name : `${doc.data()['fname']} ${doc.data()['lname']}`
+                                        // name : `${doc.data()['fname']} ${doc.data()['lname']}`
+                                        // img_src : doc.data()['img_src']
                                     }
                         })
                         .catch(err => {
@@ -38,10 +39,45 @@ exports.isLoggedIn =
                         })
             })
             .then(data => {
-                req.user.name = data["name"];
+                req.user.id   = data["id"];
                 return next();
             })
             .catch(err => {
                 return res.status(403).json(err);
+            })
+    }
+
+// check if user is authorised (primary user) and can view page
+exports.isAuthorised =
+
+    (req, res, next) => {
+        let idToken;
+        if (req.headers.authorization && req.headers.authorization.startsWith('Bearer ')){
+            // extract the token
+            idToken = req.headers.authorization.split('Bearer ')[1];
+        }
+
+        // decode token
+        admin
+            .auth()
+            .verifyIdToken(idToken)
+            .then(decodedToken => {
+                req.user = decodedToken;
+                // get user info with token
+                return db
+                    .collection('users')
+                    .doc(req.user.uid)
+                    .get()
+                    .then(doc => {
+                        // check if user is primary or secondary
+                        if (doc.data().uType === 0) return next();
+                        else return res.status(403).json(err);
+                    })
+                    .catch(err => {
+                        return res.status(403).json(err);
+                    })
+            })
+            .catch(err => {
+                console.log(err);
             })
     }

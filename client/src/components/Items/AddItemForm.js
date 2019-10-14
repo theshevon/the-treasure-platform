@@ -27,6 +27,8 @@ class AddItemForm extends Component {
         assignedto        : null,
         stage             : 0,
         allUsers          : [],
+        userOptions       : [],
+        visibilityOptions : [],
         selectingWatchers : true,
         selectedUsers     : [],
         loading           : false,
@@ -39,34 +41,38 @@ class AddItemForm extends Component {
         // fetch user IDs and names of all the secondary users on the platform
         axios({
                     method: 'get',
-                    url: 'http://localhost:5000/comp30022app/us-central1/api/users'
+                    url: '/users'
                 })
                 .then(res => {
+                    let users = res.data;
+
+                    // user options for visibility dropdown
+                    let userOptions = [];
+                    users.forEach(user => {
+                        userOptions.push({
+                            key   : user.uid,
+                            text  : user.name,
+                            value : user.name
+                        });
+                    });
+
                     this.setState({
-                        allUsers: res.data
-                    })
+                        allUsers    : users,
+                        userOptions : userOptions
+                    });
                 })
                 .catch(err => {
                     console.log(err);
                 });
 
-        // user options for visibility dropdown
-        let userOptions = [];
-        this.state.allUsers.forEach(user => {
-            userOptions.push({
-                key: user.uid,
-                text: user.name,
-                value: user.name
-            });
-        });
-        this.setState({ userOptions : userOptions });
+
 
         // options for visibility toggler dropdown
         let opts = ["Visible to", "Hidden from"];
-        let visibilityOptions = opts.map(item => ({
-                                                    key: item,
-                                                    text: item,
-                                                    value: item
+        let visibilityOptions = opts.map(opt => ({
+                                                    key   : opt,
+                                                    text  : opt,
+                                                    value : opt
                                                 }));
         this.setState({ visibilityOptions : visibilityOptions });
     }
@@ -113,7 +119,7 @@ class AddItemForm extends Component {
         try {
             const res = await axios({
                 method: "post",
-                url: 'http://localhost:5000/comp30022app/us-central1/api/items/new',
+                url: '/items/new',
                 data: data
             }).then((res)=> {
                 return res.data;
@@ -129,7 +135,7 @@ class AddItemForm extends Component {
         try {
             await axios({
                             method: "post",
-                            url: `http://localhost:5000/comp30022app/us-central1/api/items/${itemId}/img_upload`,
+                            url: `/items/${itemId}/img_upload`,
                             headers: {
                                 "content-type": "multipart/form-data"
                             },
@@ -185,9 +191,8 @@ class AddItemForm extends Component {
             cover      : this.state.coverImgIndex,
             visibleTo  : visibleTo,
             assignedTo : assignedTo,
-            photos     : []
         }
-
+        console.log(itemData);
         this.submitData(itemData);
 	}
 
@@ -373,7 +378,7 @@ class AddItemForm extends Component {
                             sm="9">
                             <Dropdown
                                 name="assignedto"
-                                placeholder='Select User(s)'
+                                placeholder='Select User'
                                 search
                                 selection
                                 options={this.state.userOptions}

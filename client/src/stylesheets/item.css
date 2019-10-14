@@ -20,9 +20,8 @@
     border: none !important;
     margin: 0.8em;
     width: 18.2rem;
-    border-radius: 0px !important;
+    border-radius: 5px !important;
     box-shadow: 0 6px 15px rgba(36,37,38,0.08);
-
 }
 
 .item-card:hover{
@@ -36,6 +35,7 @@
 }
 
 .item-card-body{
+    padding-top: 0 !important;
     padding-left: 0 !important;
     padding-right: 0 !important;
 }
@@ -66,20 +66,6 @@
     border-color: #a8a8a8!important;
 }
 
-.modal-title.h4{
-    margin-left: 50% !important;
-    transform: translateX(-50%) !important;
-}
-
-.modal-content{
-    border-radius: 0 !important;
-    border: none !important;
-}
-
-.modal-header{
-    border-bottom: none !important;
-}
-
 .carousel-item img{
     height: 700px !important;
     object-fit: cover;
@@ -90,7 +76,7 @@
 }
 
 .like-btn {
-    background-color: none !important;
+    background-color: rgba(0, 0, 0, 0) !important;
     border: none !important;
     outline: none !important;
     padding: 1em;
@@ -108,4 +94,8 @@
 .edit-btn {
     margin-right: 5px;
     margin-bottom: 5px;
+}
+
+.item-card-loaded:hover{
+    transform: scale(1.05) perspective(1px);
 }

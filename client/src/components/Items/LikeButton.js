@@ -25,7 +25,7 @@ class LikeButton extends Component {
 		// let route = this.state.liked ? "int" : "notint";
 		// axios({
 		// 		method: 'put',
-		// 		url: `http://localhost:5000/comp30022app/us-central1/api/items/${this.props.itemID}/${route}/${this.userId}`,
+		// 		url: `/items/${this.props.itemID}/${route}/${this.userId}`,
 		// 	  })
 		// 	  .then(res => {
 		// 		  // do nothing with response
