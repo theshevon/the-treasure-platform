@@ -246,8 +246,6 @@ exports.getUsers =
                         });
                     });
 
-                emailIndex = 0;
-
                 // Check for error
                 if (!errors[i]) {
                     // Create new invitee doc
@@ -298,9 +296,7 @@ exports.getUsers =
             if (Object.keys(errors).length === 0) {
                 return res.status(200).json("Success: All invites sent");
             }
-            return {
-                errors
-            }
+            return errors;
 
         }
 
