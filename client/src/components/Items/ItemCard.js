@@ -93,6 +93,49 @@ export class ItemCard extends Component {
 			btnContent = ("Yes, I'm sure");
 		}
 
+		let btnSet = null;
+		if (user.type === 0){
+			btnSet = (
+						<Row>
+							<Col
+								lg="2">
+
+								{/* edit button */}
+								<Button
+									className="btn edit-btn"
+									variant="light">
+									Edit
+								</Button>
+
+								{/* delete button */}
+								<Button
+									variant="danger"
+									onClick={this.handleDeleteRequest}
+									className="del-btn btn"
+									itemId={item.id}
+									disabled={this.state.loading}>
+									Delete
+								</Button>
+							</Col>
+
+							<Col
+								lg="10"
+								className="d-flex justify-content-end">
+								<Button
+									className="btn"
+									variant="light">
+									View Interested
+								</Button>
+								<Button
+									className="btn ml-2"
+									variant="light">
+									Assign Item
+								</Button>
+							</Col>
+						</Row>
+					)
+		}
+
 		return (
 
 			<Card
@@ -196,67 +239,31 @@ export class ItemCard extends Component {
 							</p>
 						</div>
 
-						<Row>
-							<Col
-								lg="2">
-
-								{/* edit button */}
-								<Button
-									className="btn edit-btn"
-									variant="light">
-									Edit
-								</Button>
-
-								{/* delete button */}
-								<Button
-									variant="danger"
-									onClick={this.handleDeleteRequest}
-									className="del-btn btn"
-									itemId={item.id}
-									disabled={this.state.loading}>
-									Delete
-								</Button>
-							</Col>
-
-							<Col
-								lg="10"
-								className="d-flex justify-content-end">
-								<Button
-									className="btn"
-									variant="light">
-									View Interested
-								</Button>
-								<Button
-									className="btn ml-2"
-									variant="light">
-									Assign Item
-								</Button>
-							</Col>
-						</Row>
+						{ btnSet }
 
 						<div>
-						{/* ask user to confirm item deletion */}
-						<SweetAlert
-							warning
-							showCancel
-							show={this.state.showWarning}
-							confirmBtnText={btnContent}
-							confirmBtnBsStyle="danger"
-							cancelBtnBsStyle="default"
-							title="STOP!"
-							onConfirm={() => this.handleDelete(item.id)}
-							onCancel={this.cancelDelete}>
-							Are you sure you want to delete this item?
-						</SweetAlert>
+							{/* ask user to confirm item deletion */}
+							<SweetAlert
+								warning
+								showCancel
+								show={this.state.showWarning}
+								confirmBtnText={btnContent}
+								confirmBtnBsStyle="danger"
+								cancelBtnBsStyle="default"
+								title="STOP!"
+								onConfirm={() => this.handleDelete(item.id)}
+								onCancel={this.cancelDelete}>
+								Are you sure you want to delete this item?
+							</SweetAlert>
 
-						{/* successful deletion notification */}
-						<SweetAlert
-							success
-							title="Done!"
-							show={this.state.showDeleteSuccess}
-							onConfirm={this.hideConrfimationAlert}>
-							The item was successfully deleted!
-						</SweetAlert>
+							{/* successful deletion notification */}
+							<SweetAlert
+								success
+								title="Done!"
+								show={this.state.showDeleteSuccess}
+								onConfirm={this.hideConrfimationAlert}>
+								The item was successfully deleted!
+							</SweetAlert>
 						</div>
 
 					</Modal.Body>
