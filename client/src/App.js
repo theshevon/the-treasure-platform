@@ -55,7 +55,7 @@ class App extends Component{
 						{/* landing page- items */}
 						<AuthenticatedRoute
 							exact
-							path="/items"
+							path="/"
 							component={ items }/>
 
 						{/* login page */}
