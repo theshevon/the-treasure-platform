@@ -8,7 +8,7 @@ const { isLoggedIn } = require("../util/middleware")
 
 router.get("/user", isLoggedIn, userController.getAuthenticatedUser);
 
-router.get("/users", isLoggedIn, userController.getSecondaryUsers);
+router.get("/users", userController.getSecondaryUsers);
 
 router.get("/logout", isLoggedIn, userController.logOutUser);
 
@@ -20,7 +20,7 @@ router.post("/register", userController.registerNewUser);
 
 router.post("/login", userController.logInUser);
 
-router.post("/invite",  userController.inviteNewUsers);
+router.post("/invite", isLoggedIn, userController.inviteNewUsers);
 
 /*===========================================================================*/
 

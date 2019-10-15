@@ -36,10 +36,10 @@ class AddItemForm extends Component {
         success           : false
     }
 
-    componentDidMount(){
+    async componentDidMount(){
 
         // fetch user IDs and names of all the secondary users on the platform
-        axios({
+        await axios({
                     method: 'get',
                     url: '/users'
                 })
@@ -65,8 +65,6 @@ class AddItemForm extends Component {
                     console.log(err);
                 });
 
-
-
         // options for visibility toggler dropdown
         let opts = ["Visible to", "Hidden from"];
         let visibilityOptions = opts.map(opt => ({
@@ -74,6 +72,7 @@ class AddItemForm extends Component {
                                                     text  : opt,
                                                     value : opt
                                                 }));
+
         this.setState({ visibilityOptions : visibilityOptions });
     }
 
