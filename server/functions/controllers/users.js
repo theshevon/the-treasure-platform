@@ -35,7 +35,7 @@ exports.checkInvitee =
         // validate code against database entry
         db
             .collection('invitees')
-            .doc(email)
+            .doc(invitee.email)
             .get()
             .then(doc => {
 
@@ -54,13 +54,14 @@ exports.checkInvitee =
                     // eslint-disable-next-line promise/no-nesting
                     return db
                             .collection('invitees')
-                            .doc(email)
+                            .doc(invitee.email)
                             .set(invitee)
                             .then(() => {
                                 return res.status(200).json("Success: User validated");
                             })
                             .catch(err => {
-                                return res.status(500).json({ error : err });
+                                console.log(err);
+                                return res.status(400).json({ error : err });
                             })
                 }
 
@@ -68,7 +69,8 @@ exports.checkInvitee =
                 return res.status(400).json({ general : "Sorry, the email address or code you entered was incorrect." });
             })
             .catch(err => {
-                res.status(500).json({err: err});
+                console.log(err);
+                res.status(400).json({err: err});
             })
     }
 
@@ -182,15 +184,15 @@ exports.getSecondaryUsers =
 
         // Get a list of all the secondary users from the database
         db.collection('users')
-            .get(req.user.id)
+            .get()
             .then(data => {
                 // Extract all userIDs
                 let users = [];
                 data.forEach((doc) => {
-                    if (doc.data().uType === 1){
+                    if (parseInt(doc.data()["uType"]) === 1){
                         let user = {
-                                    uid : doc.id,
-                                    name : doc.data().fname + " " + doc.data().lname,
+                                        uid : doc.id,
+                                        name : doc.data().fname + " " + doc.data().lname,
                                     };
                         users.push(user);
                     }
@@ -224,106 +226,106 @@ exports.getAuthenticatedUser =
 
     }
 
-    exports.inviteNewUsers =
+exports.inviteNewUsers =
 
-        async (req, res) => {
+    async (req, res) => {
 
-            // Creates new invitee from an array of JSON objects containing
-            // names and emails, and emails each invitee a unique invite code
+        // Creates new invitee from an array of JSON objects containing
+        // names and emails, and emails each invitee a unique invite code
 
-            let errors = {};
+        let errors = {};
 
-            //// TODO: Validate input
+        //// TODO: Validate input
 
-            const emailArray = req.body.emails;
+        const emailArray = req.body.emails;
 
-            //ensure that the request is not empty
-            if (emailArray.length === 0) {
-                console.log('no email addresses entered');
-                return res.status(400);
-            }
+        //ensure that the request is not empty
+        if (emailArray.length === 0) {
+            console.log('no email addresses entered');
+            return res.status(400);
+        }
 
-            console.log(emailArray[0]);
+        console.log(emailArray[0]);
 
-            for (var i = 0; i < emailArray.length; i++) {
-                var inviteeEmail = emailArray[i];
+        for (var i = 0; i < emailArray.length; i++) {
+            var inviteeEmail = emailArray[i];
 
-                // loop over all users to check for duplicate email
+            // loop over all users to check for duplicate email
 
-                db.collection('users')
-                    .get()
-                    .then((data) => {
-                        data.forEach((doc) => {
-                            if (doc.data().email === inviteeEmail) {
+            db.collection('users')
+                .get()
+                .then((data) => {
+                    data.forEach((doc) => {
+                        if (doc.data().email === inviteeEmail) {
 
-                                // Duplicate email; abort and return error
-                                errors[i]
-                                    =`Email ${inviteeEmail} is already registered`;
-                            }
-                            return null;
-                        });
-                        return null;
-                    })
-                    .catch(err => {
-                        errors[i] = `firestore error: ${err}`;
-                        return errors;
-                    });
-
-                // Check for error
-                if (!errors[i]) {
-                    // Create new invitee doc
-                    let newUser = db.collection('invitees').doc(inviteeEmail);
-                    console.log("new user, id: " + newUser.id);
-
-                    // Generate unique invite code for invitee
-                    let rawkey = Math.random().toString(36).substring(2, 12);
-                    const key = generateUniqueInviteCode(rawkey);
-
-                    if (key === null) {
-                        errors[i] = "Unique code generation failed. Try again.";
-                    }
-                    else {
-                        // Assign data to invitee doc
-                        newUser.set({
-                                accepted: false,
-                                code: key
-                            });
-
-                        console.log("Invitee added: " + inviteeEmail + ", code: " + key);
-
-                        // Generate invitation email with key code
-                        const mailOptions = {
-                            from: 'Treasure App <treasureapp.au@gmail.com>',
-                            to: inviteeEmail,
-                            subject: 'Welcome to Treasure', // email subject
-                            html: `<p style="font-size: 16px;">Welcome!</p>
-                                <br />
-                                <p style="font-size: 16px;">You have been invited to join
-                                Treasure.</p>
-                                <p style="font-size: 16px;">Go to localhost:5000/register
-                                and enter the invite
-                                code ${key} to set up your account.</p>` // email content
-                        };
-
-                        // Send invitation email to new invitee
-                        /* eslint-disable no-await-in-loop */
-                        try {
-                            await sendMail(mailOptions);
-                        /* eslint-enable no-await-in-loop */
-                        } catch (err) {
-                            errors[i] = `Email could not be sent to ${inviteeEmail}`;
+                            // Duplicate email; abort and return error
+                            errors[i]
+                                =`Email ${inviteeEmail} is already registered`;
                         }
+                        return null;
+                    });
+                    return null;
+                })
+                .catch(err => {
+                    errors[i] = `firestore error: ${err}`;
+                    return errors;
+                });
+
+            // Check for error
+            if (!errors[i]) {
+                // Create new invitee doc
+                let newUser = db.collection('invitees').doc(inviteeEmail);
+                console.log("new user, id: " + newUser.id);
+
+                // Generate unique invite code for invitee
+                let rawkey = Math.random().toString(36).substring(2, 12);
+                const key = generateUniqueInviteCode(rawkey);
+
+                if (key === null) {
+                    errors[i] = "Unique code generation failed. Try again.";
+                }
+                else {
+                    // Assign data to invitee doc
+                    newUser.set({
+                            accepted: false,
+                            code: key
+                        });
+
+                    console.log("Invitee added: " + inviteeEmail + ", code: " + key);
+
+                    // Generate invitation email with key code
+                    const mailOptions = {
+                        from: 'Treasure App <treasureapp.au@gmail.com>',
+                        to: inviteeEmail,
+                        subject: 'Welcome to Treasure', // email subject
+                        html: `<p style="font-size: 16px;">Welcome!</p>
+                            <br />
+                            <p style="font-size: 16px;">You have been invited to join
+                            Treasure.</p>
+                            <p style="font-size: 16px;">Go to localhost:5000/register
+                            and enter the invite
+                            code ${key} to set up your account.</p>` // email content
+                    };
+
+                    // Send invitation email to new invitee
+                    /* eslint-disable no-await-in-loop */
+                    try {
+                        await sendMail(mailOptions);
+                    /* eslint-enable no-await-in-loop */
+                    } catch (err) {
+                        errors[i] = `Email could not be sent to ${inviteeEmail}`;
                     }
                 }
             }
-
-            // Check for errors
-            if (Object.keys(errors).length === 0) {
-                return res.status(200).json("Success: All invites sent");
-            }
-            return errors;
-
         }
+
+        // Check for errors
+        if (Object.keys(errors).length === 0) {
+            return res.status(200).json("Success: All invites sent");
+        }
+        return errors;
+
+    }
 
 
 exports.sendMailToAddress =
