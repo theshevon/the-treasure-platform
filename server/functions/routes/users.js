@@ -20,8 +20,12 @@ router.post("/register", userController.registerNewUser);
 
 router.post("/login", userController.logInUser);
 
-router.post("/invite", userController.inviteNewUsers);
+router.post("/invite", isLoggedIn, userController.inviteNewUsers);
 
-/*===========================================================================*/
+/*=================================PUT ROUTES=================================*/
+
+router.put("/users/:id/img_upload", userController.uploadImg);
+
+/*============================================================================*/
 
 module.exports = router;
