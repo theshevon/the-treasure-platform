@@ -58,9 +58,10 @@ class NavbarComponent extends Component {
         );
 
         let name   = localStorage.TreasureUName || user.name;
-        let imgSrc = localStorage.TreasureUImg || user.imgSrc;
+        let imgSrc = localStorage.TreasureUImg  || user.imgSrc;
+        let type   = localStorage.TreasureUType || user.type;
 
-        if (user.type === 0){
+        if (parseInt(type) === 0){
             menuItems = (
                 <Nav
                     className="mr-auto">

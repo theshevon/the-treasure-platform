@@ -63,19 +63,19 @@ class InviteForm extends Component {
 
         // send the data to the server
         axios({
-            method: 'post',
-            url: 'http://localhost:5000/comp30022app/us-central1/api/invite',
-            data: { emails : this.state.emails }
-        })
-        .then(res => {
-            this.setState({ loading : false });
-        })
-        .catch(err => {
-            this.setState({
-                errors    : err.response.data,
-                loading   : false,
+                method: 'post',
+                url: 'http://localhost:5000/comp30022app/us-central1/api/invite',
+                data: { emails : this.state.emails }
             })
-        })
+            .then(res => {
+                this.setState({ loading : false });
+            })
+            .catch(err => {
+                this.setState({
+                    errors    : err.response.data,
+                    loading   : false,
+                })
+            })
     }
 
     render() {
