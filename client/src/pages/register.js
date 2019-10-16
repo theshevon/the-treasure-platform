@@ -1,12 +1,12 @@
-import React, { Component } from 'react'
-import axios from 'axios'
+import React, { Component } from 'react';
+import axios                from 'axios';
 
 // boostrap imports
-import Spinner from 'react-bootstrap/Spinner'
-import Button  from 'react-bootstrap/Button'
-import Form    from 'react-bootstrap/Form'
-import Row     from 'react-bootstrap/Row'
-import Col     from 'react-bootstrap/Col'
+import Spinner from 'react-bootstrap/Spinner';
+import Button  from 'react-bootstrap/Button';
+import Form    from 'react-bootstrap/Form';
+import Row     from 'react-bootstrap/Row';
+import Col     from 'react-bootstrap/Col';
 
 class Register extends Component {
 

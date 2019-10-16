@@ -1,10 +1,10 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 
 // custom css
-import '../stylesheets/error.css'
+import '../stylesheets/error.css';
 
 // icons
-import errorIcon from '../icons/error.svg'
+import errorIcon from '../icons/error.svg';
 
 export class error extends Component {
     render() {

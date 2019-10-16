@@ -1,8 +1,8 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 
 // bootstrap imports
-import Button from 'react-bootstrap/Button'
-import Modal  from 'react-bootstrap/Modal'
+import Button from 'react-bootstrap/Button';
+import Modal  from 'react-bootstrap/Modal';
 
 export class FormModal extends Component {
 

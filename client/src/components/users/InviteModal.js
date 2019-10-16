@@ -1,14 +1,14 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 
 // bootstrap imports
-import Button from 'react-bootstrap/Button'
-import Modal  from 'react-bootstrap/Modal'
+import Button from 'react-bootstrap/Button';
+import Modal  from 'react-bootstrap/Modal';
 
 // custom components
-import InviteFrom from './users/InviteForm'
+import InviteFrom from './users/InviteForm';
 
 // custom stylesheets
-import '../stylesheets/invite-modal.css'
+import '../stylesheets/invite-modal.css';
 
 class InviteModal extends Component {
 
