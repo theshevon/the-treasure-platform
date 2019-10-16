@@ -16,8 +16,8 @@ import items     from './pages/items';
 import login     from './pages/login';
 
 // custom components
-import AuthenticatedRoute from './components/util/AuthenticatedRoute'
-import PrivateRoute       from './components/util/PrivateRoute'
+import AuthenticatedRoute from './components/util/AuthenticatedRoute';
+import PrivateRoute       from './components/util/PrivateRoute';
 
 // redux stuff
 import { Provider }                from 'react-redux';
@@ -26,7 +26,7 @@ import { SET_AUTHENTICATED }       from './redux/types';
 import { logoutUser, getUserData } from './redux/actions/userActions';
 
 // local server URL (for dev)
-axios.defaults.baseURL = 'http://localhost:5000/comp30022app/us-central1/api'
+axios.defaults.baseURL = 'http://localhost:5000/comp30022app/us-central1/api';
 
 // global server URL
 // axios.defaults.baseURL = 'https://us-central1-comp30022app.cloudfunctions.net/api';

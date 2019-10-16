@@ -122,6 +122,21 @@ exports.validateItemData =
         }
     }
 
+exports.validateSupportData =
+
+    (supportData) => {
+
+        let errors = {};
+
+        // check if subject and body are valid
+        if (isEmpty(supportData.subject)) errors.subject = "Please enter a subject!";
+        if (isEmpty(supportData.message)) errors.message = "Please enter a message!";
+
+        return {
+            errors,
+            valid : Object.keys(errors).length === 0
+        }
+    }
 /*=============================HELPER FUNCTIONS===============================*/
 
 const isEmpty = (string) => {
