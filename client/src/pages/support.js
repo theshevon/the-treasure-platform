@@ -120,8 +120,17 @@ class support extends Component {
             } else {
                 messageClass = "valid-field";
             }
-        }
 
+            if (errors.general){
+                subjectFeedback = null;
+                messageFeedback = (
+                    <p
+                        className="invalid-feedback-msg">
+                        { errors.general }
+                    </p>
+                );
+            }
+        }
 
         return (
 
