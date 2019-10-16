@@ -16,7 +16,9 @@ class support extends Component {
         subject   : '',
         message   : '',
         showAlert : false,
-        alertMsg  : ''
+        alertMsg  : '',
+        errors    : {},
+        validated : false
     }
 
     handleChange = event => {
@@ -47,7 +49,7 @@ class support extends Component {
                 url    : '/support',
                 data   :  data
             })
-            .then((res) => {
+            .then(res => {
                 this.setState({
                                 loading   : false,
                                 topic     : '',
@@ -58,17 +60,68 @@ class support extends Component {
                 return
             })
             .catch(err => {
-                this.setState({ errors : err.response.data });
+                this.setState({ loading: false, validated: true, errors : {subject: "error", message: "error2"} });
             })
     }
 
 
     render() {
 
+        let errors    = this.state.errors;
+        let validated = this.state.validated;
+
         let btnContent = ("Send");
         if (this.state.loading){
             btnContent = (<Spinner animation="border" size="sm"/>);
         }
+
+        let alert = null;
+        if (this.state.showAlert){
+            alert = (
+                <Alert
+                    className="mt-1"
+                    variant="success"
+                    style={{ textAlign : "center" }}
+                    onClose={ this.clearAlert }
+                    dismissible>
+                    <p>
+                    { this.state.alertMsg }
+                    </p>
+                </Alert>
+            )
+        }
+
+        let subjectClass    = "";
+        let messageClass    = "";
+        let subjectFeedback = null;
+        let messageFeedback = null;
+
+        if (validated){
+            if (errors.subject){
+                subjectFeedback = (
+                    <p
+                        className="invalid-feedback-msg">
+                        { errors.subject }
+                    </p>
+                );
+                subjectClass = "invalid-field";
+            } else {
+                subjectClass = "valid-field";
+            }
+
+            if (errors.message){
+                messageFeedback = (
+                    <p
+                        className="invalid-feedback-msg">
+                        { errors.message }
+                    </p>
+                );
+                messageClass = "invalid-field";
+            } else {
+                messageClass = "valid-field";
+            }
+        }
+
 
         return (
 
@@ -77,11 +130,14 @@ class support extends Component {
 
                 <Row
                     className="login-form-container d-flex justify-content-center">
+
                     <Col
                         className="login-form-body p-5"
                         xs="10"
                         sm="6"
                         md="4">
+
+                        { alert }
 
                         {/* Form header */}
                         <h1
@@ -99,21 +155,25 @@ class support extends Component {
                             <Row
                                 className="my-1">
                                 <Form.Control
+                                    className={ subjectClass }
                                     name="subject"
                                     placeholder="subject"
                                     value={this.state.subject}
                                     onChange={this.handleChange}
                                     required/>
+                                { subjectFeedback }
                             </Row>
                             <Row
                                 className="my-1">
                                 <Form.Control
-                                        as="textarea"
-                                        name="desc"
-                                        rows="5"
-                                        placeholder="message"
-                                        required
-                                        onChange={this.handleChange}/>
+                                    className={ messageClass }
+                                    as="textarea"
+                                    name="desc"
+                                    rows="5"
+                                    placeholder="message"
+                                    required
+                                    onChange={this.handleChange}/>
+                                { messageFeedback }
                             </Row>
                             <Button
                                 className="btn centered-btn mt-3"
