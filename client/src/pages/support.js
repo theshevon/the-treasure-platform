@@ -60,8 +60,12 @@ class support extends Component {
                 return
             })
             .catch(err => {
-                this.setState({ loading: false, validated: true, errors : {subject: "error", message: "error2"} });
-            })
+                this.setState({
+                                loading   : false,
+                                validated : true,
+                                errors    : err.response.data
+                            });
+            });
     }
 
 
