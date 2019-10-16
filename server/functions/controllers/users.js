@@ -5,7 +5,8 @@ const nodemailer    = require('nodemailer');
 const config        = require('../util/config');
 const { validateRegistrationData,
         validateLoginData,
-        validateInviteeData } = require("../util/validators");
+        validateInviteeData,
+        validateSupportData } = require("../util/validators");
 
 const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -352,23 +353,29 @@ exports.sendMailToAddress =
         return res.send('Email sent');
     }
 
-exports.sendSupportMessage = 
+exports.sendSupportMessage =
 
     async (req, res) => {
 
-        let subject = req.body.subject;
-        let message = req.body.message;
-        let senderID = req.params.uid;
+        const supportData = {
+                                subject : req.body.subject,
+                                message : req.body.message
+                            }
+
+        // carry out validation
+        const { valid, errors } = validateSupportData(supportData);
+        if (!valid) return res.status(400).json(errors);
 
         const mailOptions = {
-            from: 'Treasure App <treasureapp.au@gmail.com>',
+            from: req.user.email,
             to: 'treasureapp.au@gmail.com',
-            subject: `Support Request: ${subject}`, // email subject
-            html: ` <p style="font-size: 16px;">${message}</p>
-                    <br>
-                    <p style="font-size: 10px;"><b>Received from UID:</b> ${senderID}</p>`
+            subject: `Support Request: ${subject}`,
+            html:
+                `<p style="font-size: 16px;">${message}</p>
+                <br>
+                <p style="font-size: 10px;"><b>Received from UID:</b> ${senderID}</p>`
         };
-        
+
         // send email
         /* eslint-disable no-await-in-loop */
         try {

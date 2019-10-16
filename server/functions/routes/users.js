@@ -20,9 +20,9 @@ router.post("/register", userController.registerNewUser);
 
 router.post("/login", userController.logInUser);
 
-router.post("/invite", userController.inviteNewUsers);
+router.post("/invite", isLoggedIn, userController.inviteNewUsers);
 
-router.post("/users/:uid/support", userController.sendSupportMessage);
+router.post("/support", isLoggedIn, userController.sendSupportMessage);
 
 /*===========================================================================*/
 
