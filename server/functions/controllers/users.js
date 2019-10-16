@@ -6,7 +6,8 @@ const config        = require('../util/config');
 const { validateRegistrationData,
         validateInvitationData,
         validateLoginData,
-        validateInviteeData } = require("../util/validators");
+        validateInviteeData,
+        validateSupportData } = require("../util/validators");
 
 const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -309,6 +310,41 @@ exports.inviteNewUsers =
             return res.status(200).json("Success: All invites sent");
         }
         return res.status(400).json(errors);
+    }
+
+exports.sendSupportMessage =
+
+    async (req, res) => {
+
+        const supportData = {
+                                subject : req.body.subject,
+                                message : req.body.message
+                            }
+
+        // carry out validation
+        const { valid, errors } = validateSupportData(supportData);
+        if (!valid) return res.status(400).json(errors);
+
+        const mailOptions = {
+            from: req.user.email,
+            to: 'treasureapp.au@gmail.com',
+            subject: `Support Request: ${supportData.subject}`,
+            html:
+                `<p style="font-size: 16px; color: black;">${req.user.name}<i>UID: (${req.user.id})</i> wrote:</p>
+                <br>
+                <p style="font-size: 16px; color: black; background: #f8f9fa">${supportData.message}</p>`
+        };
+
+        // send email
+        /* eslint-disable no-await-in-loop */
+        try {
+            await sendMail(mailOptions);
+        } catch (err) {
+            console.log(err);
+            return res.status(400).json({ general : "Sorry, something went wrong!"});
+        }
+
+        return res.status(200).json("Success: Support message sent");
     }
 
 /*=============================HELPER FUNCTIONS===============================*/
