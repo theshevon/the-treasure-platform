@@ -369,20 +369,20 @@ exports.sendSupportMessage =
         const mailOptions = {
             from: req.user.email,
             to: 'treasureapp.au@gmail.com',
-            subject: `Support Request: ${subject}`,
+            subject: `Support Request: ${supportData.subject}`,
             html:
-                `<p style="font-size: 16px;">${message}</p>
+                `<p style="font-size: 16px; color: black;">${req.user.name}<i>UID: (${req.user.id})</i> wrote:</p>
                 <br>
-                <p style="font-size: 10px;"><b>Received from UID:</b> ${senderID}</p>`
+                <p style="font-size: 16px; color: black; background: #f8f9fa">${supportData.message}</p>`
         };
 
         // send email
         /* eslint-disable no-await-in-loop */
         try {
             await sendMail(mailOptions);
-        /* eslint-enable no-await-in-loop */
         } catch (err) {
-            res.status(400).json(err)
+            console.log(err);
+            return res.status(400).json({ general : "Sorry, something went wrong!"});
         }
 
         return res.status(200).json("Success: Support message sent");
