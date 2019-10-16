@@ -20,14 +20,19 @@ To commit changes and deploy the server globally, do the same as mentioned above
 
 **Notes**:
 - A service key is required to read/write from firebase.
-- You may need to installed a plug-in to disable Access-Control-Allow-Origin in order to make requests from the React app.
 
 ## Build Status - *Incomplete*
 
 Currently, the registration, login, item catalogue, item view and invite users components have been implemented.
 
-If you wish to test the app, you can login using the test account:
-`username` : "test@email.com",
+If you wish to test the app, you can login using the following test accounts:
+
+- **Primary User**
+`username` : "pu@test.com"
+`password` : "password"
+
+- **Secondary User**
+`username` : "su@test.com"
 `password` : "password"
 
 ## Development Team

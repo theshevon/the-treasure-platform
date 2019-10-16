@@ -6,7 +6,7 @@ const idxController = require("../controllers/index");
 /*=================================GET ROUTES=================================*/
 
 // -- landing page
-router.get("/", (req, res) => res.redirect("/items"));
+router.get("/", (req, res) => res.redirect("/login"));
 
 // error page
 router.get("/*", idxController.showError);

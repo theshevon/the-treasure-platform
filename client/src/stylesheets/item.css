@@ -9,6 +9,7 @@
     height: 25vh;
     object-fit: cover;
     border-radius: 0px !important;
+    margin-bottom: 1em;
 }
 
 .item-card {
@@ -17,8 +18,9 @@
     border-width: 0.5px !important;
     background: white;
     border: none !important;
-    margin-bottom: 20px;
-    border-radius: 0px !important;
+    margin: 0.8em;
+    width: 18.2rem;
+    border-radius: 5px !important;
     box-shadow: 0 6px 15px rgba(36,37,38,0.08);
 }
 
@@ -33,6 +35,7 @@
 }
 
 .item-card-body{
+    padding-top: 0 !important;
     padding-left: 0 !important;
     padding-right: 0 !important;
 }
@@ -44,26 +47,23 @@
     transition: 500ms !important;
     margin-left: 50%;
     transform: translateX(-50%);
+    align-self: right;
+}
+
+.item-like-btn{
+    color: 	#FFB6C1 !important;
+    background: none !important;
+    border: 1px solid #a8a8a8 ;
+    transition: 500ms !important;
+    margin-left: 50%;
+    transform: translateX(-50%);
+    align-self: right;
 }
 
 .item-view-btn:hover{
     color: black !important;
     background: #a8a8a8;
     border-color: #a8a8a8!important;
-}
-
-.modal-title.h4{
-    margin-left: 50% !important;
-    transform: translateX(-50%) !important;
-}
-
-.modal-content{
-    border-radius: 0 !important;
-    border: none !important;
-}
-
-.modal-header{
-    border-bottom: none !important;
 }
 
 .carousel-item img{
@@ -73,4 +73,29 @@
 
 .modal-body::-webkit-scrollbar{
     width: 0 !important;
+}
+
+.like-btn {
+    background-color: rgba(0, 0, 0, 0) !important;
+    border: none !important;
+    outline: none !important;
+    padding: 1em;
+}
+.item-row {
+    margin-right: none !important;
+    margin-left: none !important;
+}
+
+.item-row{
+    display: flex;
+    justify-content: space-between;
+}
+
+.edit-btn {
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+
+.item-card-loaded:hover{
+    transform: scale(1.05) perspective(1px);
 }

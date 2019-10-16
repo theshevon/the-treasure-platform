@@ -1,40 +1,7 @@
 /* @import url('https://fonts.googleapis.com/css?family=Muli&display=swap'); */
 
-body{
-    background-image: linear-gradient(to top, #dad4ec 0%, #dad4ec 1%, #f3e7e9 100%) !important;
-    background-size: contain !important;
-    /* font-family: 'Muli', sans-serif; */
-    /* background: #f6f6f6 !important; */
-}
-
-#content{
-    margin-top: 10vh;
-    min-height: 90vh;
-}
-
-.page-title{
-    font-weight: 200;
-    text-align: center;
-}
-
-.add-btn{
-    margin-left: 50%;
-    transform: translateX(-50%);
-}
-
 .item-col{
-    padding-right: 0px;
-}
-
-.modal-content{
-    border-radius: 0px !important;
-    border: none !important;
-    padding: 2%;
-}
-
-.modal-title.h4{
-    margin-left: 50% !important;
-    transform: translateX(-50%) !important;
+    padding: 0px !important;
 }
 
 .info-modal-body::-webkit-scrollbar {
@@ -120,4 +87,10 @@ div.mouse span.scroll-down {
 
 .scrolled{
     opacity: 0;
+}
+
+.all-items-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center
 }

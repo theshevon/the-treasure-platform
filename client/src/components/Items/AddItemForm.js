@@ -3,16 +3,16 @@ import axios from 'axios'
 
 // bootstrap imports
 import Spinner from 'react-bootstrap/Spinner'
-import Button from 'react-bootstrap/Button'
-import Form from 'react-bootstrap/Form'
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
+import Button  from 'react-bootstrap/Button'
+import Form    from 'react-bootstrap/Form'
+import Row     from 'react-bootstrap/Row'
+import Col     from 'react-bootstrap/Col'
 
 // semantic-ui imports
 import { Dropdown } from 'semantic-ui-react'
 
 // custom css
-import '../stylesheets/add-item-form.css'
+import '../../stylesheets/add-item-form.css'
 
 // stub data
 // import users from '../data/users'
@@ -24,50 +24,55 @@ class AddItemForm extends Component {
         desc              : null,
         coverImgIndex     : 0,
         uploadedFiles     : [],
-        val               : null,
         assignedto        : null,
         stage             : 0,
         allUsers          : [],
+        userOptions       : [],
+        visibilityOptions : [],
         selectingWatchers : true,
         selectedUsers     : [],
         loading           : false,
-        validated         : false
+        validated         : false,
+        success           : false
     }
 
-    componentDidMount(){
+    async componentDidMount(){
 
         // fetch user IDs and names of all the secondary users on the platform
-        axios.get({
-                        method: 'get',
-                        url: 'http://localhost:5000/comp30022app/us-central1/api/users'
-                    })
-                    .then(res => {
-                        this.setState({
-                            allUsers: res.data
-                        })
-                    })
-                    .catch(err => {
-                        console.log(err);
+        await axios({
+                    method: 'get',
+                    url: '/users'
+                })
+                .then(res => {
+                    let users = res.data;
+
+                    // user options for visibility dropdown
+                    let userOptions = [];
+                    users.forEach(user => {
+                        userOptions.push({
+                            key   : user.uid,
+                            text  : user.name,
+                            value : user.name
+                        });
                     });
 
-        // user options for visibility dropdown
-        let userOptions = [];
-        this.state.allUsers.forEach(user => {
-            userOptions.push({
-                key: user.uid,
-                text: user.name,
-                value: user.name
-            });
-        });
-        this.setState({ userOptions : userOptions });
+                    this.setState({
+                        allUsers    : users,
+                        userOptions : userOptions
+                    });
+                })
+                .catch(err => {
+                    console.log(err);
+                });
 
         // options for visibility toggler dropdown
         let opts = ["Visible to", "Hidden from"];
-        let visibilityOptions = opts.map(item => ({
-                                                    key: item,
-                                                    text: item,
-                                                    value: item
+        let visibilityOptions = opts.map(opt => ({
+                                                    key   : opt,
+                                                    text  : opt,
+                                                    value : opt
                                                 }));
+
         this.setState({ visibilityOptions : visibilityOptions });
     }
 
@@ -98,6 +103,50 @@ class AddItemForm extends Component {
         this.setState({ selectedUsers : value })
     }
 
+    // handles state updates for errors during submission
+    handleErrors = err => {
+        this.setState({
+            errors    : err,
+            stage     : 0,
+            loading   : false,
+            validated : true
+        })
+    }
+
+    // handles item creation
+    handleCreate = async data => {
+        try {
+            const res = await axios({
+                method: "post",
+                url: '/items/new',
+                data: data
+            }).then((res)=> {
+                return res.data;
+            })
+            return res;
+        } catch (err) {
+            throw err;
+        }
+    };
+
+    // handles image uploads for a specific item
+    handleUpload = async (fd, itemId) => {
+        try {
+            await axios({
+                            method: "post",
+                            url: `/items/${itemId}/img_upload`,
+                            headers: {
+                                "content-type": "multipart/form-data"
+                            },
+                            data: fd
+
+                        })
+            return;
+        } catch (err) {
+            throw err.response.data;
+        }
+    }
+
     // prepares and sends the data to the server to create a new item
     handleSubmit = event => {
 
@@ -125,8 +174,8 @@ class AddItemForm extends Component {
         }
 
         // replace assignedto with the uid of the corresponding user
-        let assignedTo;
-        for (var i=0; i<this.state.allUsers.length; i++){
+        let assignedTo = '';
+        for (let i=0; i<this.state.allUsers.length; i++){
             let user = this.state.allUsers[i];
             if (user.name === this.state.assignedto){
                 assignedTo = user.uid;
@@ -139,31 +188,35 @@ class AddItemForm extends Component {
             name       : this.state.name,
             desc       : this.state.desc,
             cover      : this.state.coverImgIndex,
-            photos     : this.state.uploadedFiles,
-            val        : this.state.val,
-            visibleto  : visibleTo,
-            assignedto : assignedTo
-		}
-
-        // send the data to the server
-		axios({
-				method: 'post',
-				url: 'http://localhost:5000/comp30022app/us-central1/api/items',
-				data: itemData
-			})
-			.then(res => {
-				this.setState({ loading : false });
-				this.props.history.push('/items');
-			})
-			.catch(err => {
-				this.setState({
-                    errors    : err.response.data,
-                    stage     : 0,
-					loading   : false,
-					validated : true
-				})
-			})
+            visibleTo  : visibleTo,
+            assignedTo : assignedTo,
+        }
+        console.log(itemData);
+        this.submitData(itemData);
 	}
+
+    submitData = async itemData => {
+        try {
+            // create a new item using the data
+            const itemId = await this.handleCreate(itemData);
+
+            for (let i = 0; i < this.state.uploadedFiles.length; i++) {
+                const file = this.state.uploadedFiles[i];
+                let fd = new FormData();
+                fd.append("file", file, file.name);
+                // send each file as its own upload request
+                await this.handleUpload(fd, itemId);
+            }
+        } catch(err) {
+            this.handleErrors(err);
+
+            // TODO: if an image upload failed, then delete the item and provide
+            // an appropriate response to the user.
+        }
+
+        this.props.handleAlert("Successfully created new item!");
+        this.props.handleClose();
+    }
 
     // handles state updates to uploaded files
     handleFileSelect = event => {
@@ -227,6 +280,7 @@ class AddItemForm extends Component {
 
                 <Form
                     noValidate
+                    encType="multipart/form-data"
                     validated={this.state.validated}
                     onSubmit={this.handleValidation}>
 
@@ -271,32 +325,6 @@ class AddItemForm extends Component {
                                 onChange={this.handleChange}/>
                             <Form.Control.Feedback type="invalid">
                                 Please enter a description of the item.
-                            </Form.Control.Feedback>
-                        </Col>
-                    </Form.Group>
-
-                    {/* Item value field */}
-                    <Form.Group
-                        as={Row}
-                        className={this.state.stage ===  0 ? "" : "hidden-field"}>
-                        <Form.Label
-                            column
-                            sm="3">
-                            Value{" "}
-                                <span
-                                    className="text-muted">
-                                    (Optional)
-                                </span>
-                        </Form.Label>
-                        <Col
-                            sm="9">
-                            <Form.Control
-                                type="text"
-                                name="val"
-                                onChange={this.handleChange}
-                                className="optional-field"/>
-                            <Form.Control.Feedback type="invalid">
-                                {/* Error message for item value */}
                             </Form.Control.Feedback>
                         </Col>
                     </Form.Group>
@@ -349,7 +377,7 @@ class AddItemForm extends Component {
                             sm="9">
                             <Dropdown
                                 name="assignedto"
-                                placeholder='Select User(s)'
+                                placeholder='Select User'
                                 search
                                 selection
                                 options={this.state.userOptions}

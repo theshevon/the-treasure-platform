@@ -2,12 +2,15 @@ const express        = require("express");
 const router         = express.Router();
 
 const userController = require("../controllers/users")
+const { isLoggedIn } = require("../util/middleware")
 
 /*=================================GET ROUTES=================================*/
 
-router.get("/users", userController.getUsers);
+router.get("/user", isLoggedIn, userController.getAuthenticatedUser);
 
-router.get("/logout", userController.logOutUser);
+router.get("/users", userController.getSecondaryUsers);
+
+router.get("/logout", isLoggedIn, userController.logOutUser);
 
 /*================================POST ROUTES=================================*/
 
@@ -16,6 +19,8 @@ router.post("/check_invitee", userController.checkInvitee);
 router.post("/register", userController.registerNewUser);
 
 router.post("/login", userController.logInUser);
+
+router.post("/invite", isLoggedIn, userController.inviteNewUsers);
 
 /*===========================================================================*/
 

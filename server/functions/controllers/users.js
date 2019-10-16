@@ -1,9 +1,23 @@
 const { admin, db } = require('../util/admin');
 const firebase      = require('firebase');
+const fb_functions  = require('firebase-functions');
+const nodemailer    = require('nodemailer');
 const config        = require('../util/config');
-const { validateRegistrationData, validateLoginData, validateInviteeData } = require("../util/validators");
+const { validateRegistrationData,
+        validateInvitationData,
+        validateLoginData,
+        validateInviteeData } = require("../util/validators");
+
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'treasureapp.au@gmail.com',
+        pass: 'zexePnb9F0lHhk4C1777Tb2YVm'
+    }
+});
 
 firebase.initializeApp(config);
+
 
 exports.checkInvitee =
 
@@ -47,7 +61,8 @@ exports.checkInvitee =
                                 return res.status(200).json("Success: User validated");
                             })
                             .catch(err => {
-                                return res.status(500).json({ error : err });
+                                console.log(err);
+                                return res.status(400).json({ error : err });
                             })
                 }
 
@@ -55,7 +70,8 @@ exports.checkInvitee =
                 return res.status(400).json({ general : "Sorry, the email address or code you entered was incorrect." });
             })
             .catch(err => {
-                res.status(500).json({err: err});
+                console.log(err);
+                res.status(400).json({err: err});
             })
     }
 
@@ -90,9 +106,9 @@ exports.registerNewUser =
                     fname: newUser.fname,
                     lname: newUser.lname,
                     email: newUser.email,
-                    utype: 1,
-                    createdon: admin.firestore.FieldValue.serverTimestamp(),
-                    intitems: []
+                    uType: 1,
+                    createdOn: admin.firestore.FieldValue.serverTimestamp(),
+                    intItems: []
                 }
 
                 // eslint-disable-next-line promise/no-nesting
@@ -143,7 +159,7 @@ exports.logInUser =
             })
             .catch(err => {
                 console.log("Error: " + err);
-                return res.status(403).json({ general: "Sorry, the email address or password you entered is incorrect." });
+                return res.status(400).json({ general: "Sorry, the email address or password you entered is incorrect." });
             });
     }
 
@@ -163,21 +179,21 @@ exports.logOutUser =
             });
     }
 
-exports.getUsers =
+exports.getSecondaryUsers =
 
     (req, res) => {
 
         // Get a list of all the secondary users from the database
         db.collection('users')
             .get()
-            .then((data) => {
+            .then(data => {
                 // Extract all userIDs
                 let users = [];
                 data.forEach((doc) => {
-                    if (doc.data().utype === 1){
+                    if (parseInt(doc.data()["uType"]) === 1){
                         let user = {
-                                    uid : doc.id,
-                                    name : doc.data().fname + doc.data().lname,
+                                        uid : doc.id,
+                                        name : doc.data().fname + " " + doc.data().lname,
                                     };
                         users.push(user);
                     }
@@ -187,4 +203,135 @@ exports.getUsers =
             .catch((err) => {
                 res.status(500).json({ error: err.code });
             });
+    }
+
+exports.getAuthenticatedUser =
+
+    (req, res) => {
+
+        db.collection('users')
+            .doc(req.user.id)
+            .get()
+            .then(doc => {
+                let user = {};
+                user.id      = doc.id;
+                user.name    = `${doc.data()['fname']} ${doc.data()['lname']}`;
+                user.type    = doc.data()['uType'];
+                user.imgSrc  = doc.data()['imgSrc'];
+                return res.status(200).json(user);
+            })
+            .catch(err => {
+                console.log(err);
+                return res.status(400).json(err);
+            })
+
+    }
+
+exports.inviteNewUsers =
+
+    async (req, res) => {
+
+        // extract emails from the request body
+        const emails = req.body.emails;
+
+        // validate email addresses
+        const { allInvalid, errors } = validateInvitationData(emails);
+        if (allInvalid) return res.status(400).json(errors);
+
+        let registeredEmails = [];
+
+        // retrieve all the email addresses of registered users
+        await db.collection('users')
+                .get()
+                .then((data) => {
+                    data.forEach((doc) => {
+                        registeredEmails.push(doc.data()['email']);
+                    });
+                    return;
+                })
+                .catch(err => {
+                    res.status(400).json(err);
+                });
+
+
+        for (var i = 0; i < emails.length; i++) {
+
+            if (errors[i] || emails[i] === '')  continue;
+
+            var email = emails[i];
+
+            // check if email already belongs to a registered user
+            for (var j=0; j<registeredEmails.length; j++){
+                if (email === registeredEmails[j]){
+                    errors[i] = "This email already belongs to a registered user";
+                    break;
+                }
+            }
+
+            if (errors[i])  continue;
+
+            // create new invitee doc
+            let newUser = db.collection('invitees').doc(email);
+
+            // generate unique invite code for invitee
+            let code = Math.random().toString(36).substring(2, 10);
+
+            // assign data to invitee doc
+            newUser.set({
+                            accepted : false,
+                            code     : code,
+                        });
+
+            // Generate invitation email with key code
+            const mailOptions = {
+                from: 'Treasure Platform <noreply@treasure.firebase.com>',
+                to: email,
+                subject: 'Welcome to Treasure', // email subject
+                html:
+                    `<h2 style="color: #a7bfe8;">Welcome!</h2>
+                    <p style="font-size: 16px; color: black">You have been invited to join the <span style="color: #fed766; font-weight: bold;">Treasure</span> Platform!</p>
+                    <p style="font-size: 16px;">Click on this <a href="https://comp30022app.firebaseapp.com/register">link</a>
+                    and enter the invite code <span style="border-radius:5px; border: 0.5px solid black; background: #f8f9fa; padding: 2px; font-weight: bold;">${code}</span> to set up your account now!</p>`
+            }
+
+            // Send invitation email to new invitee
+            /* eslint-disable no-await-in-loop */
+            try {
+                await sendEmail(mailOptions);
+            } catch (err) {
+                errors[i] = `Email could not be sent to ${email}`;
+            }
+        }
+
+        // return errors, if they were found.
+        // else, return success
+        if (Object.keys(errors).length === 0){
+            return res.status(200).json("Success: All invites sent");
+        }
+        return res.status(400).json(errors);
+    }
+
+/*=============================HELPER FUNCTIONS===============================*/
+
+sendEmail =
+
+    (mailOptions) => {
+
+        try {
+                return new Promise((resolve, reject) => {
+                    transporter.sendMail(mailOptions, (err, info) => {
+                        if (err) {
+                            console.log(err);
+                            reject(err);
+                        } else {
+                            console.log(`Successfully emailed!`);
+                            resolve(info);
+                        }
+                    });
+                });
+        } catch (err) {
+                console.log('error: ' + err);
+        }
+
+        return null;
     }

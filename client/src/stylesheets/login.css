@@ -1,10 +1,7 @@
-body{
-    overflow-x: hidden;
+.main-container{
+    width: "100vw";
+    height: "100vh";
 }
-
-/* .main-container{
-    background: #87e3e5;
-} */
 
 .login-form-container{
     padding-top: 50vh !important;
@@ -24,18 +21,7 @@ body{
 .login-btn{
     margin-left: 50%;
     transform: translateX(-50%);
-    border: 3px solid #EEE3E9 !important;
-    /* border: 2px solid #87e3e5 !important; */
-    background: white !important;
-    color: gray !important;
     transition: 250ms !important;
-}
-
-.login-btn:hover{
-    background: #EEE3E9 !important;
-    /* background: #87e3e5 !important; */
-    color: white!important;
-    font-weight: bold;
 }
 
 .login-form-body{
@@ -45,4 +31,11 @@ body{
 
 .was-validated .form-control:valid {
     background-image: none !important;
+}
+
+.alert-window{
+    padding-top: 50vh !important;
+}
+.login-alert{
+    z-index: 100;
 }

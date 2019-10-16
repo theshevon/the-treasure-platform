@@ -1,17 +1,30 @@
 const express        = require("express");
 const router         = express.Router();
 
-const itemController = require("../controllers/items");
+const itemController  = require("../controllers/items");
+const { isLoggedIn, isAuthorised }  = require("../util/middleware");
 
 /*=================================GET ROUTES=================================*/
 
-router.get("/items", itemController.getItems);
-
-// app.get("/item/:id", getSpecificItem)
+router.get("/items", isLoggedIn, itemController.getItems);
 
 /*================================POST ROUTES=================================*/
 
-router.post("/items", itemController.createItem);
+router.post("/items/new", isLoggedIn, itemController.createItem);
+
+router.post("/items/:id/img_upload", isLoggedIn, itemController.uploadImg);
+
+/*===============================DELETE ROUTES================================*/
+
+router.delete("/items/:id", isLoggedIn, itemController.deleteItem);
+
+/*================================PUT ROUTES==================================*/
+
+router.put("/items/:id/edit", isLoggedIn, itemController.modifyItem);
+
+router.put("/items/:iid/int/users/:uid", itemController.toggleEOI);
+
+router.put("/items/:iid/assign/:uid", itemController.assignItem);
 
 /*===========================================================================*/
 

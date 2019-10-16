@@ -1,49 +1,46 @@
-import React, { Component } from 'react'
-import axios from "axios";
-
-// boostrap imports
-import Button from 'react-bootstrap/Button'
-import Modal from 'react-bootstrap/Modal'
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
+import React, { Component } from 'react';
+import axios                from 'axios';
 
 // custom components
-import ItemSkeleton from '../components/ItemSkeleton'
-import AddItemForm from '../components/AddItemForm'
-import Navbar from '../components/Navbar'
-import Item from '../components/Item'
+import ItemSkeleton from '../components/items/ItemSkeleton';
+import ItemCard     from '../components/items/ItemCard';
+import Navbar       from '../components/util/Navbar';
 
 // custom css
-import '../stylesheets/items.css'
-import '../stylesheets/item.css'
-
-// stub data
-// import itemsData from '../data/items'
+import '../stylesheets/items.css';
+import '../stylesheets/item.css';
 
 class Items extends Component {
 
     state = {
         items: null,
         showAddItemModal: false,
-        loading: true
+        loading: true,
+        showAlert: false,
+        alertMsg : ''
     }
 
     // fetch item data from database
     componentDidMount(){
+        this.fetchItemsData();
+    }
+
+    fetchItemsData = () => {
         axios({
-                method: 'get',
-                url: 'http://localhost:5000/comp30022app/us-central1/api/items'
+            method: 'get',
+            url: '/items'
+        })
+        .then(res => {
+            this.setState({
+                items: res.data,
+                loading: false
             })
-            .then(res => {
-                this.setState({
-                    items: res.data,
-                    loading: false
-                })
-            })
-            .catch(
-                err => console.log(err)
-            );
-    };
+        })
+        .catch(
+            err => console.log(err)
+        );
+    }
+
 
     // handle modal close
     handleClose = () => {
@@ -61,13 +58,16 @@ class Items extends Component {
 
         if (!this.state.loading){
             itemListContent = (
-                <Row className="my-3 justify-content-center">
+                <div
+                    className='all-items-container'>
                     { this.state.items.map((item, index) => (
-                        <Col key={index} className='item-col' xs={12} md={6}>
-                            <Item className="my-5" item={ item }/>
-                        </Col>
-                    ))}
-                </Row>
+                        <ItemCard
+                            key={index}
+                            className="my-5"
+                            item={ item }/>
+                        )
+                    )}
+                </div>
             )
         }
 
@@ -76,23 +76,15 @@ class Items extends Component {
 
                 <Navbar />
 
-                <div id="content" className="container">
-
-                    <h1 className="page-title"> ITEMS </h1>
-
-                    <Button className="mt-2 mb-3 add-btn btn" variant="light" onClick={this.handleShow}>Add Item</Button>
-
-                    <Modal className="add-item-modal" show={this.state.showAddItemModal} size="lg" onHide={this.handleClose} centered scrollable>
-                        <Modal.Header closeButton>
-                            <Modal.Title>Add A New Item</Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
-                            <AddItemForm />
-                        </Modal.Body>
-                    </Modal>
+                <div
+                    id="content"
+                    className="container">
+                    <h1
+                        className="page-title mb-5">
+                        ITEMS
+                    </h1>
 
                     { itemListContent }
-
                 </div>
             </div>
         )

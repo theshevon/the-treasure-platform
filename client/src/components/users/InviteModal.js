@@ -1,9 +1,14 @@
 import React, { Component } from 'react'
-import Modal from 'react-bootstrap/Modal'
-import Button from 'react-bootstrap/Button'
-import InviteFrom from './InviteForm'
-import '../stylesheets/invite-modal.css'
 
+// bootstrap imports
+import Button from 'react-bootstrap/Button'
+import Modal  from 'react-bootstrap/Modal'
+
+// custom components
+import InviteFrom from './users/InviteForm'
+
+// custom stylesheets
+import '../stylesheets/invite-modal.css'
 
 class InviteModal extends Component {
 
@@ -19,8 +24,11 @@ class InviteModal extends Component {
         return (
             <div>
 
-                <Button variant="primary" onClick={this.handleShow}>
-                    + Users
+                <Button
+                    className="mt-2 mb-3 add-btn btn"
+                    variant="light"
+                    onClick={this.handleShow}>
+                    Invite Users
                 </Button>
 
                 <Modal
@@ -30,7 +38,9 @@ class InviteModal extends Component {
                     centered
                     show={this.state.show}
                     onHide={this.handleClose}>
-                    <Modal.Header closeButton>
+
+                    <Modal.Header
+                        closeButton>
                         <Modal.Title>Invite Users</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>

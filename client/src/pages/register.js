@@ -45,7 +45,7 @@ class Register extends Component {
 
         axios({
                 method: 'post',
-                url: 'http://localhost:5000/comp30022app/us-central1/api/check_invitee',
+                url: '/check_invitee',
                 data: inviteeData
             })
             .then(res => {
@@ -75,21 +75,21 @@ class Register extends Component {
         this.setState({ loading: true });
 
         const registrationData = {
-            fname: this.state.fname,
-            lname: this.state.lname,
-            email: this.state.email,
-            pw:    this.state.pw,
-            pw_c:  this.state.pw_c
+            fname : this.state.fname,
+            lname : this.state.lname,
+            email : this.state.email,
+            pw    : this.state.pw,
+            pw_c  : this.state.pw_c
         }
 
         axios({
                 method: 'post',
-                url: 'http://localhost:5000/comp30022app/us-central1/api/register',
+                url: '/register',
                 data: registrationData
             })
             .then(res => {
-                this.setState({loading:false});
-                this.props.history.push('/items');
+                this.setState({ loading : false });
+                this.props.history.push('/login');
             })
             .catch(err => {
                 this.setState({
@@ -190,7 +190,8 @@ class Register extends Component {
 
                     {/* Submit button */}
                     <Button
-                        className="login-btn btn mt-3"
+                        className="centered-btn btn mt-3"
+                        variant="light"
                         type="submit"
                         onClick={this.handleValidation}
                         disabled={this.state.loading}>
