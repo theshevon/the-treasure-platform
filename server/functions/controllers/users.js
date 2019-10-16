@@ -4,6 +4,7 @@ const fb_functions  = require('firebase-functions');
 const nodemailer    = require('nodemailer');
 const config        = require('../util/config');
 const { validateRegistrationData,
+        validateInvitationData,
         validateLoginData,
         validateInviteeData,
         validateSupportData } = require("../util/validators");
@@ -36,7 +37,7 @@ exports.checkInvitee =
         // validate code against database entry
         db
             .collection('invitees')
-            .doc(email)
+            .doc(invitee.email)
             .get()
             .then(doc => {
 
@@ -55,13 +56,14 @@ exports.checkInvitee =
                     // eslint-disable-next-line promise/no-nesting
                     return db
                             .collection('invitees')
-                            .doc(email)
+                            .doc(invitee.email)
                             .set(invitee)
                             .then(() => {
                                 return res.status(200).json("Success: User validated");
                             })
                             .catch(err => {
-                                return res.status(500).json({ error : err });
+                                console.log(err);
+                                return res.status(400).json({ error : err });
                             })
                 }
 
@@ -69,7 +71,8 @@ exports.checkInvitee =
                 return res.status(400).json({ general : "Sorry, the email address or code you entered was incorrect." });
             })
             .catch(err => {
-                res.status(500).json({err: err});
+                console.log(err);
+                res.status(400).json({err: err});
             })
     }
 
@@ -183,15 +186,15 @@ exports.getSecondaryUsers =
 
         // Get a list of all the secondary users from the database
         db.collection('users')
-            .get(req.user.id)
+            .get()
             .then(data => {
                 // Extract all userIDs
                 let users = [];
                 data.forEach((doc) => {
-                    if (doc.data().uType === 1){
+                    if (parseInt(doc.data()["uType"]) === 1){
                         let user = {
-                                    uid : doc.id,
-                                    name : doc.data().fname + " " + doc.data().lname,
+                                        uid : doc.id,
+                                        name : doc.data().fname + " " + doc.data().lname,
                                     };
                         users.push(user);
                     }
@@ -225,132 +228,88 @@ exports.getAuthenticatedUser =
 
     }
 
-    exports.inviteNewUsers =
-
-        async (req, res) => {
-
-            // Creates new invitee from an array of JSON objects containing
-            // names and emails, and emails each invitee a unique invite code
-
-            let errors = {};
-
-            //// TODO: Validate input
-
-            const emailArray = req.body.emails;
-
-            //ensure that the request is not empty
-            if (emailArray.length === 0) {
-                console.log('no email addresses entered');
-                return res.status(400);
-            }
-
-            console.log(emailArray[0]);
-
-            for (var i = 0; i < emailArray.length; i++) {
-                var inviteeEmail = emailArray[i];
-
-                // loop over all users to check for duplicate email
-
-                db.collection('users')
-                    .get()
-                    .then((data) => {
-                        data.forEach((doc) => {
-                            if (doc.data().email === inviteeEmail) {
-
-                                // Duplicate email; abort and return error
-                                errors[i]
-                                    =`Email ${inviteeEmail} is already registered`;
-                            }
-                            return null;
-                        });
-                        return null;
-                    })
-                    .catch(err => {
-                        errors[i] = `firestore error: ${err}`;
-                        return errors;
-                    });
-
-                // Check for error
-                if (!errors[i]) {
-                    // Create new invitee doc
-                    let newUser = db.collection('invitees').doc(inviteeEmail);
-                    console.log("new user, id: " + newUser.id);
-
-                    // Generate unique invite code for invitee
-                    let rawkey = Math.random().toString(36).substring(2, 12);
-                    const key = generateUniqueInviteCode(rawkey);
-
-                    if (key === null) {
-                        errors[i] = "Unique code generation failed. Try again.";
-                    }
-                    else {
-                        // Assign data to invitee doc
-                        newUser.set({
-                                accepted: false,
-                                code: key
-                            });
-
-                        console.log("Invitee added: " + inviteeEmail + ", code: " + key);
-
-                        // Generate invitation email with key code
-                        const mailOptions = {
-                            from: 'Treasure App <treasureapp.au@gmail.com>',
-                            to: inviteeEmail,
-                            subject: 'Welcome to Treasure', // email subject
-                            html: `<p style="font-size: 16px;">Welcome!</p>
-                                <br />
-                                <p style="font-size: 16px;">You have been invited to join
-                                Treasure.</p>
-                                <p style="font-size: 16px;">Go to localhost:5000/register
-                                and enter the invite
-                                code ${key} to set up your account.</p>` // email content
-                        };
-
-                        // Send invitation email to new invitee
-                        /* eslint-disable no-await-in-loop */
-                        try {
-                            await sendMail(mailOptions);
-                        /* eslint-enable no-await-in-loop */
-                        } catch (err) {
-                            errors[i] = `Email could not be sent to ${inviteeEmail}`;
-                        }
-                    }
-                }
-            }
-
-            // Check for errors
-            if (Object.keys(errors).length === 0) {
-                return res.status(200).json("Success: All invites sent");
-            }
-            return errors;
-
-        }
-
-
-exports.sendMailToAddress =
+exports.inviteNewUsers =
 
     async (req, res) => {
 
-        // getting dest email by query string
+        // extract emails from the request body
+        const emails = req.body.emails;
 
-        const mailOptions = {
-            from: 'User <>', // Something like: Jane Doe <janedoe@gmail.com>
-            to: req.dest,
-            subject: 'Subject', // email subject
-            html: `<p style="font-size: 16px;">Message</p>
-                <br />
-            ` // email content in HTML
-        };
+        // validate email addresses
+        const { allInvalid, errors } = validateInvitationData(emails);
+        if (allInvalid) return res.status(400).json(errors);
 
-        console.log('start');
-        try {
-            await sendMail(mailOptions);
-        } catch (err) {
-            return res.send(err.toString());
-            // throw err;
+        let registeredEmails = [];
+
+        // retrieve all the email addresses of registered users
+        await db.collection('users')
+                .get()
+                .then((data) => {
+                    data.forEach((doc) => {
+                        registeredEmails.push(doc.data()['email']);
+                    });
+                    return;
+                })
+                .catch(err => {
+                    res.status(400).json(err);
+                });
+
+
+        for (var i = 0; i < emails.length; i++) {
+
+            if (errors[i] || emails[i] === '')  continue;
+
+            var email = emails[i];
+
+            // check if email already belongs to a registered user
+            for (var j=0; j<registeredEmails.length; j++){
+                if (email === registeredEmails[j]){
+                    errors[i] = "This email already belongs to a registered user";
+                    break;
+                }
+            }
+
+            if (errors[i])  continue;
+
+            // create new invitee doc
+            let newUser = db.collection('invitees').doc(email);
+
+            // generate unique invite code for invitee
+            let code = Math.random().toString(36).substring(2, 10);
+
+            // assign data to invitee doc
+            newUser.set({
+                            accepted : false,
+                            code     : code,
+                        });
+
+            // Generate invitation email with key code
+            const mailOptions = {
+                from: 'Treasure Platform <noreply@treasure.firebase.com>',
+                to: email,
+                subject: 'Welcome to Treasure', // email subject
+                html:
+                    `<h2 style="color: #a7bfe8;">Welcome!</h2>
+                    <p style="font-size: 16px; color: black">You have been invited to join the <span style="color: #fed766; font-weight: bold;">Treasure</span> Platform!</p>
+                    <p style="font-size: 16px;">Click on this <a href="https://comp30022app.firebaseapp.com/register">link</a>
+                    and enter the invite code <span style="border-radius:5px; border: 0.5px solid black; background: #f8f9fa; padding: 2px; font-weight: bold;">${code}</span> to set up your account now!</p>`
+            }
+
+            // Send invitation email to new invitee
+            /* eslint-disable no-await-in-loop */
+            try {
+                await sendEmail(mailOptions);
+            } catch (err) {
+                errors[i] = `Email could not be sent to ${email}`;
+            }
         }
 
-        return res.send('Email sent');
+        // return errors, if they were found.
+        // else, return success
+        if (Object.keys(errors).length === 0){
+            return res.status(200).json("Success: All invites sent");
+        }
+        return res.status(400).json(errors);
     }
 
 exports.sendSupportMessage =
@@ -390,62 +349,25 @@ exports.sendSupportMessage =
 
 /*=============================HELPER FUNCTIONS===============================*/
 
-generateUniqueInviteCode =
-
-    (raw) => {
-        // Generates a unique invite code from the randomly generated raw input
-
-        const codeLength = 8;
-        let usedCodes = [];
-
-        db.collection('invitees')
-            .get()
-            .then((data) => {
-                // Extract all invite codes
-                data.forEach((doc) => {
-                    if (doc.data().code){
-                        usedCodes.push(doc.data().code);
-                    }
-                    return null;
-                });
-                return null;
-            })
-            .catch(err => {
-                console.log(err);
-                return null;
-            });
-
-        // Return 'codeLength'-char substring of raw
-        for (var i = 0; i + codeLength < raw.length; i++) {
-            const code = raw.substring(0 + i, codeLength + i);
-
-            if (!(usedCodes.includes(code))) {
-                return code;
-            }
-        }
-
-    }
-
-
-sendMail =
+sendEmail =
 
     (mailOptions) => {
 
-       try {
-           return new Promise((resolve, reject) => {
-              transporter.sendMail(mailOptions, (err, info) => {
-                 if (err) {
-                    console.log("error: ", err);
-                    reject(err);
-                 } else {
-                    console.log(`Mail sent successfully!`);
-                    resolve(info);
-                 }
-              });
-           });
-       } catch (err) {
-           console.log('error: ' + err);
-       }
+        try {
+                return new Promise((resolve, reject) => {
+                    transporter.sendMail(mailOptions, (err, info) => {
+                        if (err) {
+                            console.log(err);
+                            reject(err);
+                        } else {
+                            console.log(`Successfully emailed!`);
+                            resolve(info);
+                        }
+                    });
+                });
+        } catch (err) {
+                console.log('error: ' + err);
+        }
 
-       return null;
+        return null;
     }

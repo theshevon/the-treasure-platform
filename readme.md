@@ -41,5 +41,3 @@ If you wish to test the app, you can login using the following test accounts:
 * Michael Manoussakis
 * Grace Sng
 * Shevon Mendis
-
-
