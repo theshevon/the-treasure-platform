@@ -283,11 +283,11 @@ exports.inviteNewUsers =
                             code     : code,
                         });
 
-            // Generate invitation email with key code
+            // Generate invitation email with invite code
             const mailOptions = {
                 from: 'Treasure Platform <noreply@treasure.firebase.com>',
                 to: email,
-                subject: 'Welcome to Treasure', // email subject
+                subject: 'Welcome to Treasure',
                 html:
                     `<h2 style="color: #a7bfe8;">Welcome!</h2>
                     <p style="font-size: 16px; color: black">You have been invited to join the <span style="color: #fed766; font-weight: bold;">Treasure</span> Platform!</p>
@@ -326,7 +326,7 @@ exports.sendSupportMessage =
         if (!valid) return res.status(400).json(errors);
 
         const mailOptions = {
-            from: req.user.email,
+            from: 'Treasure Platform <noreply@treasure.firebase.com>',
             to: 'treasureapp.au@gmail.com',
             subject: `Support Request: ${supportData.subject}`,
             html:
