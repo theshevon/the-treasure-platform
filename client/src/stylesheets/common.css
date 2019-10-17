@@ -34,8 +34,8 @@ body{
     bottom: -12.5px;
 }
 
-.modal-title, .page-title, .item-card-title {
-    font-family: 'Playfair Display', serif;
+.page-title {
+    font-family: 'Scope One', serif;
 }
 
 .modal-dialog-scrollable .modal-body{
