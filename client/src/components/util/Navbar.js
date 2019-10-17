@@ -60,7 +60,7 @@ class NavbarComponent extends Component {
 
         let name   = localStorage.TreasureUName || user.name || "Loading User...";
         let imgSrc = localStorage.TreasureUImg  || user.imgSrc || no_img;
-        let type   = localStorage.TreasureUType || user.type || 1;
+        let type   = localStorage.TreasureUType || user.type;
 
         if (parseInt(type) === 0){
             menuItems = (
