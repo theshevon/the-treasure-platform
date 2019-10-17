@@ -1,0 +1,13 @@
+.sweet-alert {
+    animation: none !important
+}
+
+.int-users-dialog {
+    height: 300px;
+    overflow-y: scroll !important;
+}
+
+
+.int-users-dialog::-webkit-scrollbar{
+    width: 0 !important;
+}
