@@ -19,7 +19,7 @@ class Register extends Component {
         pw_c:    '',
         pic:     null,
         loading: false,
-        stage:   1,
+        stage:   0,
         validated: false
     }
 
@@ -120,11 +120,14 @@ class Register extends Component {
                         });
 
         if (this.state.errors) return;
+        console.log("No errors. UID: ", uid);
+        console.log(this.state);
 
         // send the image, if one has been uploaded
         if (fd){
+            console.log("uploading file")
             await axios({
-                            method : 'post',
+                            method : 'put',
                             url    : `/users/${uid}/img_upload`,
                             headers: {
                                 "content-type": "multipart/form-data"
@@ -136,6 +139,7 @@ class Register extends Component {
                             this.props.history.push('/login');
                         })
                         .catch(err => {
+                            console.log("error: ", err);
                             this.setState({
                                 errors: err.response.data,
                                 loading: false,

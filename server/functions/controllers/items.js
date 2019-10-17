@@ -130,94 +130,94 @@ exports.uploadImg =
     // 104 :- Error : Failed to upload image to firebase storage
     // 105 :- Error : Other error
 
-    (req, res) => {
+    async (req, res) => {
 
         // find the database entry for the required item
-        db
-            .collection('items')
-            .doc(req.params.id)
-            .get()
-            .then(doc => {
+        await db
+                .collection('items')
+                .doc(req.params.id)
+                .get()
+                .then(doc => {
 
-                // eslint-disable-next-line promise/always-return
-                if (!doc.exists){
-                    return res.status(400).json({ code : 101 });
-                }
-
-                let photos = doc.data()["photos"];
-
-                const busboy = new BusBoy({ headers: req.headers });
-
-                let imageToBeUploaded = {};
-                let imageFileName;
-
-                // prepare the image file
-                busboy.on('file', (fieldname, file, filename, encoding, mimetype) => {
-
-                    // check if the file type is that of an image
-                    if (mimetype !== 'image/jpeg' && mimetype !== 'image/png') {
-                        return res.status(400).json({ code : 102 });
+                    // eslint-disable-next-line promise/always-return
+                    if (!doc.exists){
+                        return res.status(400).json({ code : 101 });
                     }
 
-                    // create a unique name for the image
-                    const imageExtension = filename.split('.')[filename.split('.').length - 1];
-                    imageFileName = `items_${req.params.id}_${Math.round(Math.random() * 10000000).toString()}.${imageExtension}`;
+                    let photos = doc.data()["photos"];
 
-                    // upload the image
-                    const filepath = path.join(os.tmpdir(), imageFileName);
-                    imageToBeUploaded = { filepath, mimetype };
-                    file.pipe(fs.createWriteStream(filepath));
-                });
+                    const busboy = new BusBoy({ headers: req.headers });
 
-                // store the image on firebase storage
-                busboy.on('finish', () => {
+                    let imageToBeUploaded = {};
+                    let imageFileName;
 
-                    // eslint-disable-next-line promise/no-nesting
-                    admin
-                    .storage()
-                    .bucket(config.storageBucket)
-                    .upload(imageToBeUploaded.filepath, {
-                        resumable: false,
-                        metadata: {
-                            metadata: {
-                                contentType: imageToBeUploaded.mimetype
-                            }
+                    // prepare the image file
+                    busboy.on('file', (fieldname, file, filename, encoding, mimetype) => {
+
+                        // check if the file type is that of an image
+                        if (mimetype !== 'image/jpeg' && mimetype !== 'image/png') {
+                            return res.status(400).json({ code : 102 });
                         }
-                    })
-                    .then(() => {
 
-                        // determine the imageURL and add it to the item's database entry
-                        const imageUrl = `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${imageFileName}?alt=media`;
-                        photos.push(imageUrl);
+                        // create a unique name for the image
+                        const imageExtension = filename.split('.')[filename.split('.').length - 1];
+                        imageFileName = `items_${req.params.id}_${Math.round(Math.random() * 10000000).toString()}.${imageExtension}`;
 
-                        // update databse entry
-                        // eslint-disable-next-line promise/no-nesting
-                        return db
-                                .collection('items')
-                                .doc(doc.id)
-                                .update({ photos : photos })
-                                .then(() => {
-                                    return res.status(200).json({ code : 200 });
-                                })
-                                // eslint-disable-next-line handle-callback-err
-                                .catch(err => {
-                                    return res.status(400).json({ code : 103 });
-                                })
-
-                    })
-                    // eslint-disable-next-line handle-callback-err
-                    .catch(err => {
-                        return res.status(400).json({ code : 104 });
+                        // upload the image
+                        const filepath = path.join(os.tmpdir(), imageFileName);
+                        imageToBeUploaded = { filepath, mimetype };
+                        file.pipe(fs.createWriteStream(filepath));
                     });
-                });
 
-                busboy.end(req.rawBody);
-            })
+                    // store the image on firebase storage
+                    busboy.on('finish', () => {
 
-            // eslint-disable-next-line handle-callback-err
-            .catch(err => {
-                return res.status(400).json({ code : 105 });
-            })
+                        // eslint-disable-next-line promise/no-nesting
+                        admin
+                            .storage()
+                            .bucket(config.storageBucket)
+                            .upload(imageToBeUploaded.filepath, {
+                                resumable: false,
+                                metadata: {
+                                    metadata: {
+                                        contentType: imageToBeUploaded.mimetype
+                                    }
+                                }
+                        })
+                        .then(() => {
+
+                            // determine the imageURL and add it to the item's database entry
+                            const imageUrl = `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${imageFileName}?alt=media`;
+                            photos.push(imageUrl);
+
+                            // update databse entry
+                            // eslint-disable-next-line promise/no-nesting
+                            return db
+                                    .collection('items')
+                                    .doc(doc.id)
+                                    .update({ photos : photos })
+                                    .then(() => {
+                                        return res.status(200).json({ code : 200 });
+                                    })
+                                    .catch(err => {
+                                        console.log(err);
+                                        return res.status(400).json({ code : 103 });
+                                    })
+
+                        })
+                        .catch(err => {
+                            console.log(err);
+                            return res.status(400).json({ code : 104 });
+                        });
+                    });
+
+                    busboy.end(req.rawBody);
+                })
+
+                .catch(err => {
+                    console.log(err);
+                    return res.status(400).json({ code : 105 });
+                })
     }
 
 // firebase function to automatically delete image files from firebase storage
