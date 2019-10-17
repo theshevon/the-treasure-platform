@@ -409,9 +409,6 @@ exports.inviteNewUsers =
                 errors[i] = `Email could not be sent to ${email}`;
             }
         }
-        return errors;
-
-    }
 
         // return errors, if they were found.
         // else, return success
@@ -420,6 +417,7 @@ exports.inviteNewUsers =
         }
         return res.status(400).json(errors);
     }
+
 
 exports.sendSupportMessage =
 
