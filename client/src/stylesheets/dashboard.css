@@ -12,7 +12,6 @@
 }
 
 .dashboard-option:hover{
-    transform: scale(1.05) perspective(1px);
     box-shadow:5px 12px 20px rgba(36,37,38,0.13);
     border: none !important;
 }
