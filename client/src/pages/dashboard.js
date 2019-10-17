@@ -1,23 +1,23 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 
 // boostrap imports
-import Alert from 'react-bootstrap/Alert'
-import Col   from 'react-bootstrap/Col'
-import Row   from 'react-bootstrap/Row'
+import Alert from 'react-bootstrap/Alert';
+import Col   from 'react-bootstrap/Col';
+import Row   from 'react-bootstrap/Row';
 
 // custom components
-import AddItemForm  from '../components/items/AddItemForm'
-import InviteForm   from '../components/users/InviteForm'
-import FormModal    from '../components/util/FormModal'
-import Navbar       from '../components/util/Navbar'
+import AddItemForm  from '../components/items/AddItemForm';
+import InviteForm   from '../components/users/InviteForm';
+import FormModal    from '../components/util/FormModal';
+import Navbar       from '../components/util/Navbar';
 
 // custom css
-import '../stylesheets/common.css'
-import '../stylesheets/dashboard.css'
+import '../stylesheets/common.css';
+import '../stylesheets/dashboard.css';
 
 // custom icons
-import inviteIcon from '../icons/invite.svg'
-import itemIcon   from '../icons/item.svg'
+import inviteIcon from '../icons/invite.svg';
+import itemIcon   from '../icons/item.svg';
 
 export class Dashboard extends Component {
 

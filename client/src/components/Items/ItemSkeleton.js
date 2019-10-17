@@ -1,12 +1,12 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 
 // boostrap imports
-import Card from 'react-bootstrap/Card'
-import Row  from 'react-bootstrap/Row'
-import Col  from 'react-bootstrap/Col'
+import Card from 'react-bootstrap/Card';
+import Row  from 'react-bootstrap/Row';
+import Col  from 'react-bootstrap/Col';
 
 // custom CSS
-import '../../stylesheets/item-skeleton.css'
+import '../../stylesheets/item-skeleton.css';
 
 class ItemSkeleton extends Component {
 

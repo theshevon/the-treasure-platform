@@ -1,12 +1,12 @@
-import React, { Component } from 'react'
-import axios                from 'axios'
+import React, { Component } from 'react';
+import axios                from 'axios';
 
 // bootstrap imports
-import Spinner from 'react-bootstrap/Spinner'
-import Button  from 'react-bootstrap/Button'
-import Form    from 'react-bootstrap/Form'
-import Row     from 'react-bootstrap/Row'
-import Col     from 'react-bootstrap/Col'
+import Spinner from 'react-bootstrap/Spinner';
+import Button  from 'react-bootstrap/Button';
+import Form    from 'react-bootstrap/Form';
+import Row     from 'react-bootstrap/Row';
+import Col     from 'react-bootstrap/Col';
 
 // custom css
 import '../../stylesheets/invite-form.css';
@@ -20,7 +20,7 @@ class InviteForm extends Component {
         noRows   : this.minRows,
         emails   : Array(this.minRows).fill(''),
         loading  : false,
-		errors   : null,
+		errors   : {},
 		validated: false
     }
 
@@ -57,25 +57,25 @@ class InviteForm extends Component {
         event.preventDefault();
 
         this.setState({
-			loading  : true,
-			validated: true
+			loading  : true
         });
 
         // send the data to the server
         axios({
-            method: 'post',
-            url: 'http://localhost:5000/comp30022app/us-central1/api/invite',
-            data: { emails : this.state.emails }
-        })
-        .then(res => {
-            this.setState({ loading : false });
-        })
-        .catch(err => {
-            this.setState({
-                errors    : err.response.data,
-                loading   : false,
+                method: 'post',
+                url: 'http://localhost:5000/comp30022app/us-central1/api/invite',
+                data: { emails : this.state.emails }
             })
-        })
+            .then(res => {
+                this.setState({ loading : false });
+            })
+            .catch(err => {
+                this.setState({
+                    errors    : err.response.data,
+                    loading   : false,
+                    validated : true
+                })
+            })
     }
 
     render() {

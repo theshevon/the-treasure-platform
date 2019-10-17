@@ -355,3 +355,58 @@ exports.toggleEOI =
             });
     }
 
+exports.assignItem = 
+
+    (req, res) => {
+
+        // iid - item id
+        let iid = req.params.iid;
+        // uid - user id
+        let uid = req.params.uid;
+
+        db
+            .collection('items')
+            .doc(iid)
+            .get()
+            .then(itemDoc => {
+
+                if (!itemDoc.exists){
+                    return res.status(400).json("Invalid Item ID");
+                }
+
+                // validate userID
+                // eslint-disable-next-line promise/no-nesting
+                return db.collection('users')
+                        .doc(uid)
+                        .get()
+                        .then(userDoc => {
+
+                            if (!userDoc.exists){
+                                throw new Error("Invalid user id");
+                            }
+
+                            // set assigned field of item to uid
+                            // eslint-disable-next-line promise/no-nesting
+                            return db
+                                    .collection('items')
+                                    .doc(iid)
+                                    .update({ assignedTo : uid })
+                                    .then(() => {
+                                        return res.status(200).json("Success");
+                                    })
+                                    .catch(err => {
+                                        console.log(err);
+                                        throw new Error(err);
+                                    })
+                        })
+                        .catch (err => {
+                            console.log(err);
+                            return res.status(400).json("Invalid User ID");
+                        });
+
+            })
+            .catch(err => {
+                console.log(err);
+                return res.status(400).json(err);
+            });
+    }

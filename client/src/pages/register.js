@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
-import axios from 'axios'
+import axios                from 'axios';
 import PropTypes            from 'prop-types'
 
 // boostrap imports
-import Spinner from 'react-bootstrap/Spinner'
-import Button  from 'react-bootstrap/Button'
-import Form    from 'react-bootstrap/Form'
-import Row     from 'react-bootstrap/Row'
-import Col     from 'react-bootstrap/Col'
+import Spinner from 'react-bootstrap/Spinner';
+import Button  from 'react-bootstrap/Button';
+import Form    from 'react-bootstrap/Form';
+import Row     from 'react-bootstrap/Row';
+import Col     from 'react-bootstrap/Col';
 
 // redux stuff
 import { connect }   from 'react-redux'

@@ -29,9 +29,9 @@ exports.isLoggedIn =
                         .get()
                         .then(doc => {
                             return {
-                                        id   : doc.id,
-                                        // name : `${doc.data()['fname']} ${doc.data()['lname']}`
-                                        // img_src : doc.data()['img_src']
+                                        id    : doc.id,
+                                        name  : `${doc.data()['fname']} ${doc.data()['lname']}`,
+                                        email : doc.data().email
                                     }
                         })
                         .catch(err => {
@@ -39,7 +39,9 @@ exports.isLoggedIn =
                         })
             })
             .then(data => {
-                req.user.id   = data["id"];
+                req.user.id    = data["id"];
+                req.user.name  = data["name"];
+                req.user.email = data["email"];
                 return next();
             })
             .catch(err => {

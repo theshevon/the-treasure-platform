@@ -1,19 +1,19 @@
-import React, { Component } from 'react'
-import PropTypes            from 'prop-types'
+import React, { Component } from 'react';
+import PropTypes            from 'prop-types';
 
 // bootstrap imports
-import Spinner from 'react-bootstrap/Spinner'
-import Button  from 'react-bootstrap/Button'
-import Form    from 'react-bootstrap/Form'
-import Row     from 'react-bootstrap/Row'
-import Col     from 'react-bootstrap/Col'
+import Spinner from 'react-bootstrap/Spinner';
+import Button  from 'react-bootstrap/Button';
+import Form    from 'react-bootstrap/Form';
+import Row     from 'react-bootstrap/Row';
+import Col     from 'react-bootstrap/Col';
 
 // custom css
-import '../stylesheets/login.css'
+import '../stylesheets/login.css';
 
 // redux stuff
-import { connect }   from 'react-redux'
-import { loginUser } from '../redux/actions/userActions'
+import { connect }   from 'react-redux';
+import { loginUser } from '../redux/actions/userActions';
 
 class Login extends Component {
 
