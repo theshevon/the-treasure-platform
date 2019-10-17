@@ -101,5 +101,5 @@
 }
 
 .item-card-loaded:hover{
-    transform: scale(1.05) perspective(1px);
+    transform: scale(1.015) perspective(1px);
 }
