@@ -11,3 +11,7 @@
 .int-users-dialog::-webkit-scrollbar{
     width: 0 !important;
 }
+
+li {
+  list-style-type: none;
+}
