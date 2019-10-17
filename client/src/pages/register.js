@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import axios from 'axios'
+import PropTypes            from 'prop-types'
 
 // boostrap imports
 import Spinner from 'react-bootstrap/Spinner'
@@ -7,6 +8,10 @@ import Button  from 'react-bootstrap/Button'
 import Form    from 'react-bootstrap/Form'
 import Row     from 'react-bootstrap/Row'
 import Col     from 'react-bootstrap/Col'
+
+// redux stuff
+import { connect }   from 'react-redux'
+import { loginUser } from '../redux/actions/userActions'
 
 class Register extends Component {
 
@@ -106,7 +111,6 @@ class Register extends Component {
                         .then(res => {
                             if (!fd){
                                 this.setState({ loading : false });
-                                this.props.history.push('/login');
                                 return;
                             }
                             return res.data;
@@ -120,12 +124,9 @@ class Register extends Component {
                         });
 
         if (this.state.errors) return;
-        console.log("No errors. UID: ", uid);
-        console.log(this.state);
 
         // send the image, if one has been uploaded
         if (fd){
-            console.log("uploading file")
             await axios({
                             method : 'put',
                             url    : `/users/${uid}/img_upload`,
@@ -136,10 +137,15 @@ class Register extends Component {
                         })
                         .then(res => {
                             this.setState({ loading : false });
-                            this.props.history.push('/login');
+
+                            // login the user
+                            let userData = {
+                                email    : this.state.email,
+                                password : this.state.password,
+                            }
+                            this.props.loginUser(userData, this.props.history);
                         })
                         .catch(err => {
-                            console.log("error: ", err);
                             this.setState({
                                 errors: err.response.data,
                                 loading: false,
@@ -148,7 +154,6 @@ class Register extends Component {
                         });
         }
 
-        return;
     }
 
     handleUpload = async event => {
@@ -417,4 +422,13 @@ class Register extends Component {
     }
 }
 
-export default Register;
+Register.propTypes = {
+	loginUser: PropTypes.func.isRequired,
+	user: PropTypes.object.isRequired,
+}
+
+const mapActionsToProps = {
+	loginUser
+}
+
+export default connect(mapActionsToProps)(Register);
