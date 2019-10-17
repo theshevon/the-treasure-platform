@@ -10,6 +10,9 @@ import SweetAlert from 'react-bootstrap-sweetalert';
 // custom icons
 import userIcon  from '../../icons/user.svg';
 
+// custom css
+import '../../stylesheets/view-interested.css';
+
 class ViewInterestedModal extends Component {
     state = {
         show     : false,
@@ -19,8 +22,8 @@ class ViewInterestedModal extends Component {
     componentDidMount(){
 
         axios({
-                method: 'get',
-                url: '/users'
+                method : 'get',
+                url    : '/users'
             })
             .then(res => {
                 let users = res.data;
@@ -40,6 +43,7 @@ class ViewInterestedModal extends Component {
 
         const { intUsers } = this.props;
         let listIntUsers = [];
+
 
         if (intUsers.length === 0) {
             listIntUsers = "No one is interested yet."
@@ -73,8 +77,10 @@ class ViewInterestedModal extends Component {
                 show = {this.state.show}
                 custom
                 customIcon={userIcon}
+                customClass = "int-users-dialog"
                 title="Interested Users"
                 onConfirm={this.handleClose}
+                onCancel={this.handleClose}
                 >
                     {listIntUsers}
                 </SweetAlert>
