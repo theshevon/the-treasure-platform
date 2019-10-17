@@ -8,3 +8,13 @@
 .border-on{
     border: 1px solid #cecece
 }
+
+.int-user-modal{
+    height: 50vh !important;
+    top: 50% !important;
+    transform: translateY(-50%);
+}
+
+.int-user-modal .modal-body{
+    padding-bottom: 10px !important;
+}

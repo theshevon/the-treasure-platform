@@ -24,7 +24,7 @@ class ViewInterestedModal extends Component {
 
     async componentDidMount(){
 
-        let { intUsers } = this.props;
+        let { intUserIDs } = this.props;
 
         await axios({
                         method : 'get',
@@ -40,10 +40,10 @@ class ViewInterestedModal extends Component {
                         });
 
                         // map all the interested user ids to their data
-                        let count=0;
-                        for (let i=0; i<intUsers.length; i++){
-                            if (idsToData.hasOwnProperty(intUsers[i])){  // TODO: remove this clause after seeding db
-                                intUsers[count++] = idsToData[intUsers[i]];
+                        let intUsers=[];
+                        for (let i=0; i<intUserIDs.length; i++){
+                            if (idsToData.hasOwnProperty([intUserIDs[i]])){  // TODO: remove this clause after seeding db
+                                intUsers.push(idsToData[intUserIDs[i]]);
                             }
                         }
 
@@ -67,7 +67,7 @@ class ViewInterestedModal extends Component {
         let userList;
 
         if (this.state.loading){
-            userList = (<Spinner animation="border" size="md"/>);
+            userList = (<Spinner animation="border" size="sm"/>);
         } else {
             intUsers = this.state.intUsers;
 
@@ -75,8 +75,6 @@ class ViewInterestedModal extends Component {
 
             if (intUsers.length > 0){
                 userList = (
-                    <Row
-                        className="user-list d-flex justify-content-center">
                         <Col
                             xs="12"
                             md="10">
@@ -88,7 +86,6 @@ class ViewInterestedModal extends Component {
                                     imgSrc = {userData[2]}/>
                             ))}
                         </Col>
-                    </Row>
                 );
             }
         }
@@ -111,7 +108,8 @@ class ViewInterestedModal extends Component {
 					show={this.state.show}
 					backdrop
 					onHide={this.handleClose}
-					centered
+                    centered
+                    className="int-user-modal"
 					ref={view_int_modal => (this.view_int_modal = view_int_modal)}>
 
 					{/* item name */}
@@ -124,8 +122,11 @@ class ViewInterestedModal extends Component {
 					</Modal.Header>
 
 					<Modal.Body
-						className="info-modal-body px-5 pb-5 pt-0">
-                        { userList }
+						className="px-5 pb-5 pt-0">
+                        <Row
+                            className="user-list d-flex justify-content-center">
+                            { userList }
+                        </Row>
 					</Modal.Body>
 
 				</Modal>

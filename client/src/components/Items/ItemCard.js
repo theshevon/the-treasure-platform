@@ -138,7 +138,7 @@ export class ItemCard extends Component {
 								lg="10"
 								className="d-flex justify-content-end">
 
-								<ViewInterestedModal intUsers={ item.intUsers } />
+								<ViewInterestedModal intUserIDs={ item.intUsers } />
 
 								<Button
 									className="btn ml-2"
