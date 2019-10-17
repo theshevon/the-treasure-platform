@@ -125,13 +125,6 @@ export class ItemCard extends Component {
 
 								<ViewInterestedModal intUsers={ item.intUsers } />
 
-								{/*<Button
-									className="btn"
-									variant="light"
-									onClickViewInterested = {this.handleViewInterested}>
-									View Interested
-								</Button>*/}
-
 								<Button
 									className="btn ml-2"
 									variant="light">
