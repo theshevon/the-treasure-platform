@@ -100,13 +100,6 @@ export class ItemCard extends Component {
 							<Col
 								lg="2">
 
-								{/* edit button */}
-								<Button
-									className="btn edit-btn"
-									variant="light">
-									Edit
-								</Button>
-
 								{/* delete button */}
 								<Button
 									variant="danger"
