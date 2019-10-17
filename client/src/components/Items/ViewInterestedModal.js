@@ -77,12 +77,13 @@ class ViewInterestedModal extends Component {
                 show = {this.state.show}
                 custom
                 customIcon={userIcon}
-                customClass = "int-users-dialog"
                 title="Interested Users"
                 onConfirm={this.handleClose}
                 onCancel={this.handleClose}
                 >
-                    {listIntUsers}
+                    <div className = "int-users-list">
+                        {listIntUsers}
+                    </div>
                 </SweetAlert>
             </div>
         )

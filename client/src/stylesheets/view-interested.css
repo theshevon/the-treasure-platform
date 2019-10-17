@@ -2,13 +2,13 @@
     animation: none !important
 }
 
-.int-users-dialog {
-    height: 300px;
+.int-users-list {
+    max-height: 250px;
     overflow-y: scroll !important;
 }
 
 
-.int-users-dialog::-webkit-scrollbar{
+.int-users-list::-webkit-scrollbar{
     width: 0 !important;
 }
 
