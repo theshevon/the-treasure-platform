@@ -16,7 +16,8 @@
 }
 
 .brand-text {
-    font-family: 'Playfair Display', serif !important;
+    margin-top: 7px;
+    font-family: 'Scope One', serif !important;
 }
 
 .navbar-brand:hover, .navbar-brand-scrolled:hover {
@@ -33,4 +34,3 @@
     object-fit: scale-down;
     background: white;
 }
-
