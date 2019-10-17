@@ -1,17 +1,10 @@
-.sweet-alert {
-    animation: none !important
+.user-tag{
+    width:100%;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
 }
 
-.int-users-list {
-    max-height: 250px;
-    overflow-y: scroll !important;
-}
-
-
-.int-users-list::-webkit-scrollbar{
-    width: 0 !important;
-}
-
-li {
-  list-style-type: none;
+.border-on{
+    border: 1px solid #cecece
 }

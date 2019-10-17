@@ -2,8 +2,11 @@ import React, { Component } from 'react';
 import axios                from 'axios';
 
 // bootstrap imports
-import Button from 'react-bootstrap/Button';
-import Modal  from 'react-bootstrap/Modal';
+import Spinner from 'react-bootstrap/Spinner';
+import Button  from 'react-bootstrap/Button';
+import Modal   from 'react-bootstrap/Modal';
+import Row     from 'react-bootstrap/Row';
+import Col     from 'react-bootstrap/Col';
 
 // custom components
 import UserTag from '../users/UserTag';
@@ -15,6 +18,7 @@ class ViewInterestedModal extends Component {
 
     state = {
         show     : false,
+        loading  : true,
         intUsers : []
     }
 
@@ -32,7 +36,7 @@ class ViewInterestedModal extends Component {
                         // create a mapping from user ids to data
                         let idsToData = {};
                         users.forEach(user => {
-                            idsToData[user.uid] = [user.name, user.img];
+                            idsToData[user.uid] = [user.uid, user.name, user.img];
                         });
 
                         // map all the interested user ids to their data
@@ -43,7 +47,10 @@ class ViewInterestedModal extends Component {
                             }
                         }
 
-                        this.setState({ intUsers : intUsers });
+                        this.setState({
+                                        loading  : false,
+                                        intUsers : intUsers
+                                    });
                     })
                     .catch(err => {
                         console.log(err);
@@ -56,24 +63,34 @@ class ViewInterestedModal extends Component {
 
     render() {
 
-        let intUsers = this.state.intUsers;
+        let intUsers;
+        let userList;
 
-        let userList = ("No one has expressed interest in this item yet.");
-        console.log(intUsers);
-        if (intUsers.length > 0){
-            userList = (
-                <div
-                    className="user-list">
+        if (this.state.loading){
+            userList = (<Spinner animation="border" size="md"/>);
+        } else {
+            intUsers = this.state.intUsers;
 
-                    { intUsers.map((userData, index) => (
-                        <UserTag
-                            key    = {index}
-                            name   = {userData[0]}
-                            imgSrc = {userData[1]}/>
-                    ))}
+            userList = ("No one has expressed interest in this item yet.");
 
-                </div>
-            );
+            if (intUsers.length > 0){
+                userList = (
+                    <Row
+                        className="user-list d-flex justify-content-center">
+                        <Col
+                            xs="12"
+                            md="10">
+
+                            { intUsers.map(userData => (
+                                <UserTag
+                                    key    = {userData[0]}
+                                    name   = {userData[1]}
+                                    imgSrc = {userData[2]}/>
+                            ))}
+                        </Col>
+                    </Row>
+                );
+            }
         }
 
         return (
@@ -89,18 +106,19 @@ class ViewInterestedModal extends Component {
                 </Button>
 
                 <Modal
-					size="md"
+					size="sm"
 					scrollable
 					show={this.state.show}
 					backdrop
 					onHide={this.handleClose}
 					centered
-					ref={view_modal => (this.view_modal = view_modal)}>
+					ref={view_int_modal => (this.view_int_modal = view_int_modal)}>
 
 					{/* item name */}
 					<Modal.Header
 						closeButton>
-						<Modal.Title>
+						<Modal.Title
+                            className="sub-modal-title">
 							Interested Users
 						</Modal.Title>
 					</Modal.Header>
