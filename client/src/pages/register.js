@@ -1,5 +1,6 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import axios                from 'axios';
+import PropTypes            from 'prop-types'
 
 // boostrap imports
 import Spinner from 'react-bootstrap/Spinner';
@@ -7,6 +8,10 @@ import Button  from 'react-bootstrap/Button';
 import Form    from 'react-bootstrap/Form';
 import Row     from 'react-bootstrap/Row';
 import Col     from 'react-bootstrap/Col';
+
+// redux stuff
+import { connect }   from 'react-redux'
+import { loginUser } from '../redux/actions/userActions'
 
 class Register extends Component {
 
@@ -17,6 +22,7 @@ class Register extends Component {
         code :   '',
         pw:      '',
         pw_c:    '',
+        pic:     null,
         loading: false,
         stage:   0,
         validated: false
@@ -82,28 +88,76 @@ class Register extends Component {
             pw_c  : this.state.pw_c
         }
 
-        axios({
-                method: 'post',
-                url: '/register',
-                data: registrationData
-            })
-            .then(res => {
-                this.setState({ loading : false });
-                this.props.history.push('/login');
-            })
-            .catch(err => {
-                this.setState({
-                    errors: err.response.data,
-                    loading: false,
-                    validated: true
-                });
+        if (this.state.pic){
+            let fd   = new FormData();
+            let file = this.state.pic;
+            fd.append("file", file, file.name);
+            this.handleDataTransfer(registrationData, fd);
+        } else {
+            this.handleDataTransfer(registrationData, null);
+        }
 
-                // clear all error fields
-                Object.keys(this.state.errors).forEach(key => {
-                    this.setState({ [key] : ''})
-                })
-            })
+        return;
+    }
 
+    handleDataTransfer = async (registrationData, fd) => {
+
+        // send all the textual data
+        let uid = await axios({
+                            method: 'post',
+                            url: '/register',
+                            data: registrationData
+                        })
+                        .then(res => {
+                            if (!fd){
+                                this.setState({ loading : false });
+                                return;
+                            }
+                            return res.data;
+                        })
+                        .catch(err => {
+                            this.setState({
+                                errors: err.response.data,
+                                loading: false,
+                                validated: true
+                            });
+                        });
+
+        if (this.state.errors) return;
+
+        // send the image, if one has been uploaded
+        if (fd){
+            await axios({
+                            method : 'put',
+                            url    : `/users/${uid}/img_upload`,
+                            headers: {
+                                "content-type": "multipart/form-data"
+                            },
+                            data   : fd
+                        })
+                        .then(res => {
+                            this.setState({ loading : false });
+
+                            // login the user
+                            let userData = {
+                                email    : this.state.email,
+                                password : this.state.password,
+                            }
+                            this.props.loginUser(userData, this.props.history);
+                        })
+                        .catch(err => {
+                            this.setState({
+                                errors: err.response.data,
+                                loading: false,
+                                validated: true
+                            });
+                        });
+        }
+
+    }
+
+    handleUpload = async event => {
+        await this.setState({ pic : event.target.files[0] });
     }
 
     render() {
@@ -221,6 +275,7 @@ class Register extends Component {
 
                 <Form
                     noValidate
+                    encType="multipart/form-data"
                     validated={this.state.validated}
                     onSubmit={this.handleRegistration}>
 
@@ -232,6 +287,24 @@ class Register extends Component {
                         className="text-muted mb-4 text-center">
                         Just fill in your details and you'll be all good to go!
                     </p>
+
+
+                    <Row
+                        className="my-1">
+                        <Form.Control
+                            type="file"
+                            onChange={this.handleUpload}
+                            accept="image/*"
+                            ref={fileUpload => this.fileUpload = fileUpload}
+                            style={{ "display" : "none" }}/>
+                        <Button
+                            type="button"
+                            className="centered-btn btn"
+                            variant="light"
+                            onClick={() => this.fileUpload.click()}>
+                            Select Profile Photo
+                        </Button>
+                    </Row>
 
                     {/* Name fields */}
                     <Row
@@ -324,6 +397,7 @@ class Register extends Component {
                     {/* Submit button */}
                     <Button
                         className="login-btn btn mt-3"
+                        variant="light"
                         type="submit"
                         disabled={this.state.loading}>
                         {btnContent}
@@ -339,7 +413,7 @@ class Register extends Component {
                     <Col
                         className="login-form-body p-5"
                         xs="10"
-                        sm="6"
+                        sm="10"
                         md="3">
                         { formContent }
                     </Col>
@@ -348,4 +422,13 @@ class Register extends Component {
     }
 }
 
-export default Register;
+Register.propTypes = {
+	loginUser: PropTypes.func.isRequired,
+	user: PropTypes.object.isRequired,
+}
+
+const mapActionsToProps = {
+	loginUser
+}
+
+export default connect(mapActionsToProps)(Register);

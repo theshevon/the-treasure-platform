@@ -218,8 +218,8 @@ class AddItemForm extends Component {
     }
 
     // handles state updates to uploaded files
-    handleFileSelect = event => {
-        this.setState({ uploadedFiles : Array.from(event.target.files) });
+    handleFileSelect = async event => {
+        await this.setState({ uploadedFiles : Array.from(event.target.files) });
     }
 
     // handles state updates to visibility toggler

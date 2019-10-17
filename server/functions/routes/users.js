@@ -24,6 +24,10 @@ router.post("/invite", isLoggedIn, userController.inviteNewUsers);
 
 router.post("/support", isLoggedIn, userController.sendSupportMessage);
 
-/*===========================================================================*/
+/*=================================PUT ROUTES=================================*/
+
+router.put("/users/:id/img_upload", userController.uploadImg);
+
+/*============================================================================*/
 
 module.exports = router;

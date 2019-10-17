@@ -2,7 +2,11 @@ const { admin, db } = require('../util/admin');
 const firebase      = require('firebase');
 const fb_functions  = require('firebase-functions');
 const nodemailer    = require('nodemailer');
-const config        = require('../util/config');
+const BusBoy        = require('busboy'),
+      config        = require("../util/config"),
+      path          = require('path'),
+      fs            = require('fs'),
+      os            = require('os');
 const { validateRegistrationData,
         validateInvitationData,
         validateLoginData,
@@ -86,7 +90,8 @@ exports.registerNewUser =
             lname: req.body.lname,
             email: req.body.email,
             pw: req.body.pw,
-            pw_c: req.body.pw_c
+            pw_c: req.body.pw_c,
+            imgSrc: `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/users_no_img.png?alt=media`
         }
 
         // carry out validation
@@ -109,7 +114,7 @@ exports.registerNewUser =
                     email: newUser.email,
                     uType: 1,
                     createdOn: admin.firestore.FieldValue.serverTimestamp(),
-                    intItems: []
+                    imgSrc: newUser.imgSrc
                 }
 
                 // eslint-disable-next-line promise/no-nesting
@@ -118,10 +123,10 @@ exports.registerNewUser =
                         .doc(uid)
                         .set(userData)
                         .then(() => {
-                            return res.status(200).json("Success: new user created.");
+                            return res.status(200).json(uid);
                         })
                         .catch(err => {
-                            return res.status(500).json({ error: err });
+                            return res.status(400).json({ error: err });
                         })
 
             })
@@ -129,7 +134,7 @@ exports.registerNewUser =
                 if (err.code === "auth/email-already-in-use"){
                     return res.status(400).json({ email: "Email is already in use" });
                 } else {
-                    return res.status(500).json({ error: err.code });
+                    return res.status(400).json({ error: err.code });
                 }
             });
 
@@ -228,6 +233,107 @@ exports.getAuthenticatedUser =
 
     }
 
+// uploads a single image to firebase storage
+exports.uploadImg =
+
+    // Response codes:
+    // 200 :- No Error
+    // 101 :- Error : Document does not exist
+    // 102 :- Error : Incorrect file type
+    // 103 :- Error : Failed to link image URI to database entry
+    // 104 :- Error : Failed to upload image to firebase storage
+    // 105 :- Error : Other error
+
+    async (req, res) => {
+
+        // find the database entry for the required item
+        await db
+                .collection('users')
+                .doc(req.params.id)
+                .get()
+                .then(doc => {
+
+                    // eslint-disable-next-line promise/always-return
+                    if (!doc.exists){
+                        return res.status(400).json({ code : 101 });
+                    }
+
+                    const busboy = new BusBoy({ headers: req.headers });
+
+                    let imageToBeUploaded = {};
+                    let imageFileName;
+
+                    // prepare the image file
+                    busboy.on('file', (fieldname, file, filename, encoding, mimetype) => {
+
+                        // check if the file type is that of an image
+                        if (mimetype !== 'image/jpeg' && mimetype !== 'image/png') {
+                            return res.status(400).json({ code : 102 });
+                        }
+
+                        // create a unique name for the image
+                        const imageExtension = filename.split('.')[filename.split('.').length - 1];
+                        imageFileName = `users_${req.params.id}.${imageExtension}`;
+
+                        // upload the image
+                        const filepath = path.join(os.tmpdir(), imageFileName);
+                        imageToBeUploaded = { filepath, mimetype };
+                        file.pipe(fs.createWriteStream(filepath));
+                    });
+
+                    // store the image on firebase storage
+                    busboy.on('finish', () => {
+
+                        // eslint-disable-next-line promise/no-nesting
+                        admin
+                        .storage()
+                        .bucket(config.storageBucket)
+                        .upload(imageToBeUploaded.filepath, {
+                            resumable: false,
+                            metadata: {
+                                metadata: {
+                                    contentType: imageToBeUploaded.mimetype
+                                }
+                            }
+                        })
+                        .then(() => {
+
+                            // determine the imageURL and add it to the item's database entry
+                            const imageUrl = `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${imageFileName}?alt=media`;
+
+                            // update databse entry
+                            // eslint-disable-next-line promise/no-nesting
+                            return db
+                                    .collection('users')
+                                    .doc(doc.id)
+                                    .update({ imgSrc : imageUrl })
+                                    .then(() => {
+                                        return res.status(200).json({ code : 200 });
+                                    })
+                                    // eslint-disable-next-line handle-callback-err
+                                    .catch(err => {
+                                        console.log(err);
+                                        return res.status(400).json({ code : 103 });
+                                    })
+
+                        })
+                        // eslint-disable-next-line handle-callback-err
+                        .catch(err => {
+                            console.log(err);
+                            return res.status(400).json({ code : 104 });
+                        });
+                    });
+
+                    busboy.end(req.rawBody);
+                })
+
+                // eslint-disable-next-line handle-callback-err
+                .catch(err => {
+                    console.log(err);
+                    return res.status(400).json({ code : 105 });
+                });
+    }
+
 exports.inviteNewUsers =
 
     async (req, res) => {
@@ -303,6 +409,9 @@ exports.inviteNewUsers =
                 errors[i] = `Email could not be sent to ${email}`;
             }
         }
+        return errors;
+
+    }
 
         // return errors, if they were found.
         // else, return success
