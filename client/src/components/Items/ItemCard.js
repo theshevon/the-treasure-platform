@@ -16,6 +16,7 @@ import SweetAlert from 'react-bootstrap-sweetalert';
 
 // custom components
 import LikeButton from './LikeButton';
+import ViewInterestedModal from './ViewInterestedModal';
 
 // redux stuff
 import { connect } from 'react-redux';
@@ -29,8 +30,8 @@ export class ItemCard extends Component {
 		show              : false,
 		scrolled_modal    : false,
 		showWarning       : false,
+		showDeleteSuccess : false,
 		loading           : false,
-		showDeleteSuccess : false
 	}
 
 	handleClose = () => {
@@ -121,11 +122,16 @@ export class ItemCard extends Component {
 							<Col
 								lg="10"
 								className="d-flex justify-content-end">
-								<Button
+
+								<ViewInterestedModal intUsers={ item.intUsers } />
+
+								{/*<Button
 									className="btn"
-									variant="light">
+									variant="light"
+									onClickViewInterested = {this.handleViewInterested}>
 									View Interested
-								</Button>
+								</Button>*/}
+
 								<Button
 									className="btn ml-2"
 									variant="light">
@@ -183,6 +189,7 @@ export class ItemCard extends Component {
 					size="xl"
 					scrollable
 					show={this.state.show}
+					backdrop
 					onHide={this.handleClose}
 					centered
 					ref={view_modal => (this.view_modal = view_modal)}>
