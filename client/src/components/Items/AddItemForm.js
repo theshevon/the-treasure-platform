@@ -29,11 +29,22 @@ class AddItemForm extends Component {
         selectingWatchers : true,
         selectedUsers     : [],
         loading           : false,
+        loadingUsers      : true,
         validated         : false,
         success           : false
     }
 
     async componentDidMount(){
+
+        // options for visibility toggler dropdown
+        let opts = ["Visible to", "Hidden from"];
+        let visibilityOptions = opts.map(opt => ({
+                                                    key   : opt,
+                                                    text  : opt,
+                                                    value : opt
+                                                }));
+
+        this.setState({ visibilityOptions : visibilityOptions });
 
         // fetch user IDs and names of all the secondary users on the platform
         await axios({
@@ -54,23 +65,14 @@ class AddItemForm extends Component {
                     });
 
                     this.setState({
-                        allUsers    : users,
-                        userOptions : userOptions
+                        allUsers     : users,
+                        userOptions  : userOptions,
+                        loadingUsers : false
                     });
                 })
                 .catch(err => {
                     console.log(err);
                 });
-
-        // options for visibility toggler dropdown
-        let opts = ["Visible to", "Hidden from"];
-        let visibilityOptions = opts.map(opt => ({
-                                                    key   : opt,
-                                                    text  : opt,
-                                                    value : opt
-                                                }));
-
-        this.setState({ visibilityOptions : visibilityOptions });
     }
 
     // handles validation of the input fields in the form
@@ -335,6 +337,7 @@ class AddItemForm extends Component {
                             className="px-1">
                             <Dropdown
                                 selection
+                                disabled={this.state.loadingUsers}
                                 defaultValue="Visible to"
                                 options={this.state.visibilityOptions}
                                 onChange={this.handleVisibilityOptionChange}/>
@@ -343,13 +346,14 @@ class AddItemForm extends Component {
                             sm="9">
                             <Dropdown
                                 onChange={this.handleMultiSelect}
-                                placeholder='Select User(s)'
+                                placeholder={ this.state.loadingUsers ? 'Loading...' : 'Select User(s)' }
                                 fluid
                                 multiple
                                 selection
+                                disabled={this.state.loadingUsers}
                                 defaultValue={this.state.selectedUsers}
                                 ref={visDropdown => this.visDropdown = visDropdown}
-                                options={this.state.userOptions} />
+                                options={this.state.userOptions}/>
                             <Form.Text
                                 className="text-muted">
                                 If no users are selected, this item will be visible to everyone.
@@ -374,9 +378,10 @@ class AddItemForm extends Component {
                             sm="9">
                             <Dropdown
                                 name="assignedto"
-                                placeholder='Select User'
+                                placeholder={ this.state.loadingUsers ? 'Loading...' : 'Select User' }
                                 search
                                 selection
+                                disabled={this.state.loadingUsers}
                                 options={this.state.userOptions}
                                 onChange={this.handleAssignment}/>
                         </Col>
