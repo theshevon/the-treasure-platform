@@ -86,7 +86,8 @@ exports.registerNewUser =
             lname: req.body.lname,
             email: req.body.email,
             pw: req.body.pw,
-            pw_c: req.body.pw_c
+            pw_c: req.body.pw_c,
+            imgSrc: `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/users_no_img.png?alt=media`
         }
 
         // carry out validation
