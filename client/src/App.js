@@ -9,10 +9,11 @@ import jwtDecode    from 'jwt-decode';
 
 // pages
 import dashboard from './pages/dashboard';
-import login     from './pages/login';
-import items     from './pages/items';
 import register  from './pages/register';
+import support   from './pages/support';
 import error     from './pages/error';
+import items     from './pages/items';
+import login     from './pages/login';
 
 // custom components
 import AuthenticatedRoute from './components/util/AuthenticatedRoute';
@@ -46,9 +47,11 @@ if (token) {
 class App extends Component{
 
 	render() {
+
 		return (
 			<Provider
 				store={ store }>
+
 				<Router>
 					<Switch>
 
@@ -81,6 +84,12 @@ class App extends Component{
 							exact
 							path="/items"
 							component={ items }/>
+
+						{/* support page */}
+						<AuthenticatedRoute
+							exact
+							path="/support"
+							component={ support }/>
 
 						{/* error page */}
 						<Route

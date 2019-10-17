@@ -20,7 +20,7 @@ class InviteForm extends Component {
         noRows   : this.minRows,
         emails   : Array(this.minRows).fill(''),
         loading  : false,
-		errors   : null,
+		errors   : {},
 		validated: false
     }
 
@@ -57,8 +57,7 @@ class InviteForm extends Component {
         event.preventDefault();
 
         this.setState({
-			loading  : true,
-			validated: true
+			loading  : true
         });
 
         // send the data to the server
@@ -74,6 +73,7 @@ class InviteForm extends Component {
                 this.setState({
                     errors    : err.response.data,
                     loading   : false,
+                    validated : true
                 })
             })
     }
