@@ -31,5 +31,6 @@
 .user-img{
     border-radius: 50%;
     object-fit: scale-down;
+    background: white;
 }
 

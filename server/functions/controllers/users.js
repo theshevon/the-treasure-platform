@@ -72,7 +72,7 @@ exports.checkInvitee =
                 return res.status(400).json({ general : "Sorry, the email address or code you entered was incorrect." });
             })
             .catch(err => {
-                res.status(500).json({err: err});
+                res.status(400).json({err: err});
             })
     }
 
@@ -118,10 +118,10 @@ exports.registerNewUser =
                         .doc(uid)
                         .set(userData)
                         .then(() => {
-                            return res.status(200).json("Success: new user created.");
+                            return res.status(200).json(uid);
                         })
                         .catch(err => {
-                            return res.status(500).json({ error: err });
+                            return res.status(400).json({ error: err });
                         })
 
             })
@@ -129,7 +129,7 @@ exports.registerNewUser =
                 if (err.code === "auth/email-already-in-use"){
                     return res.status(400).json({ email: "Email is already in use" });
                 } else {
-                    return res.status(500).json({ error: err.code });
+                    return res.status(400).json({ error: err.code });
                 }
             });
 
@@ -328,8 +328,6 @@ exports.uploadImg =
                 return res.status(400).json({ code : 105 });
             })
     }
-
-
 
 exports.inviteNewUsers =
 
