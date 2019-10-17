@@ -95,7 +95,22 @@ export class ItemCard extends Component {
 		}
 
 		let btnSet = null;
-		if (user.type === 0){
+		let EOIOpt = 	(
+							<Row
+								className="justify-content-end">
+								<LikeButton
+									itemID={item.id}
+									size="sm"
+									liked={item.intUsers.includes(user.id)}/>
+							</Row>
+						);
+
+		let type   = localStorage.TreasureUType || user.type;
+		if (typeof type === "string"){
+			type = parseInt(type);
+		}
+
+		if (type === 0){
 			btnSet = (
 						<Row>
 							<Col
@@ -133,6 +148,8 @@ export class ItemCard extends Component {
 							</Col>
 						</Row>
 					)
+
+			EOIOpt = null;
 		}
 
 		return (
@@ -151,13 +168,7 @@ export class ItemCard extends Component {
 					variant="top"
 					src={item.photos[item.cover]}/>
 
-				<Row
-					className="justify-content-end">
-					<LikeButton
-						itemID={item.id}
-						size="sm"
-						liked={item.intUsers.includes(user.id)}/>
-				</Row>
+				{ EOIOpt }
 
 				<Card.Body
 					className="item-card-body">
