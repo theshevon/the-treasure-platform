@@ -122,7 +122,6 @@ class ViewInterestedModal extends Component {
                     className="int-user-modal"
 					ref={view_int_modal => (this.view_int_modal = view_int_modal)}>
 
-					{/* item name */}
 					<Modal.Header
 						closeButton>
 						<Modal.Title

@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import axios                from 'axios';
-import PropTypes            from 'prop-types';
 
 // boostrap imports
 import Spinner from 'react-bootstrap/Spinner';
@@ -8,10 +7,6 @@ import Button  from 'react-bootstrap/Button';
 import Form    from 'react-bootstrap/Form';
 import Row     from 'react-bootstrap/Row';
 import Col     from 'react-bootstrap/Col';
-
-// redux stuff
-import { connect }   from 'react-redux'
-import { loginUser } from '../redux/actions/userActions'
 
 class Register extends Component {
 
@@ -137,13 +132,6 @@ class Register extends Component {
                         })
                         .then(res => {
                             this.setState({ loading : false });
-
-                            // login the user
-                            let userData = {
-                                email    : this.state.email,
-                                password : this.state.password,
-                            }
-
                             this.props.history.push('/login');
                         })
                         .catch(err => {
