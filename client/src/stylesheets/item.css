@@ -97,3 +97,8 @@
 .item-card-loaded:hover{
     transform: scale(1.05) perspective(1px);
 }
+
+.sub-modal-title{
+    font-size: 1.5rem !important;
+    text-align: center !important;
+}

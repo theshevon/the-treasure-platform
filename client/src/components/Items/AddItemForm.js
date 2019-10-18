@@ -190,7 +190,7 @@ class AddItemForm extends Component {
             visibleTo  : visibleTo,
             assignedTo : assignedTo,
         }
-        console.log(itemData);
+
         this.submitData(itemData);
 	}
 

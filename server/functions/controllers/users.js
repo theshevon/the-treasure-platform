@@ -198,8 +198,9 @@ exports.getSecondaryUsers =
                 data.forEach((doc) => {
                     if (parseInt(doc.data()["uType"]) === 1){
                         let user = {
-                                        uid : doc.id,
+                                        uid  : doc.id,
                                         name : doc.data().fname + " " + doc.data().lname,
+                                        img  : doc.data().imgSrc
                                     };
                         users.push(user);
                     }

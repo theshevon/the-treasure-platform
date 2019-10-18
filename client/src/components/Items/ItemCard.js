@@ -16,6 +16,7 @@ import SweetAlert from 'react-bootstrap-sweetalert';
 
 // custom components
 import LikeButton from './LikeButton';
+import ViewInterestedModal from './ViewInterestedModal';
 
 // redux stuff
 import { connect } from 'react-redux';
@@ -29,8 +30,8 @@ export class ItemCard extends Component {
 		show              : false,
 		scrolled_modal    : false,
 		showWarning       : false,
+		showDeleteSuccess : false,
 		loading           : false,
-		showDeleteSuccess : false
 	}
 
 	handleClose = () => {
@@ -53,7 +54,6 @@ export class ItemCard extends Component {
 			const res = await axios
 									.delete(url)
 									.then(res => {
-												console.log(res);
 												return res.data;
 										});
 			this.handleDeleteSuccess();
@@ -94,7 +94,22 @@ export class ItemCard extends Component {
 		}
 
 		let btnSet = null;
-		if (user.type === 0){
+		let EOIOpt = 	(
+							<Row
+								className="justify-content-end">
+								<LikeButton
+									itemID={item.id}
+									size="sm"
+									liked={item.intUsers.includes(user.id)}/>
+							</Row>
+						);
+
+		let type   = localStorage.TreasureUType || user.type;
+		if (typeof type === "string"){
+			type = parseInt(type);
+		}
+
+		if (type === 0){
 			btnSet = (
 						<Row>
 							<Col
@@ -114,11 +129,9 @@ export class ItemCard extends Component {
 							<Col
 								lg="10"
 								className="d-flex justify-content-end">
-								<Button
-									className="btn"
-									variant="light">
-									View Interested
-								</Button>
+
+								<ViewInterestedModal intUserIDs={ item.intUsers } />
+
 								<Button
 									className="btn ml-2"
 									variant="light">
@@ -127,6 +140,8 @@ export class ItemCard extends Component {
 							</Col>
 						</Row>
 					)
+
+			EOIOpt = null;
 		}
 
 		return (
@@ -145,13 +160,7 @@ export class ItemCard extends Component {
 					variant="top"
 					src={item.photos[item.cover]}/>
 
-				<Row
-					className="justify-content-end">
-					<LikeButton
-						itemID={item.id}
-						size="sm"
-						liked={item.intUsers.includes(user.id)}/>
-				</Row>
+				{ EOIOpt }
 
 				<Card.Body
 					className="item-card-body">
@@ -173,9 +182,11 @@ export class ItemCard extends Component {
 				</Card.Body>
 
 				<Modal
+					id="item-modal"
 					size="xl"
 					scrollable
 					show={this.state.show}
+					backdrop
 					onHide={this.handleClose}
 					centered
 					ref={view_modal => (this.view_modal = view_modal)}>
