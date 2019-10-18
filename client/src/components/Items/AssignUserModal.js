@@ -6,8 +6,6 @@ import Spinner from 'react-bootstrap/Spinner';
 import Button  from 'react-bootstrap/Button';
 import Modal   from 'react-bootstrap/Modal';
 import Form    from 'react-bootstrap/Form';
-import Row     from 'react-bootstrap/Row';
-import Col     from 'react-bootstrap/Col';
 
 // semantic-ui imports
 import { Dropdown } from 'semantic-ui-react';
@@ -19,8 +17,13 @@ export class AssignUserModal extends Component {
 
     state = {
         show       : false,
-        loading    : true,
-        assignedTo : null
+        loading    : false,
+        current    : null,
+        assignedTo : null,
+        validated  : false,
+        errors     : null,
+        userOpts   : [],
+        idsToNames : {}
     }
 
     handleClose = () => this.setState({ show : false });
@@ -29,18 +32,129 @@ export class AssignUserModal extends Component {
 
      // handles state updates to item assignee
     handleAssignment = (event, { value }) => {
-        this.setState({ assignedto: value });
+        this.setState({ assignedTo : value });
+    }
+
+    async componentDidMount(){
+
+        let { assignedTo } = this.props;
+
+        await this.setState({ current : assignedTo });
+
+        await axios({
+                        method : 'get',
+                        url    : '/users'
+                    })
+                    .then(res => {
+                        let users = res.data;
+
+                        // mappings from user ids to their names
+                        let idsToNames = {};
+
+                        // user options for visibility dropdown
+                        let userOptions = [];
+
+                        users.forEach(user => {
+                            userOptions.push({
+                                key   : user.uid,
+                                text  : user.name,
+                                value : user.uid
+                            });
+
+                            idsToNames[user.uid] = user.name;
+                        });
+
+                        // allow for removal of assignment
+                        userOptions.push({
+                            key   : 0,
+                            text  : "No One",
+                            value : '0'
+                        });
+
+                        this.setState({
+                                        loading    : false,
+                                        userOpts   : userOptions,
+                                        idsToNames : idsToNames
+                                    });
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    });
+    }
+
+    handleSubmit = event => {
+
+        event.preventDefault();
+
+        let iid        = this.props.itemID;
+        let assignedTo = this.state.assignedTo;
+        let current    = this.state.current;
+
+        // same as current assignement so do nothing
+        if (assignedTo === current || (assignedTo === '0' && current === '')){
+            return;
+        }
+
+        this.setState({ loading : true });
+
+        axios({
+                method : 'put',
+                url    : `/items/${iid}/assign/${assignedTo}`
+            })
+            .then(res => {
+                this.setState({
+                                current   : res.data,
+                                loading   : false,
+                                errors    : null
+                            });
+            })
+            .catch(err => {
+                this.setState({
+                                loading   : false,
+                                validated : true,
+                                errors    : err.response.data
+                            });
+            });
     }
 
     render() {
 
+        const { show, loading, validated, errors, current, idsToNames } = this.state;
+
         let backdrop = null;
-        if (this.state.show){
+        if (show){
             backdrop = (
                             <div
                                 className = "int-user-modal-backdrop fade modal-backdrop show">
                             </div>
                         );
+        }
+
+        // if loading, replace button text with spinner
+        let btnContent = ("Confirm");
+		if (loading){
+			btnContent = (<Spinner animation="border" size="sm"/>);
+        }
+
+        let labelContent = (<Spinner animation="border" size="sm"/>);
+        if (current){
+            labelContent = (idsToNames[current]);
+        } else if (current === ''){
+            labelContent = ("No One");
+        }
+
+        // error feedback
+        let assignmentFeedback = null;
+
+        if (validated){
+            if (errors){
+                assignmentFeedback = (
+                    <p
+                        className="invalid-feedback-msg">
+                        { errors.msg }
+                    </p>
+                );
+            }
         }
 
         return (
@@ -84,7 +198,7 @@ export class AssignUserModal extends Component {
 
                         <p
                             className="assignee text-center">
-                            {this.props.assignedTo || 'No One'}
+                            { labelContent }
                         </p>
 
                         <Form>
@@ -99,16 +213,18 @@ export class AssignUserModal extends Component {
                                 search
                                 selection
                                 disabled={this.state.loadingUsers}
-                                options={this.state.userOptions}
+                                options={this.state.userOpts}
                                 onChange={this.handleAssignment}/>
+                            { assignmentFeedback }
                         </Form>
 					</Modal.Body>
 
                     <Modal.Footer>
                         <Button
-                            className="btn text-center"
-                            variant="light">
-                            Confirm
+                            className="assign-btn btn text-center"
+                            variant="light"
+                            onClick={this.handleSubmit}>
+                            { btnContent }
                         </Button>
                     </Modal.Footer>
 

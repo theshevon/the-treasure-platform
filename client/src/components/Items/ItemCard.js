@@ -135,6 +135,7 @@ export class ItemCard extends Component {
 									intUserIDs={ item.intUsers } />
 
 								<AssignUserModal
+									itemID    ={ item.id }
 									assignedTo={ item.assignedTo }/>
 							</Col>
 						</Row>

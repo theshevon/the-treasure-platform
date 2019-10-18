@@ -438,7 +438,7 @@ exports.sendSupportMessage =
             to: 'treasureapp.au@gmail.com',
             subject: `Support Request: ${supportData.subject}`,
             html:
-                `<p style="font-size: 16px; color: black;">${req.user.name}<i>UID: (${req.user.id})</i> wrote:</p>
+                `<p style="font-size: 16px; color: black;">${req.user.name}<i>(UID: ${req.user.id})</i> wrote:</p>
                 <br>
                 <p style="font-size: 16px; color: black; background: #f8f9fa">${supportData.message}</p>`
         };
@@ -446,7 +446,7 @@ exports.sendSupportMessage =
         // send email
         /* eslint-disable no-await-in-loop */
         try {
-            await sendMail(mailOptions);
+            await sendEmail(mailOptions);
         } catch (err) {
             console.log(err);
             return res.status(400).json({ general : "Sorry, something went wrong!"});

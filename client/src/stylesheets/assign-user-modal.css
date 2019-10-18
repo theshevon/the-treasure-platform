@@ -13,3 +13,8 @@ input.search{
 .assign-modal .modal-footer{
     border-top: none !important;
 }
+
+.assign-btn{
+    margin-right: 50%;
+    transform: translateX(50%);
+}

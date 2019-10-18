@@ -105,7 +105,7 @@ class ViewInterestedModal extends Component {
 
                 {/* View Interested Button */}
                 <Button
-                    className="btn"
+                    className="btn mr-2"
                     variant="light"
                     onClick = {this.handleShow}>
                     View Interested

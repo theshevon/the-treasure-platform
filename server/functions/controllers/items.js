@@ -23,10 +23,11 @@ exports.getItems =
 
                 // sort in chronological order
                 items.sort((item1, item2) => item1.createdOn.toDate() - item2.createdOn.toDate());
-                return res.json(items);
+
+                return res.status(200).json(items);
             })
             .catch((err) => {
-                res.status(500).json({ error: err.code });
+                res.status(400).json({ error: err.code });
             });
     }
 
@@ -294,7 +295,7 @@ exports.toggleEOI =
         // iid - item id
         let iid = req.params.iid;
         // uid - user id
-        let uid = req.params.uid;
+        let uid = req.user.id;
 
         db
             .collection('items')
@@ -355,7 +356,7 @@ exports.toggleEOI =
             });
     }
 
-exports.assignItem = 
+exports.assignItem =
 
     (req, res) => {
 
@@ -364,49 +365,65 @@ exports.assignItem =
         // uid - user id
         let uid = req.params.uid;
 
-        db
-            .collection('items')
-            .doc(iid)
-            .get()
-            .then(itemDoc => {
+        if (uid === '0'){
+            db
+                .collection('items')
+                .doc(iid)
+                .update({ assignedTo : '' })
+                .then(() => {
+                    return res.status(200).json('');
+                })
+                .catch(err => {
+                    console.log(err);
+                    return res.status(400).json({ "msg" : "Sorry, your request couldn't be completed right now." });
+                })
+        } else {
+            db
+                .collection('items')
+                .doc(iid)
+                .get()
+                .then(itemDoc => {
 
-                if (!itemDoc.exists){
-                    return res.status(400).json("Invalid Item ID");
-                }
+                    if (!itemDoc.exists){
+                        // invalid iid
+                        return res.status(400).json({ "msg" : "Sorry, your request couldn't be completed right now." });
+                    }
 
-                // validate userID
-                // eslint-disable-next-line promise/no-nesting
-                return db.collection('users')
-                        .doc(uid)
-                        .get()
-                        .then(userDoc => {
+                    // validate userID
+                    // eslint-disable-next-line promise/no-nesting
+                    return db.collection('users')
+                            .doc(uid)
+                            .get()
+                            .then(userDoc => {
 
-                            if (!userDoc.exists){
-                                throw new Error("Invalid user id");
-                            }
+                                if (!userDoc.exists){
+                                    throw new Error("Invalid user id");
+                                }
 
-                            // set assigned field of item to uid
-                            // eslint-disable-next-line promise/no-nesting
-                            return db
-                                    .collection('items')
-                                    .doc(iid)
-                                    .update({ assignedTo : uid })
-                                    .then(() => {
-                                        return res.status(200).json("Success");
-                                    })
-                                    .catch(err => {
-                                        console.log(err);
-                                        throw new Error(err);
-                                    })
-                        })
-                        .catch (err => {
-                            console.log(err);
-                            return res.status(400).json("Invalid User ID");
-                        });
+                                // set assigned field of item to uid
+                                // eslint-disable-next-line promise/no-nesting
+                                return db
+                                        .collection('items')
+                                        .doc(iid)
+                                        .update({ assignedTo : uid })
+                                        .then(() => {
+                                            return res.status(200).json(uid);
+                                        })
+                                        .catch(err => {
+                                            console.log(err);
+                                            throw new Error(err);
+                                        })
+                            })
+                            .catch (err => {
+                                // invalid uid
+                                console.log(err);
+                                return res.status(400).json({ "msg" : "Please select a user from the list!" });
+                            });
 
-            })
-            .catch(err => {
-                console.log(err);
-                return res.status(400).json(err);
-            });
+                })
+                .catch(err => {
+                    console.log(err);
+                    return res.status(400).json({ "msg" : "Sorry, your request couldn't be completed right now." });
+                });
+        }
     }
