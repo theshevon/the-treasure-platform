@@ -33,21 +33,23 @@ exports.getItems =
 
 getSecondaryUsers = async () => {
     try {
-        const users = db.collection('users')
-                        .get()
-                        .then((data) => {
-                            // extract all userIDs
-                            let users = [];
-                            data.forEach((doc) => {
-                                if (doc.data().utype === 1){
-                                    users.push(doc.id);
-                                }
-                            });
-                            return users;
-                        })
-                        .catch((err) => {
-                            res.status(500).json({ error: err.code });
-                        });
+        const users = await db.collection('users')
+                                .get()
+                                .then((data) => {
+                                    // extract all userIDs
+                                    let users = [];
+                                    data.forEach((doc) => {
+                                        if (parseInt(doc.data()["uType"]) === 1){
+                                            users.push(doc.id);
+                                        }
+                                    });
+                                    return users;
+                                })
+                                .catch((err) => {
+                                    throw new Error(err);
+                                });
+        console.log(users[0]);
+        console.log(users[1]);
         return users;
     } catch (err) {
         return -1;
@@ -71,14 +73,14 @@ exports.createItem =
             createdOn  : admin.firestore.FieldValue.serverTimestamp()
         }
 
-        const users = await getSecondaryUsers();
+        let SUs = await getSecondaryUsers();
 
-        if (users === -1){
+        if (SUs === -1){
             return res.status(500).json({"general" : "Sorry, something went wrong."});
         }
 
         // carry out validation
-        const { valid, errors } = validateItemData(item, users);
+        const { valid, errors } = validateItemData(item, SUs);
         if (!valid) return res.status(400).json(errors);
 
         // add item to collection
@@ -89,6 +91,7 @@ exports.createItem =
                 return res.status(200).json(doc.id);
             })
             .catch((err) => {
+                console.log(err)
                 return res.status(400).json({ Error : err });
             });
     }

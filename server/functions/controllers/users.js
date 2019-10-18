@@ -152,6 +152,7 @@ exports.logInUser =
 
         // Validate credentials
         const { valid, errors } = validateLoginData(user);
+
         if (!valid) return res.status(400).json(errors);
 
         firebase
