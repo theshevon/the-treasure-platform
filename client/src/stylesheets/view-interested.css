@@ -18,3 +18,7 @@
 .int-user-modal .modal-body{
     padding-bottom: 10px !important;
 }
+
+.int-user-modal-backdrop.fade.modal-backdrop.show{
+    z-index: 1052 !important;
+}

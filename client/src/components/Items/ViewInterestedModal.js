@@ -90,6 +90,15 @@ class ViewInterestedModal extends Component {
             }
         }
 
+        let backdrop = null;
+        if (this.state.show){
+            backdrop = (
+                            <div
+                                className = "int-user-modal-backdrop fade modal-backdrop show">
+                            </div>
+                        );
+        }
+
         return (
 
             <div>
@@ -102,11 +111,12 @@ class ViewInterestedModal extends Component {
                     View Interested
                 </Button>
 
+                { backdrop }
+
                 <Modal
 					size="sm"
 					scrollable
 					show={this.state.show}
-					backdrop
 					onHide={this.handleClose}
                     centered
                     className="int-user-modal"

@@ -54,7 +54,6 @@ export class ItemCard extends Component {
 			const res = await axios
 									.delete(url)
 									.then(res => {
-												console.log(res);
 												return res.data;
 										});
 			this.handleDeleteSuccess();
@@ -190,6 +189,7 @@ export class ItemCard extends Component {
 				</Card.Body>
 
 				<Modal
+					id="item-modal"
 					size="xl"
 					scrollable
 					show={this.state.show}
