@@ -195,16 +195,16 @@ export class ItemCard extends Component {
 					<Modal.Header
 						closeButton>
 						<Modal.Title>
-							{item.name}
 						</Modal.Title>
 					</Modal.Header>
 
 					{/* item image carousel */}
 					<Modal.Body
 						className="info-modal-body px-5 pb-5 pt-0">
-
+						<Row>
+						<Col sm="6">
 						<Carousel
-							controls={false}>
+							controls={true}>
 							{item.photos.map((photo, index) => (
 								<Carousel.Item
 									key={index}>
@@ -216,34 +216,26 @@ export class ItemCard extends Component {
 								</Carousel.Item>
 							))}
 						</Carousel>
+						</Col>
+
 
 						{/* animation to let user know that modal is scrollable*/}
-						<div
-							id="scroll-anim"
-							className="d-flex justify-content-center"
-							display={this.state.scrolled_modal ? "none" : "block"}>
-
-							<div
-								className="mouse-container">
-								<div
-									className="mouse">
-									<span
-										className="scroll-down">
-									</span>
-								</div>
+						<Col sm="6">
+							{/* item desciption */}
+							<div className = "modal-title item-modal-title">
+							{item.name}
 							</div>
-						</div>
+							<div
+								className="item-row">
+								<p
+									className="my-5 text-justify">
+									{item.desc}
+								</p>
+							</div>
+							{ btnSet }
+						</Col>
 
-						{/* item desciption */}
-						<div
-							className="item-row">
-							<p
-								className="my-5 text-justify">
-								{item.desc}
-							</p>
-						</div>
-
-						{ btnSet }
+						</Row>
 
 						<div>
 							{/* ask user to confirm item deletion */}
