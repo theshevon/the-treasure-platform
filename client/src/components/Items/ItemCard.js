@@ -15,8 +15,9 @@ import Col      from 'react-bootstrap/Col';
 import SweetAlert from 'react-bootstrap-sweetalert';
 
 // custom components
-import LikeButton from './LikeButton';
 import ViewInterestedModal from './ViewInterestedModal';
+import AssignUserModal     from './AssignUserModal';
+import LikeButton          from './LikeButton';
 
 // redux stuff
 import { connect } from 'react-redux';
@@ -130,13 +131,12 @@ export class ItemCard extends Component {
 								lg="10"
 								className="d-flex justify-content-end">
 
-								<ViewInterestedModal intUserIDs={ item.intUsers } />
+								<ViewInterestedModal
+									intUserIDs={ item.intUsers } />
 
-								<Button
-									className="btn ml-2"
-									variant="light">
-									Assign Item
-								</Button>
+								<AssignUserModal
+									itemID    ={ item.id }
+									assignedTo={ item.assignedTo }/>
 							</Col>
 						</Row>
 					)

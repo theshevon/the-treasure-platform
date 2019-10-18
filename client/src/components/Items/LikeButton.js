@@ -33,7 +33,7 @@ class LikeButton extends Component {
 		//  send update request to server
 		axios({
 					method: 'put',
-					url: `/items/${this.props.itemID}/int/users/${this.props.user.id}`,
+					url: `/items/${this.props.itemID}/intUsers`,
 				})
 				.then(res => {
 					// do nothing

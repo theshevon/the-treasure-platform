@@ -58,7 +58,8 @@ class support extends Component {
                                 topic     : '',
                                 message   : '',
                                 showAlert : true,
-                                alertMsg  : "Thanks for you message! Someone from our team will get back to you shortly!"
+                                alertMsg  : "Thanks for your message! Someone from our team will get back to you shortly!",
+                                errors    : {}
                             });
                 return
             })
@@ -92,7 +93,7 @@ class support extends Component {
                     onClose={ this.clearAlert }
                     dismissible>
                     <p>
-                    { this.state.alertMsg }
+                        { this.state.alertMsg }
                     </p>
                 </Alert>
             )
@@ -188,9 +189,10 @@ class support extends Component {
                                     <Form.Control
                                         className={ messageClass }
                                         as="textarea"
-                                        name="desc"
+                                        name="message"
                                         rows="5"
                                         placeholder="message"
+                                        value={this.state.message}
                                         required
                                         onChange={this.handleChange}/>
                                     { messageFeedback }

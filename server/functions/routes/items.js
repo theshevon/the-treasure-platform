@@ -22,9 +22,9 @@ router.delete("/items/:id", isLoggedIn, itemController.deleteItem);
 
 router.put("/items/:id/edit", isLoggedIn, itemController.modifyItem);
 
-router.put("/items/:iid/int/users/:uid", itemController.toggleEOI);
+router.put("/items/:iid/intUsers", isLoggedIn, itemController.toggleEOI);
 
-router.put("/items/:iid/assign/:uid", itemController.assignItem);
+router.put("/items/:iid/assign/:uid", isLoggedIn, itemController.assignItem);
 
 /*===========================================================================*/
 

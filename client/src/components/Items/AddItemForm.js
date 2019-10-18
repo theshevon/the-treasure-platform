@@ -158,18 +158,27 @@ class AddItemForm extends Component {
         // create an array with just the ids of the users who the item will
         // be visible to
         let visibleTo = [];
-        if (this.state.selectingWatchers){
+
+        // if no users will selected, the item is visible to all users
+        if (this.state.selectedUsers.length === 0){
             this.state.allUsers.forEach(user => {
-                if (this.state.selectedUsers.includes(user.name)){
-                    visibleTo.push(user.uid);
-                }
+                visibleTo.push(user.uid);
             });
         } else {
-            this.state.allUsers.forEach(user => {
-                if (!this.state.selectedUsers.includes(user.name)){
-                    visibleTo.push(user.uid);
-                }
-            });
+            // else, decide which users to show the item to
+            if (this.state.selectingWatchers){
+                this.state.allUsers.forEach(user => {
+                    if (this.state.selectedUsers.includes(user.name)){
+                        visibleTo.push(user.uid);
+                    }
+                });
+            } else {
+                this.state.allUsers.forEach(user => {
+                    if (!this.state.selectedUsers.includes(user.name)){
+                        visibleTo.push(user.uid);
+                    }
+                });
+            }
         }
 
         // replace assignedto with the uid of the corresponding user
