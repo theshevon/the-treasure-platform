@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import axios                from 'axios';
-import PropTypes            from 'prop-types'
+import PropTypes            from 'prop-types';
 
 // boostrap imports
 import Spinner from 'react-bootstrap/Spinner';
@@ -111,7 +111,7 @@ class Register extends Component {
                         .then(res => {
                             if (!fd){
                                 this.setState({ loading : false });
-                                return;
+                                this.props.history.push('/login');
                             }
                             return res.data;
                         })
@@ -143,7 +143,8 @@ class Register extends Component {
                                 email    : this.state.email,
                                 password : this.state.password,
                             }
-                            this.props.loginUser(userData, this.props.history);
+
+                            this.props.history.push('/login');
                         })
                         .catch(err => {
                             this.setState({
@@ -422,13 +423,4 @@ class Register extends Component {
     }
 }
 
-Register.propTypes = {
-	loginUser: PropTypes.func.isRequired,
-	user: PropTypes.object.isRequired,
-}
-
-const mapActionsToProps = {
-	loginUser
-}
-
-export default connect(mapActionsToProps)(Register);
+export default Register;
