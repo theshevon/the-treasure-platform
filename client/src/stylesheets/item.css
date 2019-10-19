@@ -66,12 +66,18 @@
 }
 
 .carousel-item img{
-    height: 700px !important;
+    height: 500px !important;
     object-fit: contain;
 }
 
 .modal-body::-webkit-scrollbar{
     width: 0 !important;
+}
+
+.item-modal-title{
+    margin-top: 2rem;
+    font-size: 2rem !important;
+    text-align: center !important;
 }
 
 .like-btn {
@@ -90,6 +96,11 @@
     justify-content: space-between;
 }
 
+.item-desc{
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
 .edit-btn {
     margin-right: 5px;
     margin-bottom: 5px;
@@ -102,4 +113,18 @@
 .sub-modal-title{
     font-size: 1.5rem !important;
     text-align: center !important;
+}
+
+.modal-btn-set{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    width:100%
+}
+
+.del-btn{
+    margin-right: none !important;
+    margin-left: 0.25rem;
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
 }
