@@ -21,7 +21,7 @@ class AddItemForm extends Component {
         desc              : null,
         coverImgIndex     : 0,
         uploadedFiles     : [],
-        assignedto        : null,
+        assignedTo        : null,
         stage             : 0,
         allUsers          : [],
         userOptions       : [],
@@ -62,6 +62,13 @@ class AddItemForm extends Component {
                             text  : user.name,
                             value : user.name
                         });
+                    });
+
+                    // allow the user to revert to 'unassigned' selection
+                    userOptions.push({
+                        key   : 0,
+                        text  : "No One",
+                        value : null
                     });
 
                     this.setState({
@@ -181,11 +188,11 @@ class AddItemForm extends Component {
             }
         }
 
-        // replace assignedto with the uid of the corresponding user
+        // replace assignedTo with the uid of the corresponding user
         let assignedTo = '';
         for (let i=0; i<this.state.allUsers.length; i++){
             let user = this.state.allUsers[i];
-            if (user.name === this.state.assignedto){
+            if (user.name === this.state.assignedTo){
                 assignedTo = user.uid;
                 break;
             }
@@ -386,7 +393,7 @@ class AddItemForm extends Component {
                         <Col
                             sm="9">
                             <Dropdown
-                                name="assignedto"
+                                name="assignedTo"
                                 placeholder={ this.state.loadingUsers ? 'Loading...' : 'Select User' }
                                 search
                                 selection

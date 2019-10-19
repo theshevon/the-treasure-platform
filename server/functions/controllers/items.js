@@ -56,8 +56,6 @@ getSecondaryUsers = async () => {
                                 .catch((err) => {
                                     throw new Error(err);
                                 });
-        console.log(users[0]);
-        console.log(users[1]);
         return users;
     } catch (err) {
         return -1;
