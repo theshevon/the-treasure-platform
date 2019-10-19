@@ -1,23 +1,20 @@
 import React, { Component } from 'react';
 import PropTypes            from 'prop-types';
-import axios                from 'axios';
+
 
 // bootstrap imports
 import Carousel from 'react-bootstrap/Carousel';
-import Spinner  from 'react-bootstrap/Spinner';
 import Button   from 'react-bootstrap/Button';
 import Modal    from 'react-bootstrap/Modal';
 import Card     from 'react-bootstrap/Card';
 import Row      from 'react-bootstrap/Row';
 import Col      from 'react-bootstrap/Col';
 
-// sweet alert import
-import SweetAlert from 'react-bootstrap-sweetalert';
-
 // custom components
 import ViewInterestedModal from './ViewInterestedModal';
 import AssignUserModal     from './AssignUserModal';
 import LikeButton          from './LikeButton';
+import DeleteButton 	   from './DeleteButton';
 
 // redux stuff
 import { connect } from 'react-redux';
@@ -30,8 +27,6 @@ export class ItemCard extends Component {
 	state = {
 		show              : false,
 		scrolled_modal    : false,
-		showWarning       : false,
-		showDeleteSuccess : false,
 		loading           : false,
 	}
 
@@ -43,58 +38,11 @@ export class ItemCard extends Component {
 		this.setState({ show: true });
 	}
 
-	handleDelete = async itemId => {
-
-		// start the spinner animation
-		this.setState({
-			loading: true
-		});
-
-		try {
-			const url = `/items/${itemId}`;
-			const res = await axios
-									.delete(url)
-									.then(res => {
-												return res.data;
-										});
-			this.handleDeleteSuccess();
-			return res;
-		} catch (err) {
-			throw err;
-		}
-	}
-
-	cancelDelete = () => {
-		this.setState({ showWarning: false });
-	}
-
-	handleDeleteRequest = () => {
-		this.setState({ showWarning: true });
-	}
-
-	handleDeleteSuccess = () => {
-		this.setState({ showWarning: false });
-		this.setState({ showDeleteSuccess: true });
-	}
-
-	hideConrfimationAlert = () => {
-		this.handleClose();
-		window.location.reload();
-	}
-
-
 	render() {
 
 		const { item, user } = this.props;
 
-		let btnContent;
-		if (this.state.loading){
-			btnContent = (<Spinner className="spinner" animation="border" size="md"/>);
-		} else {
-			btnContent = ("Yes, I'm sure");
-		}
-
-		let btnSet = null;
+		/* define the EOI button */
 		let EOIOpt = 	(
 							<Row
 								className="justify-content-end">
@@ -105,43 +53,42 @@ export class ItemCard extends Component {
 							</Row>
 						);
 
+		/* establish user type i.e. secondary or primary user */
 		let type   = localStorage.TreasureUType || user.type;
 		if (typeof type === "string"){
 			type = parseInt(type);
 		}
 
+		/* determine which buttons to show based on user type */
+		let btnSet = null;
 		if (type === 0){
 			btnSet = (
 						<div className="item-row">
 							<container className="modal-btn-set">
 
+								{/* view-interested button */}
 								<div className="right-btns">
-
 									<ViewInterestedModal
 										intUserIDs={ item.intUsers } />
 								</div>
+
+								{/* assign button */}
 								<div className="right-btns">
 									<AssignUserModal
 										itemID    ={ item.id }
 										assignedTo={ item.assignedTo }/>
 								</div>
 
-								<div className="left-btn">
-
-									{/* delete button */}
-									<Button
-										variant="danger"
-										onClick={this.handleDeleteRequest}
-										className="btn del-btn"
-										itemId={item.id}
-										disabled={this.state.loading}>
-										Delete
-									</Button>
+								{/* delete button */}
+								<div>
+									<DeleteButton
+										itemID    ={ item.id }/>
 								</div>
 							</container>
 						</div>
 					)
 
+			/* disable EOI option for primary users */
 			EOIOpt = null;
 		}
 
@@ -166,20 +113,21 @@ export class ItemCard extends Component {
 				<Card.Body
 					className="item-card-body">
 
-				<Card.Text
-					className="item-card-text">
-					{ item.desc.length > 100
-					? item.desc.substring(0, 100).trim() + "..."
-					: item.desc}
-				</Card.Text>
+					<Card.Text
+						className="item-card-text">
+						{ item.desc.length > 100
+						? item.desc.substring(0, 100).trim() + "..."
+						: item.desc}
+					</Card.Text>
 
-				<Button
-					className="centered-btn btn"
-					variant="light"
-					size="sm"
-					onClick={this.handleShow}>
-						more info
-				</Button>
+					<Button
+						className="centered-btn btn"
+						variant="light"
+						size="sm"
+						onClick={this.handleShow}>
+							more info
+					</Button>
+
 				</Card.Body>
 
 				<Modal
@@ -195,72 +143,42 @@ export class ItemCard extends Component {
 					{/* item name */}
 					<Modal.Header
 						closeButton>
-						<Modal.Title>
-						</Modal.Title>
 					</Modal.Header>
 
-					{/* item image carousel */}
 					<Modal.Body
 						className="info-modal-body px-5 pb-5 pt-0">
 						<Row>
-						<Col sm="6">
-						<Carousel
-							controls={item.photos.length>1 ? true : false}>
-							{item.photos.map((photo, index) => (
-								<Carousel.Item
-									key={index}>
-									<img
-										className="d-block w-100 img-fluid"
-										src={photo}
-										alt={item.name + "-img-" + index}
-									/>
-								</Carousel.Item>
-							))}
-						</Carousel>
-						</Col>
+							{/* item image carousel */}
+							<Col sm="6">
+								<Carousel
+									controls={item.photos.length>1 ? true : false}>
+									{item.photos.map((photo, index) => (
+										<Carousel.Item
+											key={index}>
+											<img
+												className="d-block w-100 img-fluid"
+												src={photo}
+												alt={item.name + "-img-" + index}
+											/>
+										</Carousel.Item>
+									))}
+								</Carousel>
+							</Col>
 
-
-						<Col sm="6">
-							{/* item desciption */}
-							<div className = "modal-title item-modal-title">
-								{item.name}
-							</div>
-							<div
-								className="item-row item-desc">
-								<p
-									className="my-5 text-justify">
-									{item.desc}
-								</p>
-							</div>
-							{ btnSet }
-						</Col>
-
+							<Col sm="6">
+								{/* item desciption */}
+								<div className = "modal-title item-modal-title">
+									{item.name}
+								</div>
+								<div
+									className="item-row item-desc">
+									<p className="my-5 text-justify">
+										{item.desc}
+									</p>
+								</div>
+								{ btnSet }
+							</Col>
 						</Row>
-
-						<div>
-							{/* ask user to confirm item deletion */}
-							<SweetAlert
-								warning
-								showCancel
-								show={this.state.showWarning}
-								confirmBtnText={btnContent}
-								confirmBtnBsStyle="danger"
-								cancelBtnBsStyle="default"
-								title="STOP!"
-								onConfirm={() => this.handleDelete(item.id)}
-								onCancel={this.cancelDelete}>
-								Are you sure you want to delete this item?
-							</SweetAlert>
-
-							{/* successful deletion notification */}
-							<SweetAlert
-								success
-								title="Done!"
-								show={this.state.showDeleteSuccess}
-								onConfirm={this.hideConrfimationAlert}>
-								The item was successfully deleted!
-							</SweetAlert>
-						</div>
 
 					</Modal.Body>
 
