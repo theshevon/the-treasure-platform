@@ -151,7 +151,8 @@ export class ItemCard extends Component {
 							{/* item image carousel */}
 							<Col sm="6">
 								<Carousel
-									controls={item.photos.length>1 ? true : false}>
+									controls={item.photos.length>1 ? true : false}
+									indicators = {false}>
 									{item.photos.map((photo, index) => (
 										<Carousel.Item
 											key={index}>
