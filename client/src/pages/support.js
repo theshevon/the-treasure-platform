@@ -40,6 +40,9 @@ class support extends Component {
 
         event.preventDefault();
 
+        // clear any alert that's already there
+        this.clearAlert();
+
         this.setState({ loading : true });
 
         let data = {
@@ -55,10 +58,11 @@ class support extends Component {
             .then(res => {
                 this.setState({
                                 loading   : false,
-                                topic     : '',
+                                subject   : '',
                                 message   : '',
                                 showAlert : true,
                                 alertMsg  : "Thanks for your message! Someone from our team will get back to you shortly!",
+                                validated : false,
                                 errors    : {}
                             });
                 return
@@ -137,6 +141,8 @@ class support extends Component {
                         { errors.general }
                     </p>
                 );
+                messageClass = "";
+                subjectClass = "";
             }
         }
 

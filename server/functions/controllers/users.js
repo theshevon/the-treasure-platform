@@ -439,9 +439,25 @@ exports.sendSupportMessage =
             to: 'treasureapp.au@gmail.com',
             subject: `Support Request: ${supportData.subject}`,
             html:
-                `<p style="font-size: 16px; color: black;">${req.user.name}<i>(UID: ${req.user.id})</i> wrote:</p>
-                <br>
-                <p style="font-size: 16px; color: black; background: #f8f9fa">${supportData.message}</p>`
+                `
+                <p
+                    style="font-size: 15px; color: black;">
+                    Message:
+                </p>
+                <p
+                    style="font-size: 14px; color: black; font-weight: light; background: #f8f9fa; border-radius: 5px; padding: 5px; box-sizing: border-box;">
+                    <i>
+                        ${supportData.message}
+                    </i>
+                </p>
+                <p
+                    style="font-size: 15px; color: black;">User details:
+                    <ul>
+                        <li> UserID : ${req.user.id}   </li>
+                        <li> Name   : ${req.user.name} </li>
+                        <li> Email  : ${req.user.email} </li>
+                    </ul>
+                </p>`
         };
 
         // send email
