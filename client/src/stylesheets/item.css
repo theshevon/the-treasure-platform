@@ -79,7 +79,6 @@
     text-align: center !important;
 }
 
-
 .like-btn {
     background-color: rgba(0, 0, 0, 0) !important;
     border: none !important;
@@ -96,6 +95,11 @@
     justify-content: space-between;
 }
 
+.item-desc{
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
 .edit-btn {
     margin-right: 5px;
     margin-bottom: 5px;
@@ -108,4 +112,18 @@
 .sub-modal-title{
     font-size: 1.5rem !important;
     text-align: center !important;
+}
+
+.modal-btn-set{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    width:100%
+}
+
+.del-btn{
+    margin-right: none !important;
+    margin-left: 0.25rem;
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
 }

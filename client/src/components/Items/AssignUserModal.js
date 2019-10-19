@@ -163,7 +163,7 @@ export class AssignUserModal extends Component {
 
                 {/* Assign button */}
                 <Button
-                    className="btn"
+                    className="btn m-1"
                     variant="light"
                     onClick = {this.handleShow}>
                     Assign

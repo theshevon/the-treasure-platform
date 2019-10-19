@@ -112,33 +112,34 @@ export class ItemCard extends Component {
 
 		if (type === 0){
 			btnSet = (
-						<Row>
-							<Col
-								lg="2">
+						<div className="item-row">
+							<container className="modal-btn-set">
 
-								{/* delete button */}
-								<Button
-									variant="danger"
-									onClick={this.handleDeleteRequest}
-									className="del-btn btn"
-									itemId={item.id}
-									disabled={this.state.loading}>
-									Delete
-								</Button>
-							</Col>
+								<div className="right-btns">
 
-							<Col
-								lg="10"
-								className="d-flex justify-content-end">
+									<ViewInterestedModal
+										intUserIDs={ item.intUsers } />
+								</div>
+								<div className="right-btns">
+									<AssignUserModal
+										itemID    ={ item.id }
+										assignedTo={ item.assignedTo }/>
+								</div>
 
-								<ViewInterestedModal
-									intUserIDs={ item.intUsers } />
+								<div className="left-btn">
 
-								<AssignUserModal
-									itemID    ={ item.id }
-									assignedTo={ item.assignedTo }/>
-							</Col>
-						</Row>
+									{/* delete button */}
+									<Button
+										variant="danger"
+										onClick={this.handleDeleteRequest}
+										className="btn del-btn"
+										itemId={item.id}
+										disabled={this.state.loading}>
+										Delete
+									</Button>
+								</div>
+							</container>
+						</div>
 					)
 
 			EOIOpt = null;
@@ -204,7 +205,7 @@ export class ItemCard extends Component {
 						<Row>
 						<Col sm="6">
 						<Carousel
-							controls={true}>
+							controls={item.photos.length>1 ? true : false}>
 							{item.photos.map((photo, index) => (
 								<Carousel.Item
 									key={index}>
@@ -219,14 +220,13 @@ export class ItemCard extends Component {
 						</Col>
 
 
-						{/* animation to let user know that modal is scrollable*/}
 						<Col sm="6">
 							{/* item desciption */}
 							<div className = "modal-title item-modal-title">
-							{item.name}
+								{item.name}
 							</div>
 							<div
-								className="item-row">
+								className="item-row item-desc">
 								<p
 									className="my-5 text-justify">
 									{item.desc}
