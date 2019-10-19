@@ -252,7 +252,7 @@ class AddItemForm extends Component {
 
     // handles state updates to item assignee
     handleAssignment = (event, { value }) => {
-        this.setState({ assignedto: value });
+        this.setState({ assignedTo: value });
     }
 
     // handles state updates to cover image selection
