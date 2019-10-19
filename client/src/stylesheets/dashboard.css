@@ -16,14 +16,6 @@
     border: none !important;
 }
 
-.dashboard-option:hover .icon.invite-icon{
-    content: url('../icons/invite-col.svg') !important;
-}
-
-.dashboard-option:hover .icon.item-icon{
-    content: url('../icons/item-col.svg') !important;
-}
-
 /* .dashboard-option:hover .btn{
     color: white;
     border-color: #fed766;
