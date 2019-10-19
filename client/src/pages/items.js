@@ -36,23 +36,8 @@ class Items extends Component {
                     })
                     .then(res => {
 
-                        let allItems = res.data;
-
-                        // filter out the items to only have the visible items
-                        let visibleItems = [];
-
-                        if (this.props.user.type === 0){
-                            visibleItems = allItems;
-                        } else {
-                            allItems.forEach(item => {
-                                if (item.visibleTo.includes(this.props.user.id)){
-                                    visibleItems.push(item);
-                                }
-                            });
-                        }
-
                         this.setState({
-                            items: visibleItems,
+                            items: res.data,
                             loading: false
                         })
                     })

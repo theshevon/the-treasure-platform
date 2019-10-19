@@ -14,11 +14,19 @@ exports.getItems =
     (req, res) => {
         db.collection('items')
             .get()
-            .then((data) => {
+            .then(data => {
+
                 let items = [];
-                data.forEach((doc) => {
-                    let item = {id : doc.id};
-                    items.push(Object.assign(item, doc.data()));
+                let uid   = req.user.id;
+                let utype = req.user.type;
+
+                // if the user is a PU, send back all the items
+                // else, filter the items based on visibility for that user
+                data.forEach(doc => {
+                    if (utype === 0 || doc.data()["visibleTo"].includes(uid)){
+                        let item = {id : doc.id};
+                        items.push(Object.assign(item, doc.data()));
+                    }
                 });
 
                 // sort in chronological order

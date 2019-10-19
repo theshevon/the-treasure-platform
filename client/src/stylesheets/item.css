@@ -1,5 +1,5 @@
 .item-card-title{
-    font-weight: light !important;
+    font-weight: 500 !important;
     font-size: 1.25rem !important;
     text-align: center !important;
 }
@@ -8,8 +8,9 @@
     width: 100%;
     height: 25vh;
     object-fit: contain;
-    border-radius: 0px !important;
+    border-radius: 5px;
     margin-bottom: 1em;
+    border: 1px solid #f0f0f0;
 }
 
 .item-card {

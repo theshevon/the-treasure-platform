@@ -30,8 +30,9 @@ exports.isLoggedIn =
                         .then(doc => {
                             return {
                                         id    : doc.id,
-                                        name  : `${doc.data()['fname']} ${doc.data()['lname']}`,
-                                        email : doc.data().email
+                                        name  : `${doc.data()["fname"]} ${doc.data()["lname"]}`,
+                                        email : doc.data()["email"],
+                                        type  : doc.data()["uType"]
                                     }
                         })
                         .catch(err => {
@@ -42,6 +43,7 @@ exports.isLoggedIn =
                 req.user.id    = data["id"];
                 req.user.name  = data["name"];
                 req.user.email = data["email"];
+                req.user.type  = data["type"];
                 return next();
             })
             .catch(err => {
