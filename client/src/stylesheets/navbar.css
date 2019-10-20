@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Playfair+Display&display=swap');
+
 .navbar{
     background-color: rgba(0,0,0,0); /* unneeded but helps with transitions */
     transition: 300ms !important;
@@ -16,8 +18,7 @@
 }
 
 .brand-text {
-    margin-top: 7px;
-    font-family: 'Scope One', serif !important;
+    font-family: 'Playfair Display', serif !important;
 }
 
 .navbar-brand:hover, .navbar-brand-scrolled:hover {
