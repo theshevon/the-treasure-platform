@@ -21,7 +21,7 @@ class AddItemForm extends Component {
         desc              : null,
         coverImgIndex     : 0,
         uploadedFiles     : [],
-        assignedto        : null,
+        assignedTo        : null,
         stage             : 0,
         allUsers          : [],
         userOptions       : [],
@@ -62,6 +62,13 @@ class AddItemForm extends Component {
                             text  : user.name,
                             value : user.name
                         });
+                    });
+
+                    // allow the user to revert to 'unassigned' selection
+                    userOptions.push({
+                        key   : 0,
+                        text  : "No One",
+                        value : null
                     });
 
                     this.setState({
@@ -158,25 +165,34 @@ class AddItemForm extends Component {
         // create an array with just the ids of the users who the item will
         // be visible to
         let visibleTo = [];
-        if (this.state.selectingWatchers){
+
+        // if no users will selected, the item is visible to all users
+        if (this.state.selectedUsers.length === 0){
             this.state.allUsers.forEach(user => {
-                if (this.state.selectedUsers.includes(user.name)){
-                    visibleTo.push(user.uid);
-                }
+                visibleTo.push(user.uid);
             });
         } else {
-            this.state.allUsers.forEach(user => {
-                if (!this.state.selectedUsers.includes(user.name)){
-                    visibleTo.push(user.uid);
-                }
-            });
+            // else, decide which users to show the item to
+            if (this.state.selectingWatchers){
+                this.state.allUsers.forEach(user => {
+                    if (this.state.selectedUsers.includes(user.name)){
+                        visibleTo.push(user.uid);
+                    }
+                });
+            } else {
+                this.state.allUsers.forEach(user => {
+                    if (!this.state.selectedUsers.includes(user.name)){
+                        visibleTo.push(user.uid);
+                    }
+                });
+            }
         }
 
-        // replace assignedto with the uid of the corresponding user
+        // replace assignedTo with the uid of the corresponding user
         let assignedTo = '';
         for (let i=0; i<this.state.allUsers.length; i++){
             let user = this.state.allUsers[i];
-            if (user.name === this.state.assignedto){
+            if (user.name === this.state.assignedTo){
                 assignedTo = user.uid;
                 break;
             }
@@ -190,7 +206,7 @@ class AddItemForm extends Component {
             visibleTo  : visibleTo,
             assignedTo : assignedTo,
         }
-        console.log(itemData);
+
         this.submitData(itemData);
 	}
 
@@ -236,7 +252,7 @@ class AddItemForm extends Component {
 
     // handles state updates to item assignee
     handleAssignment = (event, { value }) => {
-        this.setState({ assignedto: value });
+        this.setState({ assignedTo: value });
     }
 
     // handles state updates to cover image selection
@@ -377,7 +393,7 @@ class AddItemForm extends Component {
                         <Col
                             sm="9">
                             <Dropdown
-                                name="assignedto"
+                                name="assignedTo"
                                 placeholder={ this.state.loadingUsers ? 'Loading...' : 'Select User' }
                                 search
                                 selection

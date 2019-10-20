@@ -9,6 +9,9 @@ import Form    from 'react-bootstrap/Form';
 import Row     from 'react-bootstrap/Row';
 import Col     from 'react-bootstrap/Col';
 
+// custom components
+import Navbar  from '../components/util/Navbar';
+
 class support extends Component {
 
     state = {
@@ -37,6 +40,9 @@ class support extends Component {
 
         event.preventDefault();
 
+        // clear any alert that's already there
+        this.clearAlert();
+
         this.setState({ loading : true });
 
         let data = {
@@ -52,10 +58,12 @@ class support extends Component {
             .then(res => {
                 this.setState({
                                 loading   : false,
-                                topic     : '',
+                                subject   : '',
                                 message   : '',
                                 showAlert : true,
-                                alertMsg  : "Thanks for you message! Someone from our team will get back to you shortly!"
+                                alertMsg  : "Thanks for your message! Someone from our team will get back to you shortly!",
+                                validated : false,
+                                errors    : {}
                             });
                 return
             })
@@ -89,7 +97,7 @@ class support extends Component {
                     onClose={ this.clearAlert }
                     dismissible>
                     <p>
-                    { this.state.alertMsg }
+                        { this.state.alertMsg }
                     </p>
                 </Alert>
             )
@@ -133,72 +141,80 @@ class support extends Component {
                         { errors.general }
                     </p>
                 );
+                messageClass = "";
+                subjectClass = "";
             }
         }
 
         return (
 
-            <div
-                className="main-container cover-div">
+            <div>
 
-                <Row
-                    className="login-form-container d-flex justify-content-center">
+                <Navbar/>
 
-                    <Col
-                        className="login-form-body p-5"
-                        xs="10"
-                        sm="6"
-                        md="4">
+                <div
+                    className="main-container cover-div">
 
-                        { alert }
+                    <Row
+                        className="login-form-container d-flex justify-content-center">
 
-                        {/* Form header */}
-                        <h1
-                            className="form-title mb-2">
-                            Tell Us What's Wrong
-                        </h1>
-                        <p
-                            className="text-muted text-center mb-4">
-                            Experiencing issues when trying to do something?<br/>Let us know and we'll work on fixing it right away!
-                        </p>
+                        <Col
+                            className="login-form-body p-5"
+                            xs="10"
+                            sm="6"
+                            md="4">
 
-                        {/* Support form */}
-                        <Form
-                            onSubmit={this.handleSubmit}>
-                            <Row
-                                className="my-1">
-                                <Form.Control
-                                    className={ subjectClass }
-                                    name="subject"
-                                    placeholder="subject"
-                                    value={this.state.subject}
-                                    onChange={this.handleChange}
-                                    required/>
-                                { subjectFeedback }
-                            </Row>
-                            <Row
-                                className="my-1">
-                                <Form.Control
-                                    className={ messageClass }
-                                    as="textarea"
-                                    name="desc"
-                                    rows="5"
-                                    placeholder="message"
-                                    required
-                                    onChange={this.handleChange}/>
-                                { messageFeedback }
-                            </Row>
-                            <Button
-                                className="btn centered-btn mt-3"
-                                variant="light"
-                                type="submit"
-                                onClick={this.handleSubmit}
-                                disabled={this.state.loading}>
-                                {btnContent}
-                            </Button>
-                        </Form>
-                    </Col>
-                </Row>
+                            { alert }
+
+                            {/* Form header */}
+                            <h1
+                                className="form-title mb-2">
+                                Tell Us What's Wrong
+                            </h1>
+                            <p
+                                className="text-muted text-center mb-4">
+                                Experiencing issues when trying to do something?<br/>Let us know and we'll work on fixing it right away!
+                            </p>
+
+                            {/* Support form */}
+                            <Form
+                                onSubmit={this.handleSubmit}>
+                                <Row
+                                    className="my-1">
+                                    <Form.Control
+                                        className={ subjectClass }
+                                        name="subject"
+                                        placeholder="subject"
+                                        value={this.state.subject}
+                                        onChange={this.handleChange}
+                                        required/>
+                                    { subjectFeedback }
+                                </Row>
+                                <Row
+                                    className="my-1">
+                                    <Form.Control
+                                        className={ messageClass }
+                                        as="textarea"
+                                        name="message"
+                                        rows="5"
+                                        placeholder="message"
+                                        value={this.state.message}
+                                        required
+                                        onChange={this.handleChange}/>
+                                    { messageFeedback }
+                                </Row>
+                                <Button
+                                    className="btn centered-btn mt-3"
+                                    variant="light"
+                                    type="submit"
+                                    onClick={this.handleSubmit}
+                                    disabled={this.state.loading}>
+                                    {btnContent}
+                                </Button>
+                            </Form>
+                        </Col>
+                    </Row>
+                </div>
             </div>
         )
     }

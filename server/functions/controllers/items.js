@@ -14,39 +14,48 @@ exports.getItems =
     (req, res) => {
         db.collection('items')
             .get()
-            .then((data) => {
+            .then(data => {
+
                 let items = [];
-                data.forEach((doc) => {
-                    let item = {id : doc.id};
-                    items.push(Object.assign(item, doc.data()));
+                let uid   = req.user.id;
+                let utype = req.user.type;
+
+                // if the user is a PU, send back all the items
+                // else, filter the items based on visibility for that user
+                data.forEach(doc => {
+                    if (utype === 0 || doc.data()["visibleTo"].includes(uid)){
+                        let item = {id : doc.id};
+                        items.push(Object.assign(item, doc.data()));
+                    }
                 });
 
                 // sort in chronological order
                 items.sort((item1, item2) => item1.createdOn.toDate() - item2.createdOn.toDate());
-                return res.json(items);
+
+                return res.status(200).json(items);
             })
             .catch((err) => {
-                res.status(500).json({ error: err.code });
+                res.status(400).json({ error: err.code });
             });
     }
 
 getSecondaryUsers = async () => {
     try {
-        const users = db.collection('users')
-                        .get()
-                        .then((data) => {
-                            // extract all userIDs
-                            let users = [];
-                            data.forEach((doc) => {
-                                if (doc.data().utype === 1){
-                                    users.push(doc.id);
-                                }
-                            });
-                            return users;
-                        })
-                        .catch((err) => {
-                            res.status(500).json({ error: err.code });
-                        });
+        const users = await db.collection('users')
+                                .get()
+                                .then((data) => {
+                                    // extract all userIDs
+                                    let users = [];
+                                    data.forEach((doc) => {
+                                        if (parseInt(doc.data()["uType"]) === 1){
+                                            users.push(doc.id);
+                                        }
+                                    });
+                                    return users;
+                                })
+                                .catch((err) => {
+                                    throw new Error(err);
+                                });
         return users;
     } catch (err) {
         return -1;
@@ -70,14 +79,14 @@ exports.createItem =
             createdOn  : admin.firestore.FieldValue.serverTimestamp()
         }
 
-        const users = await getSecondaryUsers();
+        let SUs = await getSecondaryUsers();
 
-        if (users === -1){
+        if (SUs === -1){
             return res.status(500).json({"general" : "Sorry, something went wrong."});
         }
 
         // carry out validation
-        const { valid, errors } = validateItemData(item, users);
+        const { valid, errors } = validateItemData(item, SUs);
         if (!valid) return res.status(400).json(errors);
 
         // add item to collection
@@ -88,6 +97,7 @@ exports.createItem =
                 return res.status(200).json(doc.id);
             })
             .catch((err) => {
+                console.log(err)
                 return res.status(400).json({ Error : err });
             });
     }
@@ -294,7 +304,7 @@ exports.toggleEOI =
         // iid - item id
         let iid = req.params.iid;
         // uid - user id
-        let uid = req.params.uid;
+        let uid = req.user.id;
 
         db
             .collection('items')
@@ -355,7 +365,7 @@ exports.toggleEOI =
             });
     }
 
-exports.assignItem = 
+exports.assignItem =
 
     (req, res) => {
 
@@ -364,49 +374,65 @@ exports.assignItem =
         // uid - user id
         let uid = req.params.uid;
 
-        db
-            .collection('items')
-            .doc(iid)
-            .get()
-            .then(itemDoc => {
+        if (uid === '0'){
+            db
+                .collection('items')
+                .doc(iid)
+                .update({ assignedTo : '' })
+                .then(() => {
+                    return res.status(200).json('');
+                })
+                .catch(err => {
+                    console.log(err);
+                    return res.status(400).json({ "msg" : "Sorry, your request couldn't be completed right now." });
+                })
+        } else {
+            db
+                .collection('items')
+                .doc(iid)
+                .get()
+                .then(itemDoc => {
 
-                if (!itemDoc.exists){
-                    return res.status(400).json("Invalid Item ID");
-                }
+                    if (!itemDoc.exists){
+                        // invalid iid
+                        return res.status(400).json({ "msg" : "Sorry, your request couldn't be completed right now." });
+                    }
 
-                // validate userID
-                // eslint-disable-next-line promise/no-nesting
-                return db.collection('users')
-                        .doc(uid)
-                        .get()
-                        .then(userDoc => {
+                    // validate userID
+                    // eslint-disable-next-line promise/no-nesting
+                    return db.collection('users')
+                            .doc(uid)
+                            .get()
+                            .then(userDoc => {
 
-                            if (!userDoc.exists){
-                                throw new Error("Invalid user id");
-                            }
+                                if (!userDoc.exists){
+                                    throw new Error("Invalid user id");
+                                }
 
-                            // set assigned field of item to uid
-                            // eslint-disable-next-line promise/no-nesting
-                            return db
-                                    .collection('items')
-                                    .doc(iid)
-                                    .update({ assignedTo : uid })
-                                    .then(() => {
-                                        return res.status(200).json("Success");
-                                    })
-                                    .catch(err => {
-                                        console.log(err);
-                                        throw new Error(err);
-                                    })
-                        })
-                        .catch (err => {
-                            console.log(err);
-                            return res.status(400).json("Invalid User ID");
-                        });
+                                // set assigned field of item to uid
+                                // eslint-disable-next-line promise/no-nesting
+                                return db
+                                        .collection('items')
+                                        .doc(iid)
+                                        .update({ assignedTo : uid })
+                                        .then(() => {
+                                            return res.status(200).json(uid);
+                                        })
+                                        .catch(err => {
+                                            console.log(err);
+                                            throw new Error(err);
+                                        })
+                            })
+                            .catch (err => {
+                                // invalid uid
+                                console.log(err);
+                                return res.status(400).json({ "msg" : "Please select a user from the list!" });
+                            });
 
-            })
-            .catch(err => {
-                console.log(err);
-                return res.status(400).json(err);
-            });
+                })
+                .catch(err => {
+                    console.log(err);
+                    return res.status(400).json({ "msg" : "Sorry, your request couldn't be completed right now." });
+                });
+        }
     }

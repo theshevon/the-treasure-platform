@@ -96,8 +96,7 @@ exports.validateLoginData =
 
 exports.validateItemData =
 
-    (item, secondaryUsers) => {
-
+    (item, secondaryUserIDs) => {
         let errors = {};
 
         // check if name and desc are valid
@@ -105,13 +104,16 @@ exports.validateItemData =
         if (isEmpty(item.desc)) errors.desc = "Please enter a desciption for the item.";
 
         // check if 'assignedTo' user is a valid user
-        if (item.assignedTo && !secondaryUsers.includes(item.assignedTo)) errors.assignedTo = "Please select a valid user from the dropdown";
+        if (item.assignedTo && !secondaryUserIDs.includes(item.assignedTo)){
+            errors.assignedTo = "Please select a valid user from the dropdown";
+        }
 
         // check if 'visibleTo' field contains valid SUs
         if (item.visibleTo){
             for (var i=0; i<item.visibleTo.length; i++){
-                if (!secondaryUsers.includes(item.visibleTo[i])){
-                    errors.secondaryUsers = "Please select valid users from the dropdown";
+                if (!secondaryUserIDs.includes(item.visibleTo[i])){
+                    errors.visibleTo = "Please select valid users from the dropdown";
+                    break;
                 }
             }
         }

@@ -21,16 +21,13 @@ class Login extends Component {
 		email     : "",
 		password  : "",
 		loading   : false,
-		errors    : {},
+		errors    : null,
 		validated : false,
 	}
 
 	componentWillReceiveProps(nextProps){
 		if (nextProps.UI.errors){
-			this.setState({ errors   : nextProps.UI.errors,
-							email    : "",
-							password : ""
-						});
+			this.setState({ errors : nextProps.UI.errors });
 		}
 	}
 
@@ -42,49 +39,66 @@ class Login extends Component {
 
 		event.preventDefault();
 
-		this.setState({ validated : true });
-
 		const userData = {
-			email: this.state.email,
-			password: this.state.password
+			email    : this.state.email,
+			password : this.state.password
 		}
 
 		this.props.loginUser(userData, this.props.history);
+		this.setState({ validated : true });
 	}
 
 	render() {
 
 		const { UI: { loading, errors }} = this.props;
 
-		let emailError, pwError, loginBtnContent;
+		let btnContent;
+		let emailClass    = "login-field";
+		let pwClass       = "login-field";
+		let emailFeedback = "";
+		let pwFeedback    = "";
 
-		// check for email errors
-		if (errors && (errors.email || errors.general)){
+		if (this.state.validated && errors){
+
+			// check for email errors
 			if (errors.email){
-				emailError = (errors.email);
-			} else {
-				emailError = ("");
+                emailFeedback = (
+                    <p
+                        className="invalid-feedback-msg">
+                        { errors.email }
+                    </p>
+                );
+                emailClass += " invalid-field";
 			}
-		} else{
-			emailError = ("Please enter a valid email address.");
-		}
 
-		// check for password errors
-		if (errors && (errors.password || errors.general)){
-			if (errors.password){
-				pwError = (errors.password);
-			} else {
-				pwError = (errors.general);
+            if (errors.password){
+                pwFeedback = (
+                    <p
+                        className="invalid-feedback-msg">
+                        { errors.password }
+                    </p>
+                );
+                pwClass += " invalid-field";
+            }
+
+            if (errors.general){
+                emailFeedback = null;
+                pwFeedback   = (
+                    <p
+                        className="invalid-feedback-msg">
+                        { errors.general }
+                    </p>
+                );
+                emailClass += " invalid-field";
+                pwClass    += " invalid-field";
 			}
-		} else {
-			pwError = ("Please enter a password.");
 		}
 
 		// if loading, replace button text with spinner
 		if (loading){
-			loginBtnContent = (<Spinner animation="border" size="sm"/>);
+			btnContent = (<Spinner animation="border" size="sm"/>);
 		} else {
-			loginBtnContent = ("Log In");
+			btnContent = ("Log In");
 		}
 
 		return (
@@ -103,46 +117,39 @@ class Login extends Component {
 							sm="6"
 							md="3">
 
+							{/* Page title */}
 							<h1
 								className="form-title mb-4">
 								Welcome
 							</h1>
 
-							<Form
-								noValidate
-								validated={this.state.validated}
-								onSubmit={this.handleSubmit}>
+							{/* Login form */}
+							<Form>
 
 								<Row
-									className="my-1">
+									className="my-1 d-flex justify-content-center">
 									<Form.Control
-										className="login-field"
+										className={ emailClass }
 										name="email"
 										type="email"
 										placeholder="email"
 										value={this.state.email}
 										onChange={this.handleChange}
 										required/>
-									<Form.Control.Feedback
-										type="invalid">
-										{emailError}
-									</Form.Control.Feedback>
+									{ emailFeedback }
 								</Row>
 
 								<Row
-									className="my-1">
+									className="my-1 d-flex justify-content-center">
 									<Form.Control
-										className="login-field"
+										className={ pwClass }
 										name="password"
 										type="password"
 										placeholder="password"
 										value={this.state.password}
 										onChange={this.handleChange}
 										required/>
-									<Form.Control.Feedback
-										type="invalid">
-										{pwError}
-									</Form.Control.Feedback>
+									{ pwFeedback }
 								</Row>
 
 								<Button
@@ -151,7 +158,7 @@ class Login extends Component {
 									type="submit"
 									onClick={this.handleSubmit}
 									disabled={this.state.loading}>
-									{loginBtnContent}
+									{btnContent}
 								</Button>
 
 							</Form>

@@ -1,0 +1,20 @@
+.assignee{
+    padding: 2.5px;
+    background: #ffdf80;
+    border-radius: 5px;
+    white-space: nowrap;
+    box-sizing: border-box;
+}
+
+input.search{
+    width: 100% !important;
+}
+
+.assign-modal .modal-footer{
+    border-top: none !important;
+}
+
+.assign-btn{
+    margin-right: 50%;
+    transform: translateX(50%);
+}
