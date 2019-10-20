@@ -1,5 +1,4 @@
 .item-card-title{
-    font-family: 'Roboto', sans-serif;
     font-weight: light !important;
     font-size: 1.25rem !important;
     text-align: center !important;
@@ -9,9 +8,8 @@
     width: 100%;
     height: 25vh;
     object-fit: contain;
-    border-radius: 5px;
+    border-radius: 0px !important;
     margin-bottom: 1em;
-    border: 1px solid #f0f0f0;
 }
 
 .item-card {
@@ -29,10 +27,6 @@
 .item-card:hover{
     box-shadow:5px 12px 20px rgba(36,37,38,0.13);
     border: none !important;
-}
-
-.item-card-loaded:hover{
-    transform: scale(1.025) perspective(1px);
 }
 
 .item-card-text{
@@ -75,11 +69,6 @@
     object-fit: contain;
 }
 
-.modal-title {
-    font-family: 'Roboto', sans-serif !important;
-    font-size: 30px !important;
-}
-
 .modal-body::-webkit-scrollbar{
     width: 0 !important;
 }
@@ -114,4 +103,27 @@
 .edit-btn {
     margin-right: 5px;
     margin-bottom: 5px;
+}
+
+.item-card-loaded:hover{
+    transform: scale(1.05) perspective(1px);
+}
+
+.sub-modal-title{
+    font-size: 1.5rem !important;
+    text-align: center !important;
+}
+
+.modal-btn-set{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    width:100%
+}
+
+.del-btn{
+    margin-right: none !important;
+    margin-left: 0.25rem;
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
 }

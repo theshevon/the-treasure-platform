@@ -146,7 +146,7 @@ class InviteForm extends Component {
 
                     <Button
                         className="float-right"
-                        variant="dark"
+                        variant="light"
                         type="submit"
                         disabled={this.state.loading}>
                         { btnContent }

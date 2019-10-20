@@ -54,11 +54,6 @@ body{
     transform: translateX(-50%) !important;
 }
 
-.modal-title.h4{
-    margin-left: 50% !important;
-    transform: translateX(-50%) !important;
-}
-
 .modal-header{
     border-bottom: none !important;
 }

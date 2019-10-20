@@ -126,7 +126,7 @@ class ViewInterestedModal extends Component {
 						closeButton>
 						<Modal.Title
                             className="sub-modal-title">
-							Interested Users
+							Interested
 						</Modal.Title>
 					</Modal.Header>
 

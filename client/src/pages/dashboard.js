@@ -90,7 +90,7 @@ export class Dashboard extends Component {
                                 <FormModal
                                     modalSize="md"
                                     triggerBtnText="Invite New Users"
-                                    title="Invite New Users"
+                                    title="Invite Users"
                                     form={ < InviteForm /> }/>
                             </Col>
                         </Col>
