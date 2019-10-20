@@ -99,24 +99,24 @@ class Register extends Component {
 
         // send all the textual data
         let uid = await axios({
-                            method: 'post',
-                            url: '/register',
-                            data: registrationData
-                        })
-                        .then(res => {
-                            if (!fd){
-                                this.setState({ loading : false });
-                                this.props.history.push('/login');
-                            }
-                            return res.data;
-                        })
-                        .catch(err => {
-                            this.setState({
-                                errors: err.response.data,
-                                loading: false,
-                                validated: true
+                                method: 'post',
+                                url: '/register',
+                                data: registrationData
+                            })
+                            .then(res => {
+                                if (!fd){
+                                    this.setState({ loading : false });
+                                    this.props.history.push('/login');
+                                }
+                                return res.data;
+                            })
+                            .catch(err => {
+                                this.setState({
+                                    errors: err.response.data,
+                                    loading: false,
+                                    validated: true
+                                });
                             });
-                        });
 
         if (this.state.errors) return;
 
@@ -170,21 +170,39 @@ class Register extends Component {
         if (this.state.stage === 0){
 
             // set up error messages
-            let emailErr, codeErr;
-            if (this.state.errors){
-                if (this.state.errors.email) emailErr = this.state.errors.email;
-                if (this.state.errors.code) codeErr = this.state.errors.code;
-                if (this.state.errors.general){
-                    emailErr = ("");
-                    codeErr = this.state.errors.general;
+            let emailClass    = "login-field";
+            let codeClass     = "login-field";
+            let emailFeedback = "";
+            let codeFeedback    = "";
+            if (validated && this.state.errors){
+
+                // check for email errors
+                if (errors.email){
+                    emailFeedback = (
+                        <p
+                            className="invalid-feedback-msg">
+                            { errors.email }
+                        </p>
+                    );
+                    emailClass += " invalid-field";
+                }
+
+                // check for other errors
+                if (errors.general){
+                    emailFeedback = null;
+                    codeFeedback   = (
+                        <p
+                            className="invalid-feedback-msg">
+                            { errors.general }
+                        </p>
+                    );
+                    emailClass += " invalid-field";
+                    codeClass  += " invalid-field";
                 }
             }
 
             formContent = (
-                <Form
-                    noValidate
-                    validated={this.state.validated}
-                    onSubmit={this.handleValidation}>
+                <Form>
 
                     <h1
                         className="form-title">
@@ -202,33 +220,27 @@ class Register extends Component {
                     <Row
                         className="my-1">
                         <Form.Control
-                            className="login-field"
+                            className={emailClass}
                             name="email"
                             type="email"
                             placeholder="email"
                             value={this.state.email}
                             onChange={this.handleChange}
                             required/>
-                        <Form.Control.Feedback
-                            type="invalid">
-                            { emailErr }
-                        </Form.Control.Feedback>
+                            { emailFeedback }
                     </Row>
 
                     {/* Invitation code field */}
                     <Row
                         className="my-1">
                         <Form.Control
-                            className="login-field"
+                            className={codeClass}
                             name="code"
                             placeholder="invitation code"
                             value={this.state.code}
                             onChange={this.handleChange}
                             required/>
-                        <Form.Control.Feedback
-                            type="invalid">
-                            { codeErr }
-                        </Form.Control.Feedback>
+                            { codeFeedback }
                     </Row>
 
                     {/* Submit button */}
@@ -247,26 +259,68 @@ class Register extends Component {
         else {
 
             // set up error messages
-            let fnameErr, lnameErr, pwError;
-            if (this.state.errors){
-                if (this.state.errors.fname) {
-                    fnameErr = this.state.errors.fname;
+            let fnameClass    = "login-field";
+            let lnameClass    = "login-field";
+            let pwClass       = "login-field";
+            let fnameFeedback = "";
+            let lnameFeedback = "";
+            let pwFeedback    = "";
+
+            if (validated && this.state.errors){
+
+                // check for first name errors
+                if (errors.fname){
+                    fnameFeedback = (
+                        <p
+                            className="invalid-feedback-msg">
+                            { errors.fname }
+                        </p>
+                    );
+                    fnameClass += " invalid-field";
                 }
-                if (this.state.errors.lname){
-                    lnameErr = this.state.errors.lname;
+
+                // check for last name
+                if (errors.lname){
+                    lnameFeedback = (
+                        <p
+                            className="invalid-feedback-msg">
+                            { errors.lname }
+                        </p>
+                    );
+                    lnameClass += " invalid-field";
                 }
-                if (this.state.errors.pw){
-                    pwError = this.state.errors.pw;
+
+                // check for other errors
+                if (errors.pw){
+                    emailFeedback = null;
+                    codeFeedback   = (
+                        <p
+                            className="invalid-feedback-msg">
+                            { errors.general }
+                        </p>
+                    );
+                    emailClass += " invalid-field";
+                    codeClass  += " invalid-field";
+                }
+
+                // check for other errors
+                if (errors.general){
+                    emailFeedback = null;
+                    codeFeedback   = (
+                        <p
+                            className="invalid-feedback-msg">
+                            { errors.general }
+                        </p>
+                    );
+                    emailClass += " invalid-field";
+                    codeClass  += " invalid-field";
                 }
             }
 
             formContent = (
 
                 <Form
-                    noValidate
-                    encType="multipart/form-data"
-                    validated={this.state.validated}
-                    onSubmit={this.handleRegistration}>
+                    encType="multipart/form-data">
 
                     <h1
                         className="form-title">
@@ -274,7 +328,11 @@ class Register extends Component {
                     </h1>
                     <p
                         className="text-muted mb-4 text-center">
-                        Just fill in your details and you'll be all good to go!
+                        Just fill in a few final details and you'll be all
+                        good to go!
+                        <br/>
+                        <strong>Note: </strong>Upon successful registration,
+                        you will be redirected to the login page.
                     </p>
 
 
@@ -305,16 +363,12 @@ class Register extends Component {
                             sm="6"
                             className="pl-0 pr-1">
                             <Form.Control
-                                className="login-field"
+                                className={ fnameClass }
                                 name="fname"
                                 placeholder="first name"
                                 value={this.state.fname}
                                 onChange={this.handleChange}
                                 required/>
-                            <Form.Control.Feedback
-                                type="invalid">
-                                { fnameErr }
-                            </Form.Control.Feedback>
                         </Col>
 
                         {/* Last Name field */}
@@ -323,18 +377,17 @@ class Register extends Component {
                             sm="6"
                             className="pl-1 pr-0">
                             <Form.Control
-                                className="login-field"
+                                className={ lnameClass }
                                 name="lname"
                                 placeholder="last name"
                                 value={this.state.lname}
                                 onChange={this.handleChange}
                                 required/>
-                            <Form.Control.Feedback
-                                type="invalid">
-                                { lnameErr }
-                            </Form.Control.Feedback>
                         </Col>
                     </Row>
+
+                    { fnameFeedback }
+                    { lnameFeedback }
 
                     {/* Email field (read-only now since it has alread been
                         validated) */}
@@ -353,34 +406,27 @@ class Register extends Component {
                     <Row
                         className="my-1">
                         <Form.Control
-                            className="login-field"
+                            className={ pwClass }
                             name="pw"
                             type="password"
                             placeholder="password"
                             value={this.state.pw}
                             onChange={this.handleChange}
                             required/>
-                        <Form.Control.Feedback
-                            type="invalid">
-                            { "" }
-                        </Form.Control.Feedback>
                     </Row>
 
                     {/* Password confirmation field */}
                     <Row
                         className="my-1">
                         <Form.Control
-                            className="login-field"
+                            className={ pwClass }
                             name="pw_c"
                             type="password"
                             placeholder="confirm password"
                             value={this.state.pw_c}
                             onChange={this.handleChange}
                             required/>
-                        <Form.Control.Feedback
-                            type="invalid">
-                            { pwError }
-                        </Form.Control.Feedback>
+                        { pwFeedback }
                     </Row>
 
                     {/* Submit button */}

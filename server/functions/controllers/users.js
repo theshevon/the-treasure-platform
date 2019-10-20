@@ -39,45 +39,30 @@ exports.checkInvitee =
         if (!valid) return res.status(400).json(errors);
 
         // validate code against database entry
-        db
-            .collection('invitees')
-            .doc(invitee.email)
-            .get()
-            .then(doc => {
+        return db
+                .collection('invitees')
+                .doc(invitee.email)
+                .get()
+                .then(doc => {
 
-                // error case 1: user has not been invited to the platform
-                if (!doc.exists) return res.status(400).json({ general : "Sorry, the email address or code you entered was incorrect." });
+                    // error case 1: user has not been invited to the platform
+                    if (!doc.exists) return res.status(400).json({ general : "Sorry, the email address or code you entered was incorrect." });
 
-                // error case 2: invitation has already been accepted
-                if (doc.data().accepted) return res.status(400).json({ general : "Error: This invitation has already been accepted." });
+                    // error case 2: invitation has already been accepted
+                    if (doc.data().accepted) return res.status(400).json({ general : "Error: This invitation has already been accepted." });
 
-                // success case
-                if (doc.data().code === invitee.code){
+                    // success case
+                    if (doc.data().code === invitee.code){
+                        return res.status(200).json("Success: User validated");
+                    }
 
-                    // change accepted field to true
-                    invitee.accepted = true;
-
-                    // eslint-disable-next-line promise/no-nesting
-                    return db
-                            .collection('invitees')
-                            .doc(invitee.email)
-                            .set(invitee)
-                            .then(() => {
-                                return res.status(200).json("Success: User validated");
-                            })
-                            .catch(err => {
-                                console.log(err);
-                                return res.status(400).json({ error : err });
-                            })
-                }
-
-                // error case 3: incorrect info entered
-                return res.status(400).json({ general : "Sorry, the email address or code you entered was incorrect." });
-            })
-            .catch(err => {
-                console.log(err);
-                res.status(400).json({err: err});
-            })
+                    // error case 3: incorrect info entered
+                    return res.status(400).json({ general : "Sorry, the email address or code you entered was incorrect." });
+                })
+                .catch(err => {
+                    console.log(err);
+                    return res.status(400).json({ general : "Sorry, something went wrong." });
+                });
     }
 
 exports.registerNewUser =
