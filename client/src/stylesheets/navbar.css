@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Playfair+Display&display=swap');
+
 .navbar{
     background-color: rgba(0,0,0,0); /* unneeded but helps with transitions */
     transition: 300ms !important;
@@ -33,4 +35,3 @@
     object-fit: scale-down;
     background: white;
 }
-
