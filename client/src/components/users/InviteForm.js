@@ -48,7 +48,10 @@ class InviteForm extends Component {
         let emails = [...this.state.emails]
         emails[array_index] = event.target.value;
 
-        this.setState({ emails : emails });
+        this.setState({
+                        validated : false,
+                        emails : emails
+                    });
     }
 
     // sends the form data to the server
@@ -63,11 +66,14 @@ class InviteForm extends Component {
         // send the data to the server
         axios({
                 method: 'post',
-                url: 'http://localhost:5000/comp30022app/us-central1/api/invite',
+                url: '/invite',
                 data: { emails : this.state.emails }
             })
             .then(res => {
-                this.setState({ loading : false });
+                this.setState({
+                                loading : false,
+                                validated : true
+                             });
             })
             .catch(err => {
                 this.setState({
@@ -87,16 +93,23 @@ class InviteForm extends Component {
 			let feedback  = null;
 			let classes   = "invite-email-field mb-1";
 
-			if (this.state.validated && this.state.errors){
-				if (this.state.errors[i]){
+			if (this.state.validated){
+
+				if (this.state.errors && this.state.errors[i]){
 					feedback = (
 						<p
 							className="invalid-feedback-msg">
 							{ this.state.errors[i] }
 						</p>
-					)
+					);
 					classes += " invalid-field"
-				} else {
+				} else if (this.state.emails[i] !== ''){
+                    feedback = (
+						<p
+							className="valid-feedback-msg">
+							Successfully emailed!
+						</p>
+					);
 					classes += " valid-field";
 				}
 			}
@@ -113,7 +126,8 @@ class InviteForm extends Component {
 											className={ classes }
 											name={ fieldName }
 											type="email"
-											placeholder="email"
+                                            placeholder="email"
+                                            value={this.state.emails[i]}
 											onChange={this.handleChange}/>
 										{ feedback }
                                     </Col>
