@@ -8,19 +8,23 @@
     background: white;
     margin-bottom: 20px;
     box-shadow: 0 6px 15px rgba(36,37,38,0.08);
+    border-radius: 5px;
     height: 100%;
 }
 
 .dashboard-option:hover{
     box-shadow:5px 12px 20px rgba(36,37,38,0.13);
+    transform: scale(1.025) perspective(1px);
     border: none !important;
 }
 
-/* .dashboard-option:hover .btn{
-    color: white;
-    border-color: #fed766;
-    background: #fed766;
-} */
+.dashboard-option:hover .icon.invite-icon{
+    content: url('../icons/invite-col.svg') !important;
+}
+
+.dashboard-option:hover .icon.item-icon{
+    content: url('../icons/item-col.svg') !important;
+}
 
 .icon{
     color: linear-gradient( 91.9deg,  rgba(75,207,250,1) 6.3%, rgba(25,159,249,1) 98.9% );

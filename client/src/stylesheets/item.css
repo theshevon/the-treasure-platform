@@ -30,6 +30,10 @@
     border: none !important;
 }
 
+.item-card-loaded:hover{
+    transform: scale(1.025) perspective(1px);
+}
+
 .item-card-text{
     font-size: 0.9rem;
     text-align: justify;
@@ -100,6 +104,3 @@
     margin-bottom: 5px;
 }
 
-.item-card-loaded:hover{
-    transform: scale(1.015) perspective(1px);
-}

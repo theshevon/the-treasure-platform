@@ -1,5 +1,3 @@
-/* @import url('https://fonts.googleapis.com/css?family=Muli&display=swap'); */
-
 .item-col{
     padding: 0px !important;
 }
@@ -7,82 +5,6 @@
 .info-modal-body::-webkit-scrollbar {
     width: 0 !important;
     background: red !important;
-}
-
-@-webkit-keyframes scroll-inner {
-    from {
-      margin-top: 15%;
-    }
-    to {
-      margin-top: 50%;
-    }
-}
-
-@keyframes scroll-inner {
-    from {
-        margin-top: 15%;
-    }
-    to {
-        margin-top: 50%;
-    }
-}
-
-@-webkit-keyframes scroll-mouse {
-    from {
-        margin-top: 0;
-    }
-    to {
-        margin-top: 15px;
-    }
-}
-
-@keyframes scroll-mouse {
-    from {
-        margin-top: 0;
-    }
-    to {
-        margin-top: 15px;
-    }
-}
-
-div.mouse-container {
-    position: absolute;
-    bottom: 7.5px;
-    display: block;
-    height: 100px;
-}
-
-div.mouse {
-    position: relative;
-    margin: 0 auto;
-    display: block;
-    width: 26px;
-    height: 40px;
-    border: solid 1px #fff;
-    border-radius: 25px;
-    -webkit-animation: scroll-mouse 1.5s;
-    animation: scroll-mouse 1.5s;
-    -webkit-animation-iteration-count: infinite;
-    animation-iteration-count: infinite;
-}
-
-div.mouse span.scroll-down {
-    display: block;
-    width: 7.5px;
-    height: 7.5px;
-    background: #fff;
-    border-radius: 50%;
-    margin: 15% auto auto auto;
-    -webkit-animation: scroll-inner 1.5s;
-    animation: scroll-inner 1.5s;
-    -webkit-animation-iteration-count: infinite;
-    animation-iteration-count: infinite;
-    -webkit-animation-timing-function: ease;
-    animation-timing-function: ease;
-}
-
-#scroll-anim{
-    transition: 750ms;
 }
 
 .scrolled{
