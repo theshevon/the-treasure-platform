@@ -35,7 +35,8 @@ body{
 }
 
 .page-title {
-    font-family: 'Scope One', serif;
+    /* font-family: 'Scope One', serif; */
+    font-family: 'Playfair Display', serif;
 }
 
 .modal-dialog-scrollable .modal-body{
