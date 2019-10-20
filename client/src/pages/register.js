@@ -58,12 +58,10 @@ class Register extends Component {
             })
             .catch(err => {
                 this.setState({
-                    email: '',
-                    code: '',
                     errors: err.response.data,
                     loading: false,
                     validated: true
-                })
+                });
             })
     }
 
@@ -114,7 +112,9 @@ class Register extends Component {
                                 this.setState({
                                     errors: err.response.data,
                                     loading: false,
-                                    validated: true
+                                    validated: true,
+                                    pw: '',
+                                    pw_c: ''
                                 });
                             });
 
@@ -138,7 +138,9 @@ class Register extends Component {
                             this.setState({
                                 errors: err.response.data,
                                 loading: false,
-                                validated: true
+                                validated: true,
+                                pw: '',
+                                pw_c: ''
                             });
                         });
         }
@@ -151,12 +153,14 @@ class Register extends Component {
 
     render() {
 
+        const { loading, stage, errors, validated } = this.state;
+
         // if loading, replace button text with a spinner
         let btnContent;
-        if (this.state.loading){
+        if (loading){
             btnContent = (<Spinner animation="border" size="sm"/>);
         } else {
-            if (this.state.stage === 0){
+            if (stage === 0){
                 btnContent = ("Next");
             } else {
                 btnContent = ("Register");
@@ -167,13 +171,14 @@ class Register extends Component {
 
         let formContent;
 
-        if (this.state.stage === 0){
+        if (stage === 0){
 
             // set up error messages
             let emailClass    = "login-field";
             let codeClass     = "login-field";
             let emailFeedback = "";
-            let codeFeedback    = "";
+            let codeFeedback  = "";
+
             if (validated && this.state.errors){
 
                 // check for email errors
@@ -185,6 +190,17 @@ class Register extends Component {
                         </p>
                     );
                     emailClass += " invalid-field";
+                }
+
+                // check for code errors
+                if (errors.code){
+                    codeFeedback   = (
+                        <p
+                            className="invalid-feedback-msg">
+                            { errors.code }
+                        </p>
+                    );
+                    codeClass += " invalid-field";
                 }
 
                 // check for other errors
@@ -279,7 +295,7 @@ class Register extends Component {
                     fnameClass += " invalid-field";
                 }
 
-                // check for last name
+                // check for last name errors
                 if (errors.lname){
                     lnameFeedback = (
                         <p
@@ -290,30 +306,30 @@ class Register extends Component {
                     lnameClass += " invalid-field";
                 }
 
-                // check for other errors
+                // check for pw errors
                 if (errors.pw){
-                    emailFeedback = null;
-                    codeFeedback   = (
+                    pwFeedback   = (
                         <p
                             className="invalid-feedback-msg">
-                            { errors.general }
+                            { errors.pw }
                         </p>
                     );
-                    emailClass += " invalid-field";
-                    codeClass  += " invalid-field";
+                    pwClass += " invalid-field";
                 }
 
                 // check for other errors
                 if (errors.general){
-                    emailFeedback = null;
-                    codeFeedback   = (
+                    fnameClass += " invalid-field";
+                    lnameClass += " invalid-field";
+                    pwClass    += " invalid-field";
+                    fnameFeedback = null;
+                    lnameFeedback = null;
+                    pwFeedback   = (
                         <p
                             className="invalid-feedback-msg">
                             { errors.general }
                         </p>
                     );
-                    emailClass += " invalid-field";
-                    codeClass  += " invalid-field";
                 }
             }
 
@@ -369,6 +385,7 @@ class Register extends Component {
                                 value={this.state.fname}
                                 onChange={this.handleChange}
                                 required/>
+                            { fnameFeedback }
                         </Col>
 
                         {/* Last Name field */}
@@ -383,11 +400,9 @@ class Register extends Component {
                                 value={this.state.lname}
                                 onChange={this.handleChange}
                                 required/>
+                            { lnameFeedback }
                         </Col>
                     </Row>
-
-                    { fnameFeedback }
-                    { lnameFeedback }
 
                     {/* Email field (read-only now since it has alread been
                         validated) */}
@@ -434,6 +449,7 @@ class Register extends Component {
                         className="login-btn btn mt-3"
                         variant="light"
                         type="submit"
+                        onClick={this.handleRegistration}
                         disabled={this.state.loading}>
                         {btnContent}
                     </Button>

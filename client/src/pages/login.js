@@ -27,7 +27,6 @@ class Login extends Component {
 
 	componentWillReceiveProps(nextProps){
 		if (nextProps.UI.errors){
-			console.log(nextProps.UI.errors);
 			this.setState({ errors : nextProps.UI.errors });
 		}
 	}

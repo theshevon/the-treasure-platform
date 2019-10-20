@@ -123,6 +123,22 @@ exports.registerNewUser =
                 }
             });
 
+            // // change accepted field to true
+            // invitee.accepted = true;
+
+            // // eslint-disable-next-line promise/no-nesting
+            // return db
+            //         .collection('invitees')
+            //         .doc(invitee.email)
+            //         .set(invitee)
+            //         .then(() => {
+            //             return res.status(200).json("Success: User validated");
+            //         })
+            //         .catch(err => {
+            //             console.log(err);
+            //             return res.status(400).json({ general : "Sorry, something went wrong." });
+            //         });
+
     }
 
 exports.logInUser =
