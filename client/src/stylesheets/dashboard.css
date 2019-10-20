@@ -26,18 +26,15 @@
     content: url('../icons/item-col.svg') !important;
 }
 
-.icon{
-    color: linear-gradient( 91.9deg,  rgba(75,207,250,1) 6.3%, rgba(25,159,249,1) 98.9% );
-}
-
 .dashboard-option-content{
     margin-top: 50%;
     transform: translateY(-50%);
 }
 
 .icon{
-    height: 60%;
-    width: 60%;
+    height: 198px;
+    width : 192px;
+    color: linear-gradient( 91.9deg,  rgba(75,207,250,1) 6.3%, rgba(25,159,249,1) 98.9% );
     margin-left: 50%;
     transform: translateX(-50%);
 }

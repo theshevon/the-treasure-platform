@@ -452,17 +452,17 @@ class AddItemForm extends Component {
                     </span>
                 </Row>
                 <Row
-                    className={this.state.stage ===  1 ? "px-1 py-4" : "hidden-field"}>
+                    className={this.state.stage ===  1 ? "px-3 py-4" : "hidden-field"}>
 
                     { this.state.uploadedFiles.map((file, index) => (
                         <Col
                             key={index}
-                            xs={12} md={3}
+                            xs={12} md={4}
                             onClick={this.handleImgSelect.bind(this, index)}
                             className={ index === this.state.coverImgIndex? "selected-img" : "non-selected-img"}>
                             <img
                                 src={ URL.createObjectURL(file) }
-                                className={ "img-fluid" }
+                                className="uploaded-img img-fluid"
                                 alt={"img-" + index}
                             ></img>
                         </Col>

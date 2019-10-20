@@ -6,20 +6,27 @@
     color: black !important;
 }
 
+img.uploaded-img{
+    height: 250px;
+    object-fit: contain !important;
+}
+
 .selected-img, .non-selected-img{
     border-radius: 4px;
     transition: 200ms;
+    /* margin: 2px; */
 }
 
 .selected-img:hover, .non-selected-img:hover{
     cursor: pointer;
 }
+
 .selected-img{
-    border: 3px solid rgb(34, 168, 112);
+    border: 3px solid #fed766;
 }
 
 .non-selected-img{
-    border: 1px solid #E2E2E2;
+    border: 3px solid #E2E2E2;
 }
 
 .hidden-field{

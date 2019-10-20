@@ -82,9 +82,10 @@ export class Dashboard extends Component {
                             md="4"
                             className="dashboard-option-container mb-4">
                             <Col
+                                xs="12"
                                 className="dashboard-option">
                                 <img
-                                    className="img-fluid icon invite-icon mb-3"
+                                    className="icon invite-icon mb-3"
                                     alt="invite-icon"
                                     src={ inviteIcon }/>
                                 <FormModal
@@ -99,9 +100,10 @@ export class Dashboard extends Component {
                             md="4"
                             className="dashboard-option-container">
                             <Col
+                                xs="12"
                                 className="dashboard-option">
                                 <img
-                                    className="img-fluid icon item-icon mb-3"
+                                    className="icon item-icon mb-3"
                                     alt="item-icon"
                                     src={ itemIcon }/>
                                 <FormModal
