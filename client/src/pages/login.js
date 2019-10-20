@@ -127,7 +127,7 @@ class Login extends Component {
 							<Form>
 
 								<Row
-									className="my-1 d-flex justify-content-center">
+									className="my-1 d-flex justify-content-center px-3">
 									<Form.Control
 										className={ emailClass }
 										name="email"
@@ -140,7 +140,7 @@ class Login extends Component {
 								</Row>
 
 								<Row
-									className="my-1 d-flex justify-content-center">
+									className="my-1 d-flex justify-content-center px-3">
 									<Form.Control
 										className={ pwClass }
 										name="password"
