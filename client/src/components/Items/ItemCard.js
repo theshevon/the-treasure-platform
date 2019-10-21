@@ -97,6 +97,7 @@ export class ItemCard extends Component {
 								<div className="right-btns">
 									<AssignUserModal
 										itemID    ={ item.id }
+										visibleTo ={ item.visibleTo }
 										assignedTo={ item.assignedTo }/>
 								</div>
 

@@ -46,7 +46,15 @@ export class AssignUserModal extends Component {
                         url    : '/users'
                     })
                     .then(res => {
-                        let users = res.data;
+                        let unfilteredUsers = res.data;
+
+                        // remove all the users who the item isn't visible to
+                        let users = [];
+                        unfilteredUsers.forEach(user => {
+                            if (this.props.visibleTo.includes(user.uid)){
+                                users.push(user);
+                            }
+                        });
 
                         // mappings from user ids to their names
                         let idsToNames = {};
