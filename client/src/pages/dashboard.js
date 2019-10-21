@@ -91,6 +91,7 @@ export class Dashboard extends Component {
                                 <FormModal
                                     modalSize="md"
                                     triggerBtnText="Invite New Users"
+                                    // note="Invite up to 10 users at once"
                                     title="Invite Users"
                                     form={ < InviteForm /> }/>
                             </Col>
@@ -110,6 +111,7 @@ export class Dashboard extends Component {
                                     modalSize="lg"
                                     triggerBtnText="Add A New Item"
                                     title="Add A New Item"
+                                    // note={null}
                                     form={
                                         < AddItemForm
                                             handleAlert={ this.handleAlert }

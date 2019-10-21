@@ -152,7 +152,7 @@ class InviteForm extends Component {
                         variant="light"
                         disabled={this.state.loading || this.state.noRows === this.maxRows}
                         onClick={this.addRows}>
-                        + Add Another
+                        + Add Row
                     </Button>
 
                     <hr

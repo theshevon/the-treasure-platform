@@ -11,16 +11,16 @@ import Col     from 'react-bootstrap/Col';
 class Register extends Component {
 
     state = {
-        fname:   '',
-        lname:   '',
-        email:   '',
-        code :   '',
-        pw:      '',
-        pw_c:    '',
-        pic:     null,
-        loading: false,
-        stage:   0,
-        validated: false
+        fname     : '',
+        lname     : '',
+        email     : '',
+        code      : '',
+        pw        : '',
+        pw_c      : '',
+        pic       : null,
+        loading   : false,
+        stage     : 0,
+        validated : false
     }
 
     // handles changes made to input fields

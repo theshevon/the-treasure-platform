@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 // bootstrap imports
 import Button from 'react-bootstrap/Button';
 import Modal  from 'react-bootstrap/Modal';
+// import Row    from 'react-bootstrap/Row';
 
 export class FormModal extends Component {
 
@@ -44,6 +45,15 @@ export class FormModal extends Component {
                         </Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
+                        {/* { this.props.note
+                            ? (<Row>
+                                    <p
+                                        class="text-muted d-block">
+                                        { this.props.note }
+                                    </p>
+                                </Row>)
+                            : null
+                        } */}
                         { React.cloneElement(this.props.form, { handleClose : this.handleClose }) }
                     </Modal.Body>
                 </Modal>

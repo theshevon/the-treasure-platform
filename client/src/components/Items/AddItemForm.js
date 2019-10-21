@@ -55,9 +55,15 @@ class AddItemForm extends Component {
                     let users = res.data;
 
                     // user options for visibility dropdown
-                    let userOptions = [];
+                    let userOptions  = [];
+                    let userOptions2 = [];
                     users.forEach(user => {
                         userOptions.push({
+                            key   : user.uid,
+                            text  : user.name,
+                            value : user.name
+                        });
+                        userOptions2.push({
                             key   : user.uid,
                             text  : user.name,
                             value : user.name
@@ -65,7 +71,7 @@ class AddItemForm extends Component {
                     });
 
                     // allow the user to revert to 'unassigned' selection
-                    userOptions.push({
+                    userOptions2.push({
                         key   : 0,
                         text  : "No One",
                         value : null
@@ -74,6 +80,7 @@ class AddItemForm extends Component {
                     this.setState({
                         allUsers     : users,
                         userOptions  : userOptions,
+                        userOptions2 : userOptions2,
                         loadingUsers : false
                     });
                 })
@@ -266,7 +273,6 @@ class AddItemForm extends Component {
                         stage: 0,
                         validated: false
                       });
-
     }
 
     render() {
@@ -398,7 +404,7 @@ class AddItemForm extends Component {
                                 search
                                 selection
                                 disabled={this.state.loadingUsers}
-                                options={this.state.userOptions}
+                                options={this.state.userOptions2}
                                 onChange={this.handleAssignment}/>
                         </Col>
                     </Form.Group>
