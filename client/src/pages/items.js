@@ -62,8 +62,7 @@ class Items extends Component {
         let itemListContent = (<ItemSkeleton/>);
 
         if (!this.state.loading){
-
-            if (!this.state.items.length === 0){
+            if (this.state.items.length > 0){
                 itemListContent = (
                     <div
                         className='all-items-container'>
