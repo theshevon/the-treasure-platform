@@ -107,7 +107,7 @@ exports.registerNewUser =
                         .collection("users")
                         .doc(uid)
                         .set(userData);
-                    return { email: userData.email };
+                    return { uid : uid, email: userData.email };
                 }
                 catch (err) {
                     console.log(err);
@@ -121,7 +121,7 @@ exports.registerNewUser =
                         .collection('invitees')
                         .doc(data.email)
                         .update({ accepted: true });
-                    return res.status(200).json("Success: User registered");
+                    return res.status(200).json(data.uid);
                 }
                 catch (err) {
                     console.log(err);
@@ -240,14 +240,6 @@ exports.getAuthenticatedUser =
 // uploads a single image to firebase storage
 exports.uploadImg =
 
-    // Response codes:
-    // 200 :- No Error
-    // 101 :- Error : Document does not exist
-    // 102 :- Error : Incorrect file type
-    // 103 :- Error : Failed to link image URI to database entry
-    // 104 :- Error : Failed to upload image to firebase storage
-    // 105 :- Error : Other error
-
     async (req, res) => {
 
         // find the database entry for the required item
@@ -259,7 +251,8 @@ exports.uploadImg =
 
                     // eslint-disable-next-line promise/always-return
                     if (!doc.exists){
-                        return res.status(400).json({ code : 101 });
+                        // document does not exist
+                        return res.status(400).json({ general: "Sorry, something went wrong with the image upload. You can still head over to the login page and log in." });
                     }
 
                     const busboy = new BusBoy({ headers: req.headers });
@@ -272,7 +265,8 @@ exports.uploadImg =
 
                         // check if the file type is that of an image
                         if (mimetype !== 'image/jpeg' && mimetype !== 'image/png') {
-                            return res.status(400).json({ code : 102 });
+                            // incorrect file type
+                            return res.status(400).json({ general: "Sorry, something went wrong with the image upload. You can still head over to the login page and log in." });
                         }
 
                         // create a unique name for the image
@@ -312,19 +306,22 @@ exports.uploadImg =
                                     .doc(doc.id)
                                     .update({ imgSrc : imageUrl })
                                     .then(() => {
-                                        return res.status(200).json({ code : 200 });
+                                        // code 200
+                                        return res.status(200).json("Success!");
                                     })
                                     // eslint-disable-next-line handle-callback-err
                                     .catch(err => {
                                         console.log(err);
-                                        return res.status(400).json({ code : 103 });
+                                        // failed to link image URI to database entry
+                                        return res.status(400).json({ general: "Sorry, something went wrong with the image upload. You can still head over to the login page and log in."  });
                                     })
 
                         })
                         // eslint-disable-next-line handle-callback-err
                         .catch(err => {
                             console.log(err);
-                            return res.status(400).json({ code : 104 });
+                            // failed to upload image to firebase storage
+                            return res.status(400).json({ general: "Sorry, something went wrong with the image upload. You can still head over to the login page and log in."  });
                         });
                     });
 
@@ -334,7 +331,8 @@ exports.uploadImg =
                 // eslint-disable-next-line handle-callback-err
                 .catch(err => {
                     console.log(err);
-                    return res.status(400).json({ code : 105 });
+                    // other error
+                    return res.status(400).json({ general: "Sorry, something went wrong with the image upload. You can still head over to the login page and log in."  });
                 });
     }
 

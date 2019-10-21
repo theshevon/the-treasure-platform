@@ -333,6 +333,12 @@ class Register extends Component {
                 }
             }
 
+            // decide on what text needs to be on the photo upload button
+            let photoSelectText = "Select Profile Pic";
+            if (this.state.pic){
+                photoSelectText = "Pic Selected";
+            }
+
             formContent = (
 
                 <Form
@@ -365,7 +371,7 @@ class Register extends Component {
                             className="centered-btn btn"
                             variant="light"
                             onClick={() => this.fileUpload.click()}>
-                            Select Profile Photo
+                            {photoSelectText}
                         </Button>
                     </Row>
 
