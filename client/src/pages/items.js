@@ -63,18 +63,30 @@ class Items extends Component {
 
         if (!this.state.loading){
 
-            itemListContent = (
-                <div
-                    className='all-items-container'>
-                    { this.state.items.map((item, index) => (
-                        <ItemCard
-                            key={index}
-                            className="my-5"
-                            item={ item }/>
-                        )
-                    )}
-                </div>
-            )
+            if (!this.state.items.length === 0){
+                itemListContent = (
+                    <div
+                        className='all-items-container'>
+                        { this.state.items.map((item, index) => (
+                            <ItemCard
+                                key={index}
+                                className="my-5"
+                                item={ item }/>
+                            )
+                        )}
+                    </div>
+                )
+            } else {
+                itemListContent = (
+                    <div
+                        className='all-items-container'>
+                        <h2
+                            className="no-items-msg">
+                            Sorry, there are no items for you to view yet.
+                        </h2>
+                    </div>
+                )
+            }
         }
 
         return (

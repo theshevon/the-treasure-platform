@@ -15,5 +15,11 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  margin-bottom: 8em
+  margin-bottom: 8em;
+}
+
+.no-items-msg{
+    color: white;
+    font-family: 'Roboto';
+    padding-top: 25vh;
 }
