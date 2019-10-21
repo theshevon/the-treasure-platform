@@ -20,7 +20,10 @@ class ItemSkeleton extends Component {
         const { user } = this.props;
         let EOIOpt = 	(
                             <div
-                                className="d-flex justify-content-end">
+                                className="d-flex justify-content-between">
+                                <div
+                                    className="empty-btn empty-btn-2 mb-2">
+                                </div>
                                 <div
                                     className="empty-btn empty-btn-2 mb-2">
                                 </div>

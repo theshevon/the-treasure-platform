@@ -3,24 +3,29 @@ import PropTypes            from 'prop-types';
 
 
 // bootstrap imports
-import Carousel from 'react-bootstrap/Carousel';
-import Button   from 'react-bootstrap/Button';
-import Modal    from 'react-bootstrap/Modal';
-import Card     from 'react-bootstrap/Card';
-import Row      from 'react-bootstrap/Row';
-import Col      from 'react-bootstrap/Col';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Carousel       from 'react-bootstrap/Carousel';
+import Tooltip        from 'react-bootstrap/Tooltip';
+import Button         from 'react-bootstrap/Button';
+import Modal          from 'react-bootstrap/Modal';
+import Card           from 'react-bootstrap/Card';
+import Row            from 'react-bootstrap/Row';
+import Col            from 'react-bootstrap/Col';
 
 // custom components
 import ViewInterestedModal from './ViewInterestedModal';
 import AssignUserModal     from './AssignUserModal';
-import LikeButton          from './LikeButton';
 import DeleteButton 	   from './DeleteButton';
+import LikeButton          from './LikeButton';
 
 // redux stuff
 import { connect } from 'react-redux';
 
 // custom css
-import '../../stylesheets/item.css'
+import '../../stylesheets/item.css';
+
+// icons
+import star from '../../icons/star.svg';
 
 export class ItemCard extends Component {
 
@@ -42,16 +47,32 @@ export class ItemCard extends Component {
 
 		const { item, user } = this.props;
 
-		/* define the EOI button */
+		/* define the EOI button and assigned icon */
+
 		let EOIOpt = 	(
 							<Row
-								className="justify-content-end">
+								className={item.assignedTo === user.id ? "justify-content-between align-items-center" : "justify-content-end"}>
+								<OverlayTrigger
+									placement="top"
+									overlay={
+												<Tooltip>
+												This item has been assigned to you.
+												</Tooltip>
+											}>
+									<img
+										className={item.assignedTo === user.id ? "assigned-icon" : "d-none"}
+										src={star}
+										width="25"
+										height="25"
+										alt="assigned_icon"/>
+								</OverlayTrigger>
 								<LikeButton
 									itemID={item.id}
 									size="sm"
 									liked={item.intUsers.includes(user.id)}/>
 							</Row>
 						);
+
 
 		/* establish user type i.e. secondary or primary user */
 		let type   = localStorage.TreasureUType || user.type;
