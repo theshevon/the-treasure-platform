@@ -38,7 +38,7 @@ To commit changes and deploy the server _globally_, do the same as mentioned abo
 
 #### Manual Testing
 
-The following accounts are available for (manually:
+The following accounts are available for testing:
 
 - **Primary User**
 
@@ -50,7 +50,7 @@ The following accounts are available for (manually:
 
 #### Automated Testing
 
-The app was testing using Cypress(https://www.cypress.io/). 
+The app was tested using Cypress(https://www.cypress.io/). 
 
 In order to run the test suites:
 - Navigate to the `client` directory and run `npm run cypress:open` on your terminal. This will fire up the Cypress app. 
