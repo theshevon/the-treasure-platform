@@ -3,7 +3,7 @@ describe("Login Tests", function() {
     it("Email field - blank, Password field - blank", function() {
 
         // visit the log in page
-        cy.visit("http://google.com");
+        cy.visit('http://localhost:3000/login');
 
         // click on the log in button
         cy
