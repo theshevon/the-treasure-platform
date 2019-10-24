@@ -68,7 +68,7 @@ body{
     transition: 250ms !important;
 }
 
-.btn:not(.del-btn):enabled:hover{
+.btn:not(.del-btn, .btn-danger):enabled:hover{
     color: white !important;
     border-color:  #fed766 !important;
     background:  #fed766 !important;
@@ -99,4 +99,8 @@ p.valid-feedback-msg{
     font-size: 0.9em;
     font-weight: 500;
     text-align: center !important;
+}
+
+.fade.modal.show{
+    padding-right: 0px !important;
 }

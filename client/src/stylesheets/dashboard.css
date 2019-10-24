@@ -47,3 +47,27 @@
 .mt-6{
     margin-top: 10vh;
 }
+
+a.ui.label{
+    color: black !important;
+    font-weight: bold;
+    background-color: #FFEAB6 !important;
+    border: none !important;
+    padding-right: 2.5px !important;
+}
+
+i.delete.icon::before{
+    padding-left: 5px;
+}
+
+@media(max-width: 576px){
+
+    .dashboard{
+        margin-bottom: 4em;
+        overflow-x: hidden !important;
+    }
+
+    .mt-6{
+        margin-top: 7.5vh;
+    }
+}

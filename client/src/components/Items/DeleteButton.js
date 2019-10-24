@@ -23,7 +23,7 @@ class DeleteButton extends Component {
     handleClose = () => {
         this.setState({ show: false });
     }
-    
+
     handleDelete = async itemId => {
 		// start the spinner animation
 		this.setState({
@@ -83,7 +83,7 @@ class DeleteButton extends Component {
                         show={this.state.showWarning}
                         confirmBtnText={btnContent}
                         confirmBtnBsStyle="danger"
-                        cancelBtnBsStyle="default"
+                        cancelBtnBsStyle="light"
                         title="STOP!"
                         onConfirm={() => this.handleDelete(itemID)}
                         onCancel={this.cancelDelete}>
