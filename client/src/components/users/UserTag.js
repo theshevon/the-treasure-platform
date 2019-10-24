@@ -8,8 +8,8 @@ class UserTag extends Component {
                 <img
                     className="user-img border-on mr-2"
                     src={this.props.imgSrc}
-                    width="25"
-                    height="25"
+                    width="35"
+                    height="35"
                     alt="user_img">
                 </img>
                 <p>

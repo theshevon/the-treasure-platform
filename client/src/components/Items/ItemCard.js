@@ -166,12 +166,12 @@ export class ItemCard extends Component {
 					</Modal.Header>
 
 					<Modal.Body
-						className="info-modal-body px-5 pb-5 pt-0">
+						className="info-modal-body px-md-5 pb-md-5 pt-0">
 						<Row>
 							{/* item image carousel */}
 							<Col sm="6">
 								<Carousel
-									controls={item.photos.length>1 ? true : false}
+									controls={item.photos.length> 1 ? true : false }
 									indicators = {false}>
 									{item.photos.map((photo, index) => (
 										<Carousel.Item
