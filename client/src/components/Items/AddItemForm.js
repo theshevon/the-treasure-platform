@@ -354,9 +354,10 @@ class AddItemForm extends Component {
                     <Form.Group
                         as={Row}
                         className={this.state.stage ===  0 ? "" : "hidden-field"}>
+
                         <Col
                             sm="3"
-                            className="px-1">
+                            className="px-md-1 px-sm-3">
                             <Dropdown
                                 selection
                                 disabled={this.state.loadingUsers}
@@ -364,6 +365,7 @@ class AddItemForm extends Component {
                                 options={this.state.visibilityOptions}
                                 onChange={this.handleVisibilityOptionChange}/>
                         </Col>
+
                         <Col
                             sm="9">
                             <Dropdown
@@ -381,12 +383,14 @@ class AddItemForm extends Component {
                                 If no users are selected, this item will be visible to everyone.
                             </Form.Text>
                         </Col>
+
                     </Form.Group>
 
                     {/* Item assignment field */}
                     <Form.Group
                         as={Row}
                         className={this.state.stage ===  0 ? "" : "hidden-field"}>
+
                         <Form.Label
                             column
                             sm="3">
@@ -396,6 +400,7 @@ class AddItemForm extends Component {
                                 (Optional)
                             </span>
                         </Form.Label>
+
                         <Col
                             sm="9">
                             <Dropdown
@@ -407,6 +412,7 @@ class AddItemForm extends Component {
                                 options={this.state.userOptions2}
                                 onChange={this.handleAssignment}/>
                         </Col>
+
                     </Form.Group>
 
                     {/* Item photo field */}

@@ -35,3 +35,18 @@
     object-fit: scale-down;
     background: white;
 }
+
+.navbar-toggler{
+    border: none !important;
+}
+
+@media(max-width: 576px){
+    .navbar{
+        background-color: white;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.05), 0 6px 20px 0 rgba(0, 0, 0, 0.045);
+    }
+
+    .navbar-brand{
+        color: black !important;
+    }
+}

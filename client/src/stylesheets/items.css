@@ -15,7 +15,7 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  margin-bottom: 8em;
+  margin-bottom: 4em;
 }
 
 .no-items-msg{

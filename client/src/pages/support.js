@@ -161,8 +161,9 @@ class support extends Component {
                         <Col
                             className="login-form-body p-5"
                             xs="10"
-                            sm="6"
-                            md="4">
+                            sm="8"
+                            md="6"
+                            lg="4">
 
                             { alert }
 

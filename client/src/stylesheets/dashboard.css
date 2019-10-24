@@ -38,3 +38,12 @@
     margin-left: 50%;
     transform: translateX(-50%);
 }
+
+.dashboard{
+    overflow-y: hidden;
+    max-width: 100vw !important;
+}
+
+.mt-6{
+    margin-top: 10vh;
+}
