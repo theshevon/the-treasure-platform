@@ -1,11 +1,11 @@
 import axios from 'axios';
 import {
-    SET_USER,
     SET_ERRORS,
     CLEAR_ERRORS,
     LOADING_UI,
     SET_AUTHENTICATED,
     SET_UNAUTHENTICATED,
+    SET_USER
 } from '../types';
 
 export const loginUser = (userData, history) => (dispatch) => {
@@ -25,11 +25,21 @@ export const loginUser = (userData, history) => (dispatch) => {
         // probably a bad idea in terms of security:
         localStorage.setItem('TreasureIDToken', token);
 
+        // hacky code to manage private routes
+        localStorage.setItem('TreasureUType', res.data.type);
+
+        // data to store between navigating routes
+        localStorage.setItem('TreasureUName', res.data.name);
+        localStorage.setItem('TreasureUImg', res.data.imgSrc);
+
         // set token in all request headers
         axios.defaults.headers.common['Authorization'] = token;
 
         dispatch({ type : SET_AUTHENTICATED });
-        dispatch(getUserData());
+        dispatch({
+                    type    : SET_USER,
+                    payload : res.data
+                });
         dispatch({ type : CLEAR_ERRORS });
 
         // stop loading and redirect to catalogue
@@ -43,30 +53,6 @@ export const loginUser = (userData, history) => (dispatch) => {
     })
 }
 
-export const getUserData = () => (dispatch) => {
-    axios({
-        method: 'get',
-        url: '/user'
-    })
-    .then(res => {
-        dispatch({
-            type: SET_USER,
-            payload: res.data
-        });
-
-        // hacky code to manage private routes
-        localStorage.setItem('TreasureUType', res.data.type);
-
-        // data to store between navigating routes
-        localStorage.setItem('TreasureUName', res.data.name);
-        localStorage.setItem('TreasureUImg', res.data.imgSrc);
-
-    })
-    .catch(err => {
-        console.log(err);
-    });
-}
-
 export const logoutUser = () => (dispatch) => {
 
     // remove local storage data
@@ -77,4 +63,18 @@ export const logoutUser = () => (dispatch) => {
 
     delete axios.defaults.headers.common['Authorization'];
     dispatch({ type: SET_UNAUTHENTICATED });
+}
+
+export const setUserData = () => (dispatch) => {
+
+    let data = {
+        type   : localStorage.TreasureUType,
+        name   : localStorage.TreasureUName,
+        imgSrc : localStorage.TrasureUImg
+    }
+
+    dispatch({
+        type   : SET_USER,
+        payload: data
+    });
 }

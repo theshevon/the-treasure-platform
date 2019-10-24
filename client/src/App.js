@@ -23,13 +23,13 @@ import PrivateRoute       from './components/util/PrivateRoute';
 import { Provider }                from 'react-redux';
 import store                       from './redux/store';
 import { SET_AUTHENTICATED }       from './redux/types';
-import { logoutUser, getUserData } from './redux/actions/userActions';
+import { logoutUser, setUserData } from './redux/actions/userActions';
 
 // local server URL (for dev)
-// axios.defaults.baseURL = 'http://localhost:5000/comp30022app/us-central1/api';
+axios.defaults.baseURL = 'http://localhost:5000/comp30022app/us-central1/api';
 
 // global server URL
-axios.defaults.baseURL = 'https://us-central1-comp30022app.cloudfunctions.net/api';
+// axios.defaults.baseURL = 'https://us-central1-comp30022app.cloudfunctions.net/api';
 
 const token = localStorage.TreasureIDToken;
 if (token) {
@@ -39,8 +39,8 @@ if (token) {
 		window.location.href = '/login';
 	} else {
 		store.dispatch({ type: SET_AUTHENTICATED });
+		store.dispatch(setUserData());
 		axios.defaults.headers.common['Authorization'] = token;
-		store.dispatch(getUserData());
 	}
 }
 

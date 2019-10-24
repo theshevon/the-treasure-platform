@@ -6,6 +6,8 @@ const { isLoggedIn } = require("../util/middleware")
 
 /*=================================GET ROUTES=================================*/
 
+// router.get("/user", isLoggedIn, userController.getAuthenticatedUser);
+
 router.get("/users", userController.getSecondaryUsers);
 
 router.get("/logout", isLoggedIn, userController.logOutUser);
