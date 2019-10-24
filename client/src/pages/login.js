@@ -125,8 +125,9 @@ class Login extends Component {
 						<Col
 							className="login-form-body p-5"
 							xs="10"
-							sm="6"
-							md="3">
+							sm="8"
+							md="6"
+							lg="3">
 
 							{/* Page title */}
 							<h1
