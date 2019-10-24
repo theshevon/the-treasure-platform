@@ -1,4 +1,4 @@
-# COMP30022 Capstone Project
+# Treasure (COMP30022 Capstone Project)
 
 ## Description
 
