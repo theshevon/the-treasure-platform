@@ -1,5 +1,18 @@
 describe("Login Tests", function() {
 
+    it("Local storage clear on entry", function() {
+
+        // check local storage values
+        cy
+            .get('window')
+            .should(() => {
+                expect(localStorage.getItem('TreasureIDToken')).to.be.null;
+                expect(localStorage.getItem('TreasureUType')).to.be.null;
+                expect(localStorage.getItem('TreasureUName')).to.be.null;
+                expect(localStorage.getItem('TreasureUImg')).to.be.null;
+            });
+    })
+
     it("Email field - blank, Password field - blank", function() {
 
         // visit the log in page
@@ -451,16 +464,6 @@ describe("Logout Tests", function() {
 
     it("Log Out (Primary User)", function() {
 
-        // clear local storage
-        cy
-            .clearLocalStorage()
-            .should(ls => {
-                expect(localStorage.getItem('TreasureIDToken')).to.be.null;
-                expect(localStorage.getItem('TreasureUType')).to.be.null;
-                expect(localStorage.getItem('TreasureUName')).to.be.null;
-                expect(localStorage.getItem('TreasureUImg')).to.be.null;
-            })
-
         // visit the log in page
         cy.visit("http://localhost:3000/login");
 
@@ -528,16 +531,6 @@ describe("Logout Tests", function() {
     });
 
     it("Log Out (Secondary User)", function() {
-
-        // clear local storage
-        cy
-            .clearLocalStorage()
-            .should(ls => {
-                expect(localStorage.getItem('TreasureIDToken')).to.be.null;
-                expect(localStorage.getItem('TreasureUType')).to.be.null;
-                expect(localStorage.getItem('TreasureUName')).to.be.null;
-                expect(localStorage.getItem('TreasureUImg')).to.be.null;
-            })
 
         // visit the log in page
         cy.visit("http://localhost:3000/login");

@@ -142,6 +142,27 @@ exports.registerNewUser =
             });
     }
 
+getAuthenticatedUser =
+
+    async (uid) => {
+
+        return await db
+                        .collection('users')
+                        .doc(uid)
+                        .get()
+                        .then(doc => {
+                            let user = {};
+                            user.name    = `${doc.data()['fname']} ${doc.data()['lname']}`;
+                            user.type    = doc.data()['uType'];
+                            user.imgSrc  = doc.data()['imgSrc'];
+                            return user;
+                        })
+                        .catch(err => {
+                            console.log(err);
+                            throw new Error(err);
+                        });
+    }
+
 exports.logInUser =
 
     (req, res) => {
@@ -156,15 +177,21 @@ exports.logInUser =
         const { valid, errors } = validateLoginData(user);
 
         if (!valid) return res.status(400).json(errors);
+        var uid;
 
         firebase
             .auth()
             .signInWithEmailAndPassword(user.email, user.password)
             .then(data => {
+                uid = data.user.uid;
                 return data.user.getIdToken();
             })
-            .then(token => {
-                return res.json({ token });
+            .then(async token => {
+
+                let returnData = await getAuthenticatedUser(uid);
+                returnData.token = token;
+
+                return res.status(200).json(returnData);
             })
             .catch(err => {
                 console.log("Error: " + err);
@@ -213,28 +240,6 @@ exports.getSecondaryUsers =
             .catch((err) => {
                 res.status(500).json({ error: err.code });
             });
-    }
-
-exports.getAuthenticatedUser =
-
-    (req, res) => {
-
-        db.collection('users')
-            .doc(req.user.id)
-            .get()
-            .then(doc => {
-                let user = {};
-                user.id      = doc.id;
-                user.name    = `${doc.data()['fname']} ${doc.data()['lname']}`;
-                user.type    = doc.data()['uType'];
-                user.imgSrc  = doc.data()['imgSrc'];
-                return res.status(200).json(user);
-            })
-            .catch(err => {
-                console.log(err);
-                return res.status(400).json(err);
-            })
-
     }
 
 // uploads a single image to firebase storage

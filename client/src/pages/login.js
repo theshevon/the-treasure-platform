@@ -12,8 +12,8 @@ import Col     from 'react-bootstrap/Col';
 import '../stylesheets/login.css';
 
 // redux stuff
-import { connect }   from 'react-redux';
-import { loginUser } from '../redux/actions/userActions';
+import { connect }               from 'react-redux';
+import { loginUser, logoutUser } from '../redux/actions/userActions';
 
 class Login extends Component {
 
@@ -23,6 +23,14 @@ class Login extends Component {
 		loading   : false,
 		errors    : null,
 		validated : false,
+	}
+
+	componentDidMount(){
+
+		// logout a logged-in user if they navigate to the login page
+		if (localStorage.TreasureIDToken){
+			this.props.logoutUser();
+		}
 	}
 
 	componentWillReceiveProps(nextProps){
@@ -174,9 +182,10 @@ class Login extends Component {
 }
 
 Login.propTypes = {
-	loginUser: PropTypes.func.isRequired,
-	user: PropTypes.object.isRequired,
-	UI: PropTypes.object.isRequired
+	loginUser  : PropTypes.func.isRequired,
+	logoutUser : PropTypes.func.isRequired,
+	user       : PropTypes.object.isRequired,
+	UI         : PropTypes.object.isRequired
 }
 
 const mapStatesToProps = (state) => ({
@@ -185,7 +194,8 @@ const mapStatesToProps = (state) => ({
 });
 
 const mapActionsToProps = {
-	loginUser
+	loginUser,
+	logoutUser
 }
 
 export default connect(mapStatesToProps, mapActionsToProps)(Login);
