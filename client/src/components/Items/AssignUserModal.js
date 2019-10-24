@@ -37,7 +37,7 @@ export class AssignUserModal extends Component {
 
     async componentDidMount(){
 
-        let { assignedTo } = this.props;
+        let { visibleTo, assignedTo } = this.props.item;
 
         await this.setState({ current : assignedTo });
 
@@ -51,7 +51,7 @@ export class AssignUserModal extends Component {
                         // remove all the users who the item isn't visible to
                         let users = [];
                         unfilteredUsers.forEach(user => {
-                            if (this.props.visibleTo.includes(user.uid)){
+                            if (visibleTo.includes(user.uid)){
                                 users.push(user);
                             }
                         });
@@ -94,7 +94,7 @@ export class AssignUserModal extends Component {
 
         event.preventDefault();
 
-        let iid        = this.props.itemID;
+        let iid        = this.props.item.id;
         let assignedTo = this.state.assignedTo;
         let current    = this.state.current;
 
@@ -115,6 +115,7 @@ export class AssignUserModal extends Component {
                                 loading   : false,
                                 errors    : null
                             });
+                this.props.item.assignedTo = res.data;
             })
             .catch(err => {
                 this.setState({
@@ -146,8 +147,11 @@ export class AssignUserModal extends Component {
 
         let labelContent = (<Spinner animation="border" size="sm"/>);
         if (current){
+            console.log("Current: ");
+            console.log(current);
             labelContent = (idsToNames[current]);
         } else if (current === ''){
+            console.log("No one");
             labelContent = ("No One");
         }
 

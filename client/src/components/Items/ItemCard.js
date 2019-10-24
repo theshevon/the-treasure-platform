@@ -96,9 +96,7 @@ export class ItemCard extends Component {
 								{/* assign button */}
 								<div className="right-btns">
 									<AssignUserModal
-										itemID    ={ item.id }
-										visibleTo ={ item.visibleTo }
-										assignedTo={ item.assignedTo }/>
+										item = { item } />
 								</div>
 
 								{/* delete button */}
