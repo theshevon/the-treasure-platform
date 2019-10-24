@@ -62,7 +62,9 @@ export class Dashboard extends Component {
 
         return (
 
-            <div>
+            <div
+                className="dashboard">
+
                 <Navbar/>
 
                 <div
@@ -76,10 +78,12 @@ export class Dashboard extends Component {
                     { alert }
 
                     <Row
-                        className="mt-5 d-flex justify-content-center">
+                        className="mt-6 d-flex justify-content-center ">
                         <Col
                             xs="12"
-                            md="4"
+                            sm="8"
+                            md="6"
+                            lg="4"
                             className="dashboard-option-container mb-4">
                             <Col
                                 xs="12"
@@ -91,14 +95,15 @@ export class Dashboard extends Component {
                                 <FormModal
                                     modalSize="md"
                                     triggerBtnText="Invite New Users"
-                                    // note="Invite up to 10 users at once"
                                     title="Invite Users"
                                     form={ < InviteForm /> }/>
                             </Col>
                         </Col>
                         <Col
                             xs="12"
-                            md="4"
+                            sm="8"
+                            md="6"
+                            lg="4"
                             className="dashboard-option-container">
                             <Col
                                 xs="12"
@@ -110,8 +115,7 @@ export class Dashboard extends Component {
                                 <FormModal
                                     modalSize="lg"
                                     triggerBtnText="Add A New Item"
-                                    title="Add A New Item"
-                                    // note={null}
+                                    title="Add Item"
                                     form={
                                         < AddItemForm
                                             handleAlert={ this.handleAlert }

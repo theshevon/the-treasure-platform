@@ -215,7 +215,7 @@ export class AssignUserModal extends Component {
 
                         <Form>
                             <Form.Label
-                                className="text-center">
+                                className="text-center mr-1">
                                 {this.props.assignedTo ? "Re-Assign to:" : "Assign to:"}
                             </Form.Label>
 
@@ -224,6 +224,7 @@ export class AssignUserModal extends Component {
                                 placeholder={ this.state.loadingUsers ? 'Loading...' : 'Select User' }
                                 search
                                 selection
+                                scrollable
                                 disabled={this.state.loadingUsers}
                                 options={this.state.userOpts}
                                 onChange={this.handleAssignment}/>
