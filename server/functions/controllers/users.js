@@ -189,9 +189,7 @@ exports.logInUser =
             .then(async token => {
 
                 let returnData = await getAuthenticatedUser(uid);
-
                 returnData.token = token;
-                returnData.uid = uid;
 
                 return res.status(200).json(returnData);
             })
