@@ -42,7 +42,7 @@ describe("Support Tests", function() {
             .click()
             .get('.dropdown-item')
             .eq(0)
-            .click()
+            .click();
 
             // wait for the next page to load
             cy
@@ -101,16 +101,16 @@ describe("Support Tests", function() {
             .click()
             .get('.dropdown-item')
             .eq(0)
-            .click()
+            .click();
 
-            // wait for the next page to load
-            cy
-                .wait(2000);
+        // wait for the next page to load
+        cy
+            .wait(2000);
 
-            // ensure that the page is now the support page
-            cy
-                .url()
-                .should('eq', 'http://localhost:3000/support');
+        // ensure that the page is now the support page
+        cy
+            .url()
+            .should('eq', 'http://localhost:3000/support');
 
     });
 
