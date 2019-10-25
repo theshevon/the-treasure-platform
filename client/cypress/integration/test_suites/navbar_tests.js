@@ -26,16 +26,6 @@ describe("Navbar Tests", function() {
             .url()
             .should('eq', 'http://localhost:3000/items');
 
-        // check local storage values
-        cy
-            .get('window')
-            .should(() => {
-                expect(localStorage.getItem('TreasureIDToken')).to.not.eq(null);
-                expect(localStorage.getItem('TreasureUType')).to.eq('0');
-                expect(localStorage.getItem('TreasureUName')).to.not.eq(null);
-                expect(localStorage.getItem('TreasureUImg')).to.not.eq(null);
-            });
-
         // check navbar has dashboard
         cy
             .get('.nav-link')
@@ -80,16 +70,6 @@ describe("Navbar Tests", function() {
             .url()
             .should('eq', 'http://localhost:3000/items');
 
-        // check local storage values
-        cy
-            .get('window')
-            .should(() => {
-                expect(localStorage.getItem('TreasureIDToken')).to.not.eq(null);
-                expect(localStorage.getItem('TreasureUType')).to.eq('1');
-                expect(localStorage.getItem('TreasureUName')).to.not.eq(null);
-                expect(localStorage.getItem('TreasureUImg')).to.not.eq(null);
-            });
-
         // check navbar does not have dashboard option
         cy
             .get('a[href*="/dashboard"]')
@@ -122,16 +102,6 @@ describe("Navbar Tests", function() {
         cy
             .url()
             .should('eq', 'http://localhost:3000/items');
-
-        // check local storage values
-        cy
-            .get('window')
-            .should(() => {
-                expect(localStorage.getItem('TreasureIDToken')).to.not.eq(null);
-                expect(localStorage.getItem('TreasureUType')).to.eq('0');
-                expect(localStorage.getItem('TreasureUName')).to.not.eq(null);
-                expect(localStorage.getItem('TreasureUImg')).to.not.eq(null);
-            });
 
         // check navbar has dashboard
         cy
@@ -181,16 +151,6 @@ describe("Navbar Tests", function() {
         cy
             .url()
             .should('eq', 'http://localhost:3000/items');
-
-        // check local storage values
-        cy
-            .get('window')
-            .should(() => {
-                expect(localStorage.getItem('TreasureIDToken')).to.not.eq(null);
-                expect(localStorage.getItem('TreasureUType')).to.eq('0');
-                expect(localStorage.getItem('TreasureUName')).to.not.eq(null);
-                expect(localStorage.getItem('TreasureUImg')).to.not.eq(null);
-            });
 
         // check navbar has dashboard
         cy
@@ -253,16 +213,6 @@ describe("Navbar Tests", function() {
             .url()
             .should('eq', 'http://localhost:3000/items');
 
-        // check local storage values
-        cy
-            .get('window')
-            .should(() => {
-                expect(localStorage.getItem('TreasureIDToken')).to.not.eq(null);
-                expect(localStorage.getItem('TreasureUType')).to.eq('0');
-                expect(localStorage.getItem('TreasureUName')).to.not.eq(null);
-                expect(localStorage.getItem('TreasureUImg')).to.not.eq(null);
-            });
-
         // check navbar has items
         cy
             .get('.nav-link')
@@ -311,16 +261,6 @@ describe("Navbar Tests", function() {
         cy
             .url()
             .should('eq', 'http://localhost:3000/items');
-
-        // check local storage values
-        cy
-            .get('window')
-            .should(() => {
-                expect(localStorage.getItem('TreasureIDToken')).to.not.eq(null);
-                expect(localStorage.getItem('TreasureUType')).to.eq('0');
-                expect(localStorage.getItem('TreasureUName')).to.not.eq(null);
-                expect(localStorage.getItem('TreasureUImg')).to.not.eq(null);
-            });
 
         // check navbar has dashboard
         cy
@@ -391,16 +331,6 @@ describe("Navbar Tests", function() {
         cy
             .url()
             .should('eq', 'http://localhost:3000/items');
-
-        // check local storage values
-        cy
-            .get('window')
-            .should(() => {
-                expect(localStorage.getItem('TreasureIDToken')).to.not.eq(null);
-                expect(localStorage.getItem('TreasureUType')).to.eq('0');
-                expect(localStorage.getItem('TreasureUName')).to.not.eq(null);
-                expect(localStorage.getItem('TreasureUImg')).to.not.eq(null);
-            });
 
         // check navbar has dashboard
         cy
