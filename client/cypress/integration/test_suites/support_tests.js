@@ -425,8 +425,13 @@ describe("Support Tests", function() {
         // ensure that there is no error messages
         cy
             .get('.invalid-feedback-msg')
-            .eq(0)
             .should('not.exist');
+
+        // check that a confirmation message is displayed
+        cy
+            .get('.alert-success')
+            .eq(0)
+            .should('exist');
     });
 
 });
