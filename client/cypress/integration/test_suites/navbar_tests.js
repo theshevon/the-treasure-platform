@@ -51,6 +51,53 @@ describe("Navbar Tests", function() {
     });
 
 
+    it("Ensure no Navbar options (Secondary User)", function() {
+
+        // visit the log in page
+        cy.visit("http://localhost:3000/login");
+
+        // type in a valid email
+        cy
+            .get('input[name="email"]')
+            .type('su@test.com');
+
+        // type in an invalid password
+        cy
+            .get('input[name="password"]')
+            .type('password');
+
+        // click on the log in button
+        cy
+            .contains('Log In')
+            .click();
+
+        // wait for the next page to load
+        cy
+            .wait(3000);
+
+        // ensure that the page is now the items page
+        cy
+            .url()
+            .should('eq', 'http://localhost:3000/items');
+
+        // check local storage values
+        cy
+            .get('window')
+            .should(() => {
+                expect(localStorage.getItem('TreasureIDToken')).to.not.eq(null);
+                expect(localStorage.getItem('TreasureUType')).to.eq('1');
+                expect(localStorage.getItem('TreasureUName')).to.not.eq(null);
+                expect(localStorage.getItem('TreasureUImg')).to.not.eq(null);
+            });
+
+        // check navbar does not have dashboard option
+        cy
+            .get('a[href*="/dashboard"]')
+            .should('not.exist');
+
+    });
+
+
     it("Go to Dashboard page from Items page (Primary User)", function() {
 
         // visit the log in page
