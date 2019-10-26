@@ -175,6 +175,105 @@ describe("Invite Tests", function() {
     });
 
 
+    it.only("Incorrect format for email address", function() {
+
+        // visit the log in page
+        cy.visit("http://localhost:3000/login");
+
+        // type in a valid email
+        cy
+            .get('input[name="email"]')
+            .type('pu@test.com');
+
+        // type in an invalid password
+        cy
+            .get('input[name="password"]')
+            .type('password');
+
+        // click on the log in button
+        cy
+            .contains('Log In')
+            .click();
+
+        // wait for the next page to load
+        cy
+            .wait(3000);
+
+        // ensure that the page is now the items page
+        cy
+            .url()
+            .should('eq', 'http://localhost:3000/items');
+
+        // check navbar has dashboard
+        cy
+            .get('.nav-link')
+            .eq(0)
+            .should('have.text', 'Dashboard');
+
+        // click dashboard from the navbar
+        cy
+            .get('.nav-link')
+            .eq(0)
+            .click();
+
+        // wait for the next page to load
+        cy
+            .wait(2000);
+
+        // ensure that the page is now the dashboard page
+        cy
+            .url()
+            .should('eq', 'http://localhost:3000/dashboard');
+
+        // ensure that the invite button exists
+        cy
+            .get('.centered-btn')
+            .eq(0)
+            .should('have.text', 'Invite New Users');
+
+        // click the invite button
+        cy
+            .get('.centered-btn')
+            .eq(0)
+            .click();
+
+        // wait for the next page to load
+        cy
+            .wait(500);
+
+        // check that the invite modal appears
+        cy
+            .get('.modal-title')
+            .eq(0)
+            .should('have.text', 'Invite Users');
+
+        // enter email addresses
+        cy
+            .get('input[name="0-email"]')
+            .type('abc');
+
+        // click send invitations button
+        cy
+            .get('button[type="submit"]')
+            .click()
+
+        // wait for the next page to load
+        cy
+            .wait(2000);
+
+        // ensure that the input field does not have a green border
+        cy
+            .get('input[name="0-email"]')
+            .should('not.have.class', 'valid-field');
+
+        // ensure that no success messages were displayed
+        cy
+            .get('.valid-feedback-msg')
+            .should('not.exist');
+
+    });
+
+
     it("Email already in use", function() {
 
         // visit the log in page
