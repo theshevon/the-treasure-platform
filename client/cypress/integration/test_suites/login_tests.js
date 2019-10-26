@@ -13,7 +13,7 @@ describe("Login Tests", () => {
             });
     });
 
-    it("All elements present", () => {
+    it("Check if the necessary elements are present", () => {
 
         // visit the log in page
         cy.visit('http://localhost:3000/login');
@@ -33,7 +33,7 @@ describe("Login Tests", () => {
             .get('.btn')
             .should('exist')
             .should('have.text', 'Log In');
-    })
+    });
 
     it("Email field - blank, Password field - blank", () => {
 
