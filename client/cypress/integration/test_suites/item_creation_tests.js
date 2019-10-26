@@ -1,4 +1,4 @@
-Cypress.Commands.add('login_as_pu', () => {
+Cypress.Commands.add('go_to_dashboard', () => {
 
     // visit the register page
     cy.visit('http://localhost:3000/login');
@@ -21,32 +21,32 @@ Cypress.Commands.add('login_as_pu', () => {
     // wait for validation
     cy
         .wait(5000);
+
+    // navigate to dashboard
+    cy
+        .get('.nav-link')
+        .eq(0)
+        .click();
+
+    // ensure that the current page is the dashboard
+    cy
+        .url()
+        .should('eq', 'http://localhost:3000/dashboard');
+
+    // click on the add item button
+    cy
+        .get('.btn')
+        .eq(1)
+        .click();
 });
 
-describe("Item Creation Tests", () => {
+describe("Stage 1", () => {
 
     beforeEach(() => {
-        cy.login_as_pu();
+        cy.go_to_dashboard();
     });
 
     it("All fields blank", () => {
-
-        // navigate to dashboard
-        cy
-            .get('.nav-link')
-            .eq(0)
-            .click();
-
-        // ensure that the current page is the dashboard
-        cy
-            .url()
-            .should('eq', 'http://localhost:3000/dashboard');
-
-        // click on the add item button
-        cy
-            .get('.btn')
-            .eq(1)
-            .click();
 
         // click 'Next'
         cy
@@ -72,4 +72,62 @@ describe("Item Creation Tests", () => {
             .should('have.text', 'Please upload at least one photo.');
 
     });
+
+    it.only("Toggle visibility", () => {
+
+        // select a user from the visibility dropdown
+        cy
+            .get('#visibility_selector')
+            .click()
+            .get('#visibility_selector .item')
+            .eq(0)
+            .click();
+
+        // toggle the visibility
+        cy
+            .get('#visibility_toggler')
+            .click()
+            .get('#visibility_toggler .item')
+            .eq(1)
+            .click();
+
+        // check what the visibility toggling dropdown has selected
+        cy
+            .get('#visibility_toggler .text')
+            .eq(0)
+            .should('have.text', 'Hidden from');
+
+        // check if the visibilty list has been cleared
+        cy
+            .get('#visibility_selector')
+            .should('not.have.descendants', 'a.ui.label');
+
+        // select a user from the visibility dropdown
+        cy
+            .get('#visibility_selector')
+            .click()
+            .get('#visibility_selector .item')
+            .eq(0)
+            .click();
+
+        // toggle the visibility
+        cy
+            .get('#visibility_toggler')
+            .click()
+            .get('#visibility_toggler .item')
+            .eq(0)
+            .click();
+
+        // check what the visibility toggling dropdown has selected
+        cy
+            .get('#visibility_toggler .text')
+            .eq(0)
+            .should('have.text', 'Visible to');
+
+        // check if the visibilty list has been cleared
+        cy
+            .get('#visibility_selector')
+            .should('not.have.descendants', 'a.ui.label');
+    })
+
 });

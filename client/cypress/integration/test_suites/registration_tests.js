@@ -322,6 +322,10 @@ describe("Stage 1 Tests", () => {
 
 });
 
+// IMPORTANT: these tests will fail once you register a user with the email
+// address below, so you'd need to either delete this users data from the
+// both the firebase database and auth, or just invite a new user and use their
+// email address below.
 var validInviteeEmail = 'invited_user@test.com';
 
 Cypress.Commands.add('do_stage_1', () => {
