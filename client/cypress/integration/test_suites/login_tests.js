@@ -11,6 +11,28 @@ describe("Login Tests", () => {
                 expect(localStorage.getItem('TreasureUName')).to.be.null;
                 expect(localStorage.getItem('TreasureUImg')).to.be.null;
             });
+    });
+
+    it("All elements present", () => {
+
+        // visit the log in page
+        cy.visit('http://localhost:3000/login');
+
+        // check if email field present
+        cy
+            .get('input[name="email"]')
+            .should('exist');
+
+        // check if password field present
+        cy
+            .get('input[name="password"]')
+            .should('exist');
+
+        // check if log in button present
+        cy
+            .get('.btn')
+            .should('exist')
+            .should('have.text', 'Log In');
     })
 
     it("Email field - blank, Password field - blank", () => {
