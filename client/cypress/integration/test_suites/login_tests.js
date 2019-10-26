@@ -1,6 +1,6 @@
-describe("Login Tests", function() {
+describe("Login Tests", () => {
 
-    it("Local storage clear on entry", function() {
+    it("Local storage clear on entry", () => {
 
         // check local storage values
         cy
@@ -13,7 +13,7 @@ describe("Login Tests", function() {
             });
     })
 
-    it("Email field - blank, Password field - blank", function() {
+    it("Email field - blank, Password field - blank", () => {
 
         // visit the log in page
         cy.visit('http://localhost:3000/login');
@@ -51,7 +51,7 @@ describe("Login Tests", function() {
             .should('have.text', 'Please enter a password.');
     });
 
-    it("Email field - invalid, Password field - blank", function() {
+    it("Email field - invalid, Password field - blank", () => {
 
         // visit the log in page
         cy.visit("http://localhost:3000/login");
@@ -94,7 +94,7 @@ describe("Login Tests", function() {
             .should('have.text', 'Please enter a password.');
     });
 
-    it("Email field - valid, Password field - blank", function() {
+    it("Email field - valid, Password field - blank", () => {
 
         // visit the log in page
         cy.visit("http://localhost:3000/login");
@@ -131,7 +131,7 @@ describe("Login Tests", function() {
             .should('have.text', 'Please enter a password.');
     });
 
-    it("Email field - blank, Password field - valid", function() {
+    it("Email field - blank, Password field - valid", () => {
 
         // visit log in page
         cy.visit("http://localhost:3000/login");
@@ -174,7 +174,7 @@ describe("Login Tests", function() {
 
     });
 
-    it("Email field - invalid, Password field - valid", function() {
+    it("Email field - invalid, Password field - valid", () => {
 
         // visit the log in page
         cy.visit("http://localhost:3000/login");
@@ -222,7 +222,7 @@ describe("Login Tests", function() {
 
     });
 
-    it("Email field - blank, Password field - invalid", function() {
+    it("Email field - blank, Password field - invalid", () => {
 
         // visit the log in page
         cy.visit("http://localhost:3000/login");
@@ -264,7 +264,7 @@ describe("Login Tests", function() {
             .should('have.value', '');
     });
 
-    it("Email field - invalid, Password field - invalid", function() {
+    it("Email field - invalid, Password field - invalid", () => {
 
         // visit the log in page
         cy.visit("http://localhost:3000/login");
@@ -311,7 +311,7 @@ describe("Login Tests", function() {
             .should('have.value', '');
     });
 
-    it("Email field - valid, Password field - invalid", function() {
+    it("Email field - valid, Password field - invalid", () => {
 
         // visit the log in page
         cy.visit("http://localhost:3000/login");
@@ -358,7 +358,54 @@ describe("Login Tests", function() {
             .should('have.value', '');
     });
 
-    it("Email field - valid, Password field - valid (Primary User)", function() {
+    it("Email field - valid, Password field - valid (Non-Register User)", () => {
+
+        // visit the log in page
+        cy.visit("http://localhost:3000/login");
+
+        // type in a valid email
+        cy
+            .get('input[name="email"]')
+            .type('uu@test.com');
+
+        // type in an invalid password
+        cy
+            .get('input[name="password"]')
+            .type('123456');
+
+        // click on the log in button
+        cy
+            .contains('Log In')
+            .click();
+
+        // ensure that the page is still the same
+        cy
+            .url()
+            .should('eq', 'http://localhost:3000/login');
+
+        // ensure that the email field has a red border
+        cy
+            .get('input[name="email"]')
+            .should('have.class', 'invalid-field');
+
+        // ensure that the password field has a red border
+        cy
+            .get('input[name="password"]')
+            .should('have.class', 'invalid-field');
+
+        // ensure that the error feedback for a blank password is present
+        cy
+            .get('.invalid-feedback-msg')
+            .eq(0)
+            .should('have.text', 'Sorry, the email address or password you entered is incorrect.');
+
+        // ensure that the password field is blank
+        cy
+            .get('input[name="password"]')
+            .should('have.value', '');
+    });
+
+    it("Email field - valid, Password field - valid (Primary User)", () => {
 
         // clear local storage
         cy
@@ -390,7 +437,7 @@ describe("Login Tests", function() {
 
         // wait for the next page to load
         cy
-            .wait(3000);
+            .wait(5000);
 
         // ensure that the page is now the items page
         cy
@@ -408,7 +455,7 @@ describe("Login Tests", function() {
             });
     });
 
-    it("Email field - valid, Password field - valid (Secondary User)", function() {
+    it("Email field - valid, Password field - valid (Secondary User)", () => {
 
         // clear local storage
         cy
@@ -440,7 +487,7 @@ describe("Login Tests", function() {
 
         // wait for the next page to load
         cy
-            .wait(3000);
+            .wait(5000);
 
         // ensure that the page is now the items page
         cy
@@ -460,9 +507,9 @@ describe("Login Tests", function() {
 
 });
 
-describe("Logout Tests", function() {
+describe("Logout Tests", () => {
 
-    it("Log Out (Primary User)", function() {
+    it("Log Out (Primary User)", () => {
 
         // visit the log in page
         cy.visit("http://localhost:3000/login");
@@ -484,7 +531,7 @@ describe("Logout Tests", function() {
 
         // wait for the next page to load
         cy
-            .wait(3000);
+            .wait(5000);
 
         // ensure that the page is now the items page
         cy
@@ -530,7 +577,7 @@ describe("Logout Tests", function() {
 
     });
 
-    it("Log Out (Secondary User)", function() {
+    it("Log Out (Secondary User)", () => {
 
         // visit the log in page
         cy.visit("http://localhost:3000/login");
@@ -552,7 +599,7 @@ describe("Logout Tests", function() {
 
         // wait for the next page to load
         cy
-            .wait(3000);
+            .wait(5000);
 
         // ensure that the page is now the items page
         cy
