@@ -21,6 +21,10 @@ describe("Navbar Tests", function() {
             .contains('Log In')
             .click();
 
+        // wait for the next page to load
+        cy
+            .wait(3000);
+
         // ensure that the page is now the items page
         cy
             .url()
@@ -98,6 +102,10 @@ describe("Navbar Tests", function() {
             .contains('Log In')
             .click();
 
+        // wait for the next page to load
+        cy
+            .wait(3000);
+
         // ensure that the page is now the items page
         cy
             .url()
@@ -146,6 +154,10 @@ describe("Navbar Tests", function() {
         cy
             .contains('Log In')
             .click();
+
+        // wait for the next page to load
+        cy
+            .wait(3000);
 
         // ensure that the page is now the items page
         cy
@@ -208,6 +220,10 @@ describe("Navbar Tests", function() {
             .contains('Log In')
             .click();
 
+        // wait for the next page to load
+        cy
+            .wait(3000);
+
         // ensure that the page is now the items page
         cy
             .url()
@@ -256,6 +272,10 @@ describe("Navbar Tests", function() {
         cy
             .contains('Log In')
             .click();
+
+        // wait for the next page to load
+        cy
+            .wait(3000);
 
         // ensure that the page is now the items page
         cy
@@ -326,6 +346,10 @@ describe("Navbar Tests", function() {
         cy
             .contains('Log In')
             .click();
+
+        // wait for the next page to load
+        cy
+            .wait(3000);
 
         // ensure that the page is now the items page
         cy
