@@ -354,6 +354,7 @@ exports.inviteNewUsers =
                                                 throw new Error(err);
                                             });
         } catch (err) {
+            console.log(err);
             return res.status(400).json({ "general" : "Sorry something went wrong!"});
         }
 
@@ -404,6 +405,7 @@ exports.inviteNewUsers =
                 // eslint-disable-next-line no-await-in-loop
                 await sendEmail(mailOptions);
             } catch (err) {
+                console.log(err);
                 errors[i] = `Email could not be sent to ${email}`;
             }
         }
@@ -499,19 +501,19 @@ sendEmail =
     (mailOptions) => {
 
         try {
-                return new Promise((resolve, reject) => {
-                    transporter.sendMail(mailOptions, (err, info) => {
-                        if (err) {
-                            console.log(err);
-                            reject(err);
-                        } else {
-                            // console.log(`Successfully emailed!`);
-                            resolve(info);
-                        }
-                    });
+            return new Promise((resolve, reject) => {
+                transporter.sendMail(mailOptions, (err, info) => {
+                    if (err) {
+                        console.log(err);
+                        reject(err);
+                    } else {
+                        // console.log(`Successfully emailed!`);
+                        resolve(info);
+                    }
                 });
+            });
         } catch (err) {
-                console.log('error: ' + err);
+            console.log('error: ' + err);
         }
 
         return null;
