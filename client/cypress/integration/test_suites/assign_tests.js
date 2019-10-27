@@ -140,13 +140,18 @@ describe('Log out of PU and sign into SU', function () {
 
 })
 
-describe('Assigned To label is present on assigned object', function () {
+describe('Assigned To icon is present on assigned object', function () {
 
-    it('checks if star is on the assigned object', function () {
+    it('checks if star exist on the assigned object', function () {
 
         const assignObject = "Magic Runes"
         //go to item card's icon bar
-        cy.get(':nth-child(10) > .justify-content-end')
+
+        cy
+            .contains(assignObject).parent('div')
+            .within(()=>{
+                cy.get('.assigned-icon');
+            })
 
     })
 })
