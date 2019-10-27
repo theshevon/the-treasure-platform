@@ -329,35 +329,10 @@ describe("Stage 1 Tests", () => {
 // email address below.
 var validInviteeEmail = 'invited_user@test.com';
 
-Cypress.Commands.add('do_stage_1', () => {
-
-    // visit the register page
-    cy.visit('http://localhost:3000/register');
-
-    // type in an invalid email address
-    cy
-        .get('input[name="email"]')
-        .type(validInviteeEmail);
-
-    // type in a code
-    cy
-        .get('input[name="code"]')
-        .type('1bg2vxa4');
-
-    // click on the next button
-    cy
-        .contains('Next')
-        .click();
-
-    // wait for validation
-    cy
-        .wait(5000);
-});
-
 describe.only("Stage 2 Tests", () => {
 
     beforeEach(() => {
-        cy.do_stage_1()
+        cy.do_stage_1(validInviteeEmail)
     })
 
     it("Check if the necessary elements are present", () => {
