@@ -67,7 +67,7 @@ describe("Item View Tests", () => {
     });
 
 
-    it.only("View item (Secondary User)", () => {
+    it("View item (Secondary User)", () => {
 
         cy.login_secondary_user();
 
