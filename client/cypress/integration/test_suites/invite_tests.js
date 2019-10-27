@@ -1,34 +1,43 @@
 
+Cypress.Commands.add('login_primary_user', () => {
+
+    // visit the log in page
+    cy.visit("http://localhost:3000/login");
+
+    // type in a valid email
+    cy
+        .get('input[name="email"]')
+        .type('pu@test.com');
+
+    // type in an invalid password
+    cy
+        .get('input[name="password"]')
+        .type('password');
+
+    // click on the log in button
+    cy
+        .contains('Log In')
+        .click();
+
+    // wait for the next page to load
+    cy
+        .wait(3000);
+
+    // ensure that the page is now the items page
+    cy
+        .url()
+        .should('eq', 'http://localhost:3000/items');
+
+});
+
+
 describe("Invite Tests", () => {
 
+    beforeEach(() => {
+        cy.login_primary_user();
+    });
+
     it("Go to Invite page via Dashboard", () => {
-
-        // visit the log in page
-        cy.visit("http://localhost:3000/login");
-
-        // type in a valid email
-        cy
-            .get('input[name="email"]')
-            .type('pu@test.com');
-
-        // type in an invalid password
-        cy
-            .get('input[name="password"]')
-            .type('password');
-
-        // click on the log in button
-        cy
-            .contains('Log In')
-            .click();
-
-        // wait for the next page to load
-        cy
-            .wait(3000);
-
-        // ensure that the page is now the items page
-        cy
-            .url()
-            .should('eq', 'http://localhost:3000/items');
 
         // check navbar has dashboard
         cy
@@ -77,33 +86,6 @@ describe("Invite Tests", () => {
 
 
     it("Add row", () => {
-
-        // visit the log in page
-        cy.visit("http://localhost:3000/login");
-
-        // type in a valid email
-        cy
-            .get('input[name="email"]')
-            .type('pu@test.com');
-
-        // type in an invalid password
-        cy
-            .get('input[name="password"]')
-            .type('password');
-
-        // click on the log in button
-        cy
-            .contains('Log In')
-            .click();
-
-        // wait for the next page to load
-        cy
-            .wait(3000);
-
-        // ensure that the page is now the items page
-        cy
-            .url()
-            .should('eq', 'http://localhost:3000/items');
 
         // check navbar has dashboard
         cy
@@ -177,33 +159,6 @@ describe("Invite Tests", () => {
 
     it("Incorrect format for email address", () => {
 
-        // visit the log in page
-        cy.visit("http://localhost:3000/login");
-
-        // type in a valid email
-        cy
-            .get('input[name="email"]')
-            .type('pu@test.com');
-
-        // type in an invalid password
-        cy
-            .get('input[name="password"]')
-            .type('password');
-
-        // click on the log in button
-        cy
-            .contains('Log In')
-            .click();
-
-        // wait for the next page to load
-        cy
-            .wait(3000);
-
-        // ensure that the page is now the items page
-        cy
-            .url()
-            .should('eq', 'http://localhost:3000/items');
-
         // check navbar has dashboard
         cy
             .get('.nav-link')
@@ -275,33 +230,6 @@ describe("Invite Tests", () => {
 
 
     it("Email already in use", () => {
-
-        // visit the log in page
-        cy.visit("http://localhost:3000/login");
-
-        // type in a valid email
-        cy
-            .get('input[name="email"]')
-            .type('pu@test.com');
-
-        // type in an invalid password
-        cy
-            .get('input[name="password"]')
-            .type('password');
-
-        // click on the log in button
-        cy
-            .contains('Log In')
-            .click();
-
-        // wait for the next page to load
-        cy
-            .wait(3000);
-
-        // ensure that the page is now the items page
-        cy
-            .url()
-            .should('eq', 'http://localhost:3000/items');
 
         // check navbar has dashboard
         cy
@@ -429,33 +357,6 @@ describe("Invite Tests", () => {
 
 
     it("Valid email addresses", () => {
-
-        // visit the log in page
-        cy.visit("http://localhost:3000/login");
-
-        // type in a valid email
-        cy
-            .get('input[name="email"]')
-            .type('pu@test.com');
-
-        // type in an invalid password
-        cy
-            .get('input[name="password"]')
-            .type('password');
-
-        // click on the log in button
-        cy
-            .contains('Log In')
-            .click();
-
-        // wait for the next page to load
-        cy
-            .wait(3000);
-
-        // ensure that the page is now the items page
-        cy
-            .url()
-            .should('eq', 'http://localhost:3000/items');
 
         // check navbar has dashboard
         cy
