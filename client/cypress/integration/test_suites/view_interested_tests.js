@@ -5,7 +5,7 @@
 
 //* Tests for View Interested
 // 1. Check single SU liking an item is reflected in the PU View Int Modal
-// 2. Check that single user un-liking the same item is reflected in the PU View Int Modal
+// 2. Check single user un-liking the same item is reflected in the PU View Int Modal
 // 3. Check if more than one SU liking the same item is reflected in the PU View Int Modal
 
 // test login usernames and passwords
@@ -59,6 +59,8 @@ Cypress.Commands.add('logout', () => {
         .click();
 })
 
+
+////// 1. Check single SU liking an item is reflected in the PU View Int Modal
 describe('Go to the Items Page', function () {
   it('logs into Secondary User 1 account using the UI', function () {
 
@@ -71,7 +73,7 @@ describe('Go to the Items Page', function () {
 })
 
 
-describe('One User expresses interest', function () {
+describe('Secondary User 1  expresses interest', function () {
     it('expresses interest in an item', function () {
 
         // click on the 'like' button for the item to be assigned
@@ -83,6 +85,7 @@ describe('One User expresses interest', function () {
     })
 })
 
+
 describe('Secondary User 1 log out', function () {
     it('logs out', function () {
 
@@ -90,13 +93,16 @@ describe('Secondary User 1 log out', function () {
         cy.logout()
     })
 })
-describe('Primary User sign in', function () {
+
+
+describe('Primary User logs in', function () {
     it('logs in', function () {
 
         // PU login
         cy.login(testPrimaryUsername, testPassword)
     })
 })
+
 
 describe('Check view interested has been updated', function () {
     it('navigates to the item modal', function () {
@@ -108,7 +114,7 @@ describe('Check view interested has been updated', function () {
                 cy.contains('more info').click()
             })
     })
-    it('confirms that new interested user shows up', function () {
+    it('confirms that Secondary User 1 shows up', function () {
 
         // open 'interested users' modal
         cy
@@ -128,9 +134,9 @@ describe('Check view interested has been updated', function () {
     })
 })
 
-/////// check to see if unliking an item is reflected in the primary user account
 
-describe('Log out of Primary User and sign into second Secondary User', function () {
+/////// 2. Check single user un-liking the same item is reflected in the PU View Int Modal
+describe('Log out of Primary User and sign into second Secondary User 1', function () {
 
     it('exit modals and logout', function () {
 
@@ -184,13 +190,16 @@ describe('Secondary User 1 logs out', function () {
         cy.logout()
     })
 })
-describe('Primary User sign in', function () {
+
+
+describe('Primary User signs in', function () {
     it('logs in', function () {
 
         // PU login
         cy.login(testPrimaryUsername, testPassword)
     })
 })
+
 
 describe('Check view interested has been updated', function () {
     it('navigates to the item modal', function () {
@@ -223,7 +232,7 @@ describe('Check view interested has been updated', function () {
 })
 
 
-/////// Check that another user liking the same item works shows up in interested users
+///////  3. Check if more than one SU liking the same item is reflected in the PU View Int Modal
 describe('Log out of PU and sign into SU2', function () {
 
     it('exit modals and logout', function () {
@@ -267,7 +276,6 @@ describe('Second User expresses interest in the same object', function () {
 })
 
 
-
 describe('Secondary User 2 logs out', function () {
     it('logs out', function () {
         // SU2 logout
@@ -295,6 +303,7 @@ describe('Log into other Secondary User 1 account', function() {
 
 })
 
+
 describe('Secondary User 1 logs out', function () {
     it('logs out', function () {
 
@@ -304,6 +313,7 @@ describe('Secondary User 1 logs out', function () {
     })
 })
 
+
 describe('Primary User sign in', function () {
     it('logs in', function () {
 
@@ -311,6 +321,7 @@ describe('Primary User sign in', function () {
         cy.login(testPrimaryUsername, testPassword)
     })
 })
+
 
 describe('Check view interested has been updated', function () {
     it('navigates to the item modal', function () {
