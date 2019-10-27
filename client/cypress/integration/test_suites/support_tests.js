@@ -1,7 +1,7 @@
 
-describe("Support Tests", function() {
+describe("Support Tests", () => {
 
-    it("Go to Support page (Primary User)", function() {
+    it("Go to Support page (Primary User)", () => {
 
         // visit the log in page
         cy.visit("http://localhost:3000/login");
@@ -50,7 +50,7 @@ describe("Support Tests", function() {
     });
 
 
-    it("Go to Support page (Secondary User)", function() {
+    it("Go to Support page (Secondary User)", () => {
 
         // visit the log in page
         cy.visit("http://localhost:3000/login");
@@ -99,7 +99,7 @@ describe("Support Tests", function() {
     });
 
 
-    it("Support request: Empty subject, empty message", function() {
+    it("Support request: Empty subject, empty message", () => {
 
         // visit the log in page
         cy.visit("http://localhost:3000/login");
@@ -180,7 +180,7 @@ describe("Support Tests", function() {
     });
 
 
-    it("Support request: Empty subject, valid message", function() {
+    it("Support request: Empty subject, valid message", () => {
 
         // visit the log in page
         cy.visit("http://localhost:3000/login");
@@ -264,7 +264,7 @@ describe("Support Tests", function() {
     });
 
 
-    it("Support request: Valid subject, empty message", function() {
+    it("Support request: Valid subject, empty message", () => {
 
         // visit the log in page
         cy.visit("http://localhost:3000/login");
@@ -348,7 +348,7 @@ describe("Support Tests", function() {
     });
 
 
-    it("Support request: Valid fields", function() {
+    it("Support request: Valid fields", () => {
 
         // visit the log in page
         cy.visit("http://localhost:3000/login");
