@@ -1,3 +1,4 @@
+
 describe("Stage 1 Tests", () => {
 
     it("Check if the necessary elements are present", () => {
@@ -620,4 +621,3 @@ describe.only("Stage 2 Tests", () => {
             .should('eq', 'http://localhost:3000/login');
     });
 });
-
