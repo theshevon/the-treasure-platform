@@ -1,44 +1,3 @@
-Cypress.Commands.add('go_to_dashboard', () => {
-
-    // visit the register page
-    cy.visit('http://localhost:3000/login');
-
-    // type in an invalid email address
-    cy
-        .get('input[name="email"]')
-        .type('pu@test.com');
-
-    // type in the password
-    cy
-        .get('input[name="password"]')
-        .type('password');
-
-    // click on the log in button
-    cy
-        .contains('Log In')
-        .click();
-
-    // wait for validation
-    cy
-        .wait(5000);
-
-    // navigate to dashboard
-    cy
-        .get('.nav-link')
-        .eq(0)
-        .click();
-
-    // ensure that the current page is the dashboard
-    cy
-        .url()
-        .should('eq', 'http://localhost:3000/dashboard');
-
-    // click on the add item button
-    cy
-        .get('.btn')
-        .eq(1)
-        .click();
-});
 
 describe("Stage 1", () => {
 
@@ -55,7 +14,6 @@ describe("Stage 1", () => {
 
         // ensure that invalid fields have red borders and appropriate error
         // messages
-
         cy
             .get('.invalid-feedback')
             .eq(0)

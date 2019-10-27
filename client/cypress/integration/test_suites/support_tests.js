@@ -3,32 +3,7 @@ describe("Support Tests", () => {
 
     it("Go to Support page (Primary User)", () => {
 
-        // visit the log in page
-        cy.visit("http://localhost:3000/login");
-
-        // type in a valid email
-        cy
-            .get('input[name="email"]')
-            .type('pu@test.com');
-
-        // type in an invalid password
-        cy
-            .get('input[name="password"]')
-            .type('password');
-
-        // click on the log in button
-        cy
-            .contains('Log In')
-            .click();
-
-        // wait for the next page to load
-        cy
-            .wait(3000);
-
-        // ensure that the page is now the items page
-        cy
-            .url()
-            .should('eq', 'http://localhost:3000/items');
+        cy.login_primary_user();
 
         // click support from the Navbar
         cy
@@ -52,32 +27,7 @@ describe("Support Tests", () => {
 
     it("Go to Support page (Secondary User)", () => {
 
-        // visit the log in page
-        cy.visit("http://localhost:3000/login");
-
-        // type in a valid email
-        cy
-            .get('input[name="email"]')
-            .type('su@test.com');
-
-        // type in an invalid password
-        cy
-            .get('input[name="password"]')
-            .type('password');
-
-        // click on the log in button
-        cy
-            .contains('Log In')
-            .click();
-
-        // wait for the next page to load
-        cy
-            .wait(3000);
-
-        // ensure that the page is now the items page
-        cy
-            .url()
-            .should('eq', 'http://localhost:3000/items');
+        cy.login_secondary_user();
 
         // click support from the Navbar
         cy
@@ -101,32 +51,7 @@ describe("Support Tests", () => {
 
     it("Support request: Empty subject, empty message", () => {
 
-        // visit the log in page
-        cy.visit("http://localhost:3000/login");
-
-        // type in a valid email
-        cy
-            .get('input[name="email"]')
-            .type('pu@test.com');
-
-        // type in an invalid password
-        cy
-            .get('input[name="password"]')
-            .type('password');
-
-        // click on the log in button
-        cy
-            .contains('Log In')
-            .click();
-
-        // wait for the next page to load
-        cy
-            .wait(3000);
-
-        // ensure that the page is now the items page
-        cy
-            .url()
-            .should('eq', 'http://localhost:3000/items');
+        cy.login_primary_user();
 
         // click support from the Navbar
         cy
@@ -182,32 +107,7 @@ describe("Support Tests", () => {
 
     it("Support request: Empty subject, valid message", () => {
 
-        // visit the log in page
-        cy.visit("http://localhost:3000/login");
-
-        // type in a valid email
-        cy
-            .get('input[name="email"]')
-            .type('pu@test.com');
-
-        // type in an invalid password
-        cy
-            .get('input[name="password"]')
-            .type('password');
-
-        // click on the log in button
-        cy
-            .contains('Log In')
-            .click();
-
-        // wait for the next page to load
-        cy
-            .wait(3000);
-
-        // ensure that the page is now the items page
-        cy
-            .url()
-            .should('eq', 'http://localhost:3000/items');
+        cy.login_primary_user();
 
         // click support from the Navbar
         cy
@@ -266,32 +166,7 @@ describe("Support Tests", () => {
 
     it("Support request: Valid subject, empty message", () => {
 
-        // visit the log in page
-        cy.visit("http://localhost:3000/login");
-
-        // type in a valid email
-        cy
-            .get('input[name="email"]')
-            .type('pu@test.com');
-
-        // type in an invalid password
-        cy
-            .get('input[name="password"]')
-            .type('password');
-
-        // click on the log in button
-        cy
-            .contains('Log In')
-            .click();
-
-        // wait for the next page to load
-        cy
-            .wait(3000);
-
-        // ensure that the page is now the items page
-        cy
-            .url()
-            .should('eq', 'http://localhost:3000/items');
+        cy.login_primary_user();
 
         // click support from the Navbar
         cy
@@ -350,32 +225,7 @@ describe("Support Tests", () => {
 
     it("Support request: Valid fields", () => {
 
-        // visit the log in page
-        cy.visit("http://localhost:3000/login");
-
-        // type in a valid email
-        cy
-            .get('input[name="email"]')
-            .type('pu@test.com');
-
-        // type in an invalid password
-        cy
-            .get('input[name="password"]')
-            .type('password');
-
-        // click on the log in button
-        cy
-            .contains('Log In')
-            .click();
-
-        // wait for the next page to load
-        cy
-            .wait(3000);
-
-        // ensure that the page is now the items page
-        cy
-            .url()
-            .should('eq', 'http://localhost:3000/items');
+        cy.login_primary_user();
 
         // click support from the Navbar
         cy
