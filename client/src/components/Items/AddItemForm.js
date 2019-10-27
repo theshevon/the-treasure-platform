@@ -414,6 +414,10 @@ class AddItemForm extends Component {
                                 disabled={this.state.loadingUsers}
                                 options={this.state.userOptions2}
                                 onChange={this.handleAssignment}/>
+                            <Form.Text
+                                className="text-muted">
+                                Select 'No One' to remove an assignment.
+                            </Form.Text>
                         </Col>
 
                     </Form.Group>
