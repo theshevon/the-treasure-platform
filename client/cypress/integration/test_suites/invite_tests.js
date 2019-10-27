@@ -1,7 +1,7 @@
 
-describe("Invite Tests", function() {
+describe("Invite Tests", () => {
 
-    it("Go to Invite page via Dashboard", function() {
+    it("Go to Invite page via Dashboard", () => {
 
         // visit the log in page
         cy.visit("http://localhost:3000/login");
@@ -76,7 +76,7 @@ describe("Invite Tests", function() {
     });
 
 
-    it("Add row", function() {
+    it("Add row", () => {
 
         // visit the log in page
         cy.visit("http://localhost:3000/login");
@@ -175,7 +175,7 @@ describe("Invite Tests", function() {
     });
 
 
-    it.only("Incorrect format for email address", function() {
+    it("Incorrect format for email address", () => {
 
         // visit the log in page
         cy.visit("http://localhost:3000/login");
@@ -274,7 +274,7 @@ describe("Invite Tests", function() {
     });
 
 
-    it("Email already in use", function() {
+    it("Email already in use", () => {
 
         // visit the log in page
         cy.visit("http://localhost:3000/login");
@@ -428,7 +428,7 @@ describe("Invite Tests", function() {
     });
 
 
-    it("Valid email addresses", function() {
+    it("Valid email addresses", () => {
 
         // visit the log in page
         cy.visit("http://localhost:3000/login");
