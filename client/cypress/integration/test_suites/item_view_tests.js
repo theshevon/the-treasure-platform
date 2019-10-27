@@ -1,7 +1,7 @@
 
 describe("Item View Tests", () => {
 
-    it("Get more info (Primary User)", () => {
+    it("View item (Primary User)", () => {
 
         cy.login_primary_user();
 
@@ -67,7 +67,7 @@ describe("Item View Tests", () => {
     });
 
 
-    it.only("Get more info (Secondary User)", () => {
+    it.only("View item (Secondary User)", () => {
 
         cy.login_secondary_user();
 
