@@ -8,61 +8,45 @@ const { admin, db } = require("../util/admin"),
 
 const { validateItemData } = require("../util/validators");
 
-// returns all the items from firestore
+/**
+ * Fetches all the items from firestore.
+ */
 exports.getItems =
 
-    (req, res) => {
-        db.collection('items')
-            .get()
-            .then(data => {
+    async (req, res) => {
 
-                let items = [];
-                let uid   = req.user.id;
-                let utype = req.user.type;
+        return await db
+                        .collection('items')
+                        .get()
+                        .then(data => {
 
-                // if the user is a PU, send back all the items
-                // else, filter the items based on visibility for that user
-                data.forEach(doc => {
-                    if (utype === 0 || doc.data()["visibleTo"].includes(uid)){
-                        let item = {id : doc.id};
-                        items.push(Object.assign(item, doc.data()));
-                    }
-                });
+                            let items = [];
+                            let uid   = req.user.id;
+                            let utype = req.user.type;
 
-                // sort in chronological order
-                items.sort((item1, item2) => item1.createdOn.toDate() - item2.createdOn.toDate());
+                            // if the user is a PU, send back all the items
+                            // else, filter the items based on visibility for that user
+                            data.forEach(doc => {
+                                if (utype === 0 || doc.data()["visibleTo"].includes(uid)){
+                                    let item = {id : doc.id};
+                                    items.push(Object.assign(item, doc.data()));
+                                }
+                            });
 
-                return res.status(200).json(items);
-            })
-            .catch((err) => {
-                res.status(400).json({ error: err.code });
-            });
+                            // sort the items in chronological order
+                            items.sort((item1, item2) => item1.createdOn.toDate() - item2.createdOn.toDate());
+
+                            return res.status(200).json(items);
+                        })
+                        .catch(err => {
+                            console.log(err);
+                            res.status(400).json({ error: err.code });
+                        });
     }
 
-getSecondaryUsers = async () => {
-    try {
-        const users = await db.collection('users')
-                                .get()
-                                .then((data) => {
-                                    // extract all userIDs
-                                    let users = [];
-                                    data.forEach((doc) => {
-                                        if (parseInt(doc.data()["uType"]) === 1){
-                                            users.push(doc.id);
-                                        }
-                                    });
-                                    return users;
-                                })
-                                .catch((err) => {
-                                    throw new Error(err);
-                                });
-        return users;
-    } catch (err) {
-        return -1;
-    }
-}
-
-// creates a new database entry for a item on firestore
+/**
+ * Creates a new item and stores it in firestore.
+ */
 exports.createItem =
 
     async (req, res) => {
@@ -90,349 +74,337 @@ exports.createItem =
         if (!valid) return res.status(400).json(errors);
 
         // add item to collection
-        db
-            .collection('items')
-            .add(item)
-            .then(doc => {
-                return res.status(200).json(doc.id);
-            })
-            .catch((err) => {
-                console.log(err)
-                return res.status(400).json({ Error : err });
-            });
-    }
-
-// modifies the database entry for an item on firestore
-exports.modifyItem =
-
-    (req, res) => {
-        // extract the updated item data from form
-        let updatedItem = {
-            name       : req.body.name,
-            desc       : req.body.desc,
-            cover      : req.body.cover,
-            visibleTo  : req.body.visibleTo,
-            assignedTo : req.body.assignedTo,
-        }
-
-        // update the items database entry
-        db
-            .collection('items')
-            .doc(req.params.id)
-            .update(updatedItem)
-            .then(doc => {
-                return res.status(200).json({ code : 200 });
-            })
-            // eslint-disable-next-line handle-callback-err
-            .catch(err => {
-                return res.status(400).json({ code : 400 });
-            })
+        return await db
+                        .collection('items')
+                        .add(item)
+                        .then(doc => {
+                            return res.status(200).json(doc.id);
+                        })
+                        .catch((err) => {
+                            console.log(err)
+                            return res.status(400).json({"general" : "Sorry, something went wrong."});
+                        });
     }
 
 // uploads a single image to firebase storage
 exports.uploadImg =
 
-    // Response codes:
-    // 200 :- No Error
-    // 101 :- Error : Document does not exist
-    // 102 :- Error : Incorrect file type
-    // 103 :- Error : Failed to link image URI to database entry
-    // 104 :- Error : Failed to upload image to firebase storage
-    // 105 :- Error : Other error
-
     async (req, res) => {
 
+        const errMsg = "Sorry, something went wrong.";
+
         // find the database entry for the required item
-        await db
-                .collection('items')
-                .doc(req.params.id)
-                .get()
-                .then(doc => {
+        return await db
+                    .collection('items')
+                    .doc(req.params.id)
+                    .get()
+                    .then(doc => {
 
-                    // eslint-disable-next-line promise/always-return
-                    if (!doc.exists){
-                        return res.status(400).json({ code : 101 });
-                    }
-
-                    let photos = doc.data()["photos"];
-
-                    const busboy = new BusBoy({ headers: req.headers });
-
-                    let imageToBeUploaded = {};
-                    let imageFileName;
-
-                    // prepare the image file
-                    busboy.on('file', (fieldname, file, filename, encoding, mimetype) => {
-
-                        // check if the file type is that of an image
-                        if (mimetype !== 'image/jpeg' && mimetype !== 'image/png') {
-                            return res.status(400).json({ code : 102 });
+                        // eslint-disable-next-line promise/always-return
+                        if (!doc.exists){
+                            console.log("Err: document does not exist!");
+                            return res.status(400).json({ general : errMsg });
                         }
 
-                        // create a unique name for the image
-                        const imageExtension = filename.split('.')[filename.split('.').length - 1];
-                        imageFileName = `items_${req.params.id}_${Math.round(Math.random() * 10000000).toString()}.${imageExtension}`;
+                        let photos = doc.data()["photos"];
 
-                        // upload the image
-                        const filepath = path.join(os.tmpdir(), imageFileName);
-                        imageToBeUploaded = { filepath, mimetype };
-                        file.pipe(fs.createWriteStream(filepath));
-                    });
+                        const busboy = new BusBoy({ headers: req.headers });
 
-                    // store the image on firebase storage
-                    busboy.on('finish', () => {
+                        let imageToBeUploaded = {};
+                        let imageFileName;
 
-                        // eslint-disable-next-line promise/no-nesting
-                        admin
-                            .storage()
-                            .bucket(config.storageBucket)
-                            .upload(imageToBeUploaded.filepath, {
-                                resumable: false,
-                                metadata: {
-                                    metadata: {
-                                        contentType: imageToBeUploaded.mimetype
-                                    }
-                                }
-                        })
-                        .then(() => {
+                        // prepare the image file
+                        busboy.on('file', (fieldname, file, filename, encoding, mimetype) => {
 
-                            // determine the imageURL and add it to the item's database entry
-                            const imageUrl = `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${imageFileName}?alt=media`;
-                            photos.push(imageUrl);
+                            // check if the file type is that of an image
+                            if (mimetype !== 'image/jpeg' && mimetype !== 'image/png') {
+                                console.log("Err: incorrect file type");
+                                return res.status(400).json({ general : errMsg });
+                            }
 
-                            // update databse entry
+                            // create a unique name for the image
+                            const imageExtension = filename.split('.')[filename.split('.').length - 1];
+                            imageFileName = `items_${req.params.id}_${Math.round(Math.random() * 10000000).toString()}.${imageExtension}`;
+
+                            // upload the image
+                            const filepath = path.join(os.tmpdir(), imageFileName);
+                            imageToBeUploaded = { filepath, mimetype };
+                            file.pipe(fs.createWriteStream(filepath));
+                        });
+
+                        // store the image on firebase storage
+                        busboy.on('finish', () => {
+
                             // eslint-disable-next-line promise/no-nesting
-                            return db
-                                    .collection('items')
-                                    .doc(doc.id)
-                                    .update({ photos : photos })
-                                    .then(() => {
-                                        return res.status(200).json({ code : 200 });
-                                    })
-                                    .catch(err => {
-                                        console.log(err);
-                                        return res.status(400).json({ code : 103 });
-                                    })
+                            admin
+                                .storage()
+                                .bucket(config.storageBucket)
+                                .upload(imageToBeUploaded.filepath, {
+                                    resumable: false,
+                                    metadata: {
+                                        metadata: {
+                                            contentType: imageToBeUploaded.mimetype
+                                        }
+                                    }
+                            })
+                            .then(async () => {
 
+                                // determine the imageURL and add it to the item's database entry
+                                const imageUrl = `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${imageFileName}?alt=media`;
+                                photos.push(imageUrl);
+
+                                // update databse entry
+                                try {
+                                    await db
+                                        .collection('items')
+                                        .doc(doc.id)
+                                        .update({ photos: photos });
+                                    return res.status(200).json("Success!");
+                                }
+                                catch (err) {
+                                    console.log("Err: Failed to link image URI to database entry!");
+                                    console.log(err);
+                                    return res.status(400).json({ general : errMsg });
+                                }
+
+                            })
+                            .catch(err => {
+                                console.log("Err: Failed to upload image to firebase storage")
+                                console.log(err);
+                                return res.status(400).json({ general : errMsg });
+                            });
+                        });
+
+                        busboy.end(req.rawBody);
+
+                    })
+                    .catch(err => {
+                        console.log(err);
+                        return res.status(400).json({ code : 105 });
+                    });
+    }
+
+/**
+ * Deletes an item and its photos from firebase.
+ */
+exports.deleteItem =
+
+  async (req, res) => {
+
+        let iid = req.params.id;
+
+        // delete all the photos
+        try{
+            await db
+                    .collection('items')
+                    .doc(iid)
+                    .get()
+                    .then(doc => {
+
+                        let photos = doc.data().photos;
+
+                        // delete each photo from firebase storage
+                        photos.forEach(async photo => {
+
+                            var imgName = photo.split(/\/o\/|\?/)[1];
+
+                            await admin
+                                    .storage()
+                                    .bucket(config.storageBucket)
+                                    .deleteFiles({ prefix: `${imgName}` });
+                        });
+                        return;
+                    });
+        } catch(err){
+            console.log(err);
+            return res.status(400).json("Sorry, something went wrong.");
+        }
+
+        // now, delete the item from the database
+        return await db
+                        .collection('items')
+                        .doc(iid)
+                        .delete()
+                        .then(res => {
+                            return res.status(200).json("Successfully deleted item.");
                         })
                         .catch(err => {
                             console.log(err);
-                            return res.status(400).json({ code : 104 });
+                            return res.status(400).json("Sorry, something went wrong.");
                         });
-                    });
-
-                    busboy.end(req.rawBody);
-                })
-
-                .catch(err => {
-                    console.log(err);
-                    return res.status(400).json({ code : 105 });
-                })
-    }
-
-// firebase function to automatically delete image files from firebase storage
-// when an item's database entry is deleted
-// THIS ISN'T WORKING
-exports.deleteImages = functions.firestore
-    .document('items/{itemId}')
-    .onDelete((snap, context) => {
-
-        const { itemId } = context.params;
-
-        // delete images
-        const bucket = admin.storage().bucket(config.storageBucket);
-        return bucket.deleteFiles({
-            prefix: `${itemId}`
-        });
-    });
-
-// delete database entry
-function deleteItemDatabase (itemId, res) {
-    db
-    .collection('items')
-    .doc(itemId)
-    .delete()
-    .then(response => {
-        console.log("database delete");
-        // need to wait some reason so that the image is deleted
-        setTimeout(function(){
-            res.sendStatus(200);
-        }, 1000);
-        return;
-    })
-    .catch(err => {
-        setTimeout(function(){
-            res.sendStatus(401);
-        }, 1000);
-        console.log(err);
-    });
-}
-
-// deletes an item and images from database
-exports.deleteItem =
-
-  (req, res) => {
-        var imagesDeleted = 0;
-        // delete images
-        db.collection('items').doc(req.params.id).get().then(doc => {
-            photos = doc.data().photos;
-            console.log("image delete");
-            photos.forEach(function(photo) {
-                var imgName = photo.split(/\/o\/|\?/)[1];
-                console.log(imgName);
-                admin.storage().bucket(config.storageBucket).deleteFiles({
-                    prefix: `${imgName}`
-                });
-                imagesDeleted ++;
-                // when all images are deleted, delete from database
-                if (imagesDeleted === photos.length) {
-                    deleteItemDatabase(req.params.id, res);
-                }
-            });
-            return;
-        }).catch(err => {
-            console.log(err);
-        });
-
-
   }
 
+/**
+ * Toggles a user's expression of interest in a specific item.
+ */
 exports.toggleEOI =
 
-    (req, res) => {
+    async (req, res) => {
 
         // iid - item id
         let iid = req.params.iid;
         // uid - user id
         let uid = req.user.id;
 
-        db
-            .collection('items')
-            .doc(iid)
-            .get()
-            .then(itemDoc => {
-
-                if (!itemDoc.exists){
-                    return res.status(400).json("Invalid Item ID");
-                }
-
-                // validate userID
-                // eslint-disable-next-line promise/no-nesting
-                return db.collection('users')
-                        .doc(uid)
+        return await db
+                        .collection('items')
+                        .doc(iid)
                         .get()
-                        .then(userDoc => {
+                        .then(async itemDoc => {
 
-                            if (!userDoc.exists){
-                                throw new Error("Invalid user id");
+                            if (!itemDoc.exists){
+                                return res.status(400).json({"general" : "Sorry, something went wrong."});
                             }
 
-                            // fetch the intUsers arrays
-                            let intUsers = itemDoc.data()["intUsers"];
-
-                            // toggle the user's interest in the item
-                            if (!intUsers.includes(uid)){
-                                // if not in it, add the uid to the list
-                                intUsers.push(uid);
-                            } else {
-                                // else, remove the uid from the list
-                                let index = intUsers.indexOf(intUsers);
-                                intUsers.splice(index, 1);
-                            }
-
+                            // validate userID
                             // eslint-disable-next-line promise/no-nesting
-                            return db
-                                    .collection('items')
-                                    .doc(iid)
-                                    .update({ intUsers : intUsers })
-                                    .then(() => {
-                                        return res.status(200).json("Success");
-                                    })
-                                    .catch(err => {
-                                        console.log(err);
-                                        throw new Error(err);
-                                    })
-                        })
-                        .catch (err => {
-                            console.log(err);
-                            return res.status(400).json("Invalid User ID");
-                        });
+                            return await db
+                                            .collection('users')
+                                            .doc(uid)
+                                            .get()
+                                            .then(async userDoc => {
 
-            })
-            .catch(err => {
-                console.log(err);
-                return res.status(400).json(err);
-            });
+                                                if (!userDoc.exists){
+                                                    throw new Error("Invalid user id");
+                                                }
+
+                                                // fetch the intUsers arrays
+                                                let intUsers = itemDoc.data()["intUsers"];
+
+                                                // toggle the user's interest in the item
+                                                if (!intUsers.includes(uid)){
+                                                    // if not in it, add the uid to the list
+                                                    intUsers.push(uid);
+                                                } else {
+                                                    // else, remove the uid from the list
+                                                    let index = intUsers.indexOf(intUsers);
+                                                    intUsers.splice(index, 1);
+                                                }
+
+                                                try {
+                                                    await db
+                                                        .collection('items')
+                                                        .doc(iid)
+                                                        .update({ intUsers : intUsers });
+                                                    return res.status(200).json("Success");
+                                                }
+                                                catch (err) {
+                                                    console.log(err);
+                                                    throw new Error(err);
+                                                }
+                                            })
+                                            .catch (err => {
+                                                console.log(err);
+                                                return res.status(400).json({"general" : "Sorry, something went wrong."});
+                                            });
+
+                        })
+                        .catch(err => {
+                            console.log(err);
+                            return res.status(400).json({"general" : "Sorry, something went wrong."});
+                        });
     }
 
+/**
+ * Updates the successor of an item.
+ */
 exports.assignItem =
 
-    (req, res) => {
+    async (req, res) => {
 
         // iid - item id
         let iid = req.params.iid;
         // uid - user id
         let uid = req.params.uid;
 
+        // a user id of '0' corresponds to a removal of the current successor
         if (uid === '0'){
-            db
-                .collection('items')
-                .doc(iid)
-                .update({ assignedTo : '' })
-                .then(() => {
-                    return res.status(200).json('');
-                })
-                .catch(err => {
-                    console.log(err);
-                    return res.status(400).json({ "msg" : "Sorry, your request couldn't be completed right now." });
-                })
+            return await db
+                            .collection('items')
+                            .doc(iid)
+                            .update({ assignedTo : '' })
+                            .then(() => {
+                                return res.status(200).json('');
+                            })
+                            .catch(err => {
+                                console.log(err);
+                                return res.status(400).json({ "msg" : "Sorry, something went wrong." });
+                            });
         } else {
-            db
-                .collection('items')
-                .doc(iid)
-                .get()
-                .then(itemDoc => {
-
-                    if (!itemDoc.exists){
-                        // invalid iid
-                        return res.status(400).json({ "msg" : "Sorry, your request couldn't be completed right now." });
-                    }
-
-                    // validate userID
-                    // eslint-disable-next-line promise/no-nesting
-                    return db.collection('users')
-                            .doc(uid)
+            return await db
+                            .collection('items')
+                            .doc(iid)
                             .get()
-                            .then(userDoc => {
+                            .then(async itemDoc => {
 
-                                if (!userDoc.exists){
-                                    throw new Error("Invalid user id");
+                                if (!itemDoc.exists){
+                                    // invalid iid
+                                    return res.status(400).json({ "msg" : "Sorry, something went wrong." });
                                 }
 
-                                // set assigned field of item to uid
+                                // validate userID
                                 // eslint-disable-next-line promise/no-nesting
-                                return db
-                                        .collection('items')
-                                        .doc(iid)
-                                        .update({ assignedTo : uid })
-                                        .then(() => {
-                                            return res.status(200).json(uid);
-                                        })
-                                        .catch(err => {
-                                            console.log(err);
-                                            throw new Error(err);
-                                        })
-                            })
-                            .catch (err => {
-                                // invalid uid
-                                console.log(err);
-                                return res.status(400).json({ "msg" : "Please select a user from the list!" });
-                            });
+                                return await db
+                                                .collection('users')
+                                                .doc(uid)
+                                                .get()
+                                                .then(async userDoc => {
 
-                })
-                .catch(err => {
-                    console.log(err);
-                    return res.status(400).json({ "msg" : "Sorry, your request couldn't be completed right now." });
-                });
+                                                    if (!userDoc.exists){
+                                                        throw new Error("Invalid user id");
+                                                    }
+
+                                                    // set assigned field of item to uid
+                                                    try {
+                                                        await db
+                                                            .collection('items')
+                                                            .doc(iid)
+                                                            .update({ assignedTo: uid });
+                                                        return res.status(200).json(uid);
+                                                    }
+                                                    catch (err) {
+                                                        console.log(err);
+                                                        throw new Error(err);
+                                                    }
+                                                })
+                                                .catch (err => {
+                                                    // invalid uid
+                                                    console.log(err);
+                                                    return res.status(400).json({ "msg" : "Please select a user from the list!" });
+                                                });
+
+                            })
+                            .catch(err => {
+                                console.log(err);
+                                return res.status(400).json({ "msg" : "Sorry, something went wrong." });
+                            });
         }
     }
+
+/*=============================HELPER FUNCTIONS===============================*/
+
+/**
+ * Retrieves the secondary users' IDs from the database.
+ */
+getSecondaryUsers = async () => {
+    try {
+        const users = await db.collection('users')
+                                .get()
+                                .then((data) => {
+                                    // extract all userIDs
+                                    let users = [];
+                                    data.forEach((doc) => {
+                                        if (parseInt(doc.data()["uType"]) === 1){
+                                            users.push(doc.id);
+                                        }
+                                    });
+                                    return users;
+                                })
+                                .catch((err) => {
+                                    throw new Error(err);
+                                });
+        return users;
+    } catch (err) {
+        return -1;
+    }
+}

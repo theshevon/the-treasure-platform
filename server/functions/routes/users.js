@@ -8,8 +8,6 @@ const { isLoggedIn, isAuthorised } = require("../util/middleware")
 
 router.get("/users", isLoggedIn, userController.getSecondaryUsers);
 
-router.get("/logout", isLoggedIn, userController.logOutUser);
-
 /*================================POST ROUTES=================================*/
 
 router.post("/check_invitee", userController.checkInvitee);
