@@ -225,7 +225,7 @@ exports.deleteItem =
                         .collection('items')
                         .doc(iid)
                         .delete()
-                        .then(res => {
+                        .then(resp => {
                             return res.status(200).json("Successfully deleted item.");
                         })
                         .catch(err => {
