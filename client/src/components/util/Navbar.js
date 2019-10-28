@@ -42,7 +42,7 @@ class NavbarComponent extends Component {
     }
 
     /**
-     * Handles the logging out of a user from the platform
+     * Handles the logging out of a user from the platform.
      */
     handleLogout = event => {
         event.preventDefault();

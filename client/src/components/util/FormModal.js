@@ -15,14 +15,14 @@ class FormModal extends Component {
     }
 
     /**
-     * handles the closing of the modal
+     * Handles the closing of the modal.
      */
     handleClose = () => {
 		this.setState({ show : false })
 	}
 
     /**
-     * handles the opening of the modal
+     * Handles the opening of the modal.
      */
 	handleShow = () => {
 		this.setState({ show : true })
