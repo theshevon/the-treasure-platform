@@ -26,6 +26,12 @@ import '../../stylesheets/item.css';
 // icons
 import star from '../../icons/star.svg';
 
+
+/**
+ * Represents a single card that displays an item and its decscription.
+ * Includes a "More Info" button that triggers the Item Modal, a modal that
+ * contains additional info on the item.
+ */
 export class ItemCard extends Component {
 
 	state = {
@@ -34,10 +40,16 @@ export class ItemCard extends Component {
 		loading           : false,
 	}
 
+	/**
+	 * Closes the Item Modal
+	 */
 	handleClose = () => {
 		this.setState({ show: false });
 	}
 
+	/**
+	 * Displays the Item Modal
+	 */
 	handleShow = () => {
 		this.setState({ show: true });
 	}
@@ -46,11 +58,12 @@ export class ItemCard extends Component {
 
 		const { item, user } = this.props;
 
-		/* define the EOI button and assigned icon */
-
-		let EOIOpt = 	(
+		/* define the EOI button (a.k.a. like button) and assigned icon */
+		let itemCardButtons = 	(
 							<Row
 								className={item.assignedTo === user.id ? "justify-content-between align-items-center" : "justify-content-end"}>
+
+								{/* Assigned Icon */}
 								<OverlayTrigger
 									placement="top"
 									overlay={
@@ -65,6 +78,8 @@ export class ItemCard extends Component {
 										height="25"
 										alt="assigned_icon"/>
 								</OverlayTrigger>
+
+								{/* Like Button */}
 								<LikeButton
 									itemID={item.id}
 									size="sm"
@@ -108,30 +123,35 @@ export class ItemCard extends Component {
 					)
 
 			/* disable EOI option for primary users */
-			EOIOpt = null;
+			itemCardButtons = null;
 		}
 
 		return (
-
+			
+			// item card
 			<Card
 				className="item-card item-card-loaded"
 				style={{ width: "18.2rem" }}>
 
+				{/* item card name */}
 				<Card.Title
 					className="item-card-title">
 					{item.name}
 				</Card.Title>
 
+				{/* item card image */}
 				<Card.Img
 					className="item-card-img-top"
 					variant="top"
 					src={item.photos[item.cover]}/>
 
-				{ EOIOpt }
+				{/* item card 'like' button */}
+				{ itemCardButtons }
 
 				<Card.Body
 					className="item-card-body">
 
+					{/* item card description */}
 					<Card.Text
 						className="item-card-text">
 						{ item.desc.length > 100
@@ -139,6 +159,7 @@ export class ItemCard extends Component {
 						: item.desc}
 					</Card.Text>
 
+					{/* item card 'more info' button */}
 					<Button
 						className="centered-btn btn"
 						variant="light"
@@ -149,6 +170,7 @@ export class ItemCard extends Component {
 
 				</Card.Body>
 
+				{/* item modal */}
 				<Modal
 					id="item-modal"
 					size="xl"
@@ -159,16 +181,18 @@ export class ItemCard extends Component {
 					centered
 					ref={view_modal => (this.view_modal = view_modal)}>
 
-					{/* item name */}
 					<Modal.Header
 						closeButton>
 					</Modal.Header>
 
 					<Modal.Body
 						className="info-modal-body px-md-5 pb-md-5 pt-0">
+
 						<Row>
-							{/* item image carousel */}
+
 							<Col sm="6">
+
+								{/* item image carousel */}
 								<Carousel
 									controls={item.photos.length> 1 ? true : false }
 									indicators = {false}>
@@ -186,18 +210,25 @@ export class ItemCard extends Component {
 							</Col>
 
 							<Col sm="6">
-								{/* item desciption */}
+
+								{/* item modal name */}
 								<div className = "modal-title item-modal-title">
 									{item.name}
 								</div>
+
+								{/* item modal description */}
 								<div
 									className="item-row item-desc">
 									<p className="my-5 text-justify">
 										{item.desc}
 									</p>
 								</div>
+
+								{/* item modal buttons */}
 								{ btnSet }
+
 							</Col>
+
 						</Row>
 
 					</Modal.Body>
