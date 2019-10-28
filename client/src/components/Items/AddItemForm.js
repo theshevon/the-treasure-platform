@@ -89,7 +89,9 @@ class AddItemForm extends Component {
                 });
     }
 
-    // handles validation of the input fields in the form
+    /**
+     * Handles validation of the input fields in the form.
+     */
     handleValidation = event => {
 
         const form = event.currentTarget;
@@ -104,19 +106,25 @@ class AddItemForm extends Component {
         event.stopPropagation();
     }
 
-    // handles changes made to input fields
-    // when the value of an input field changes, its corresponding entry
-    // in the state changes too
+    /**
+     * Handles changes made to input fields.
+     * When the value of an input field changes, its corresponding entry in the
+     * state changes too.
+     */
     handleChange = event => {
 		this.setState({ [event.target.name] : event.target.value });
 	}
 
-    // handles state updates to item visibility changes
+    /**
+     * Handles state updates to item visibility changes.
+     */
     handleMultiSelect = (event, { value }) => {
         this.setState({ selectedUsers : value })
     }
 
-    // handles state updates for errors during submission
+    /**
+     * Handles state updates for errors during submission.
+     */
     handleErrors = err => {
         this.setState({
             errors    : err,
@@ -126,7 +134,9 @@ class AddItemForm extends Component {
         })
     }
 
-    // handles item creation
+    /**
+     * Sends textual data needed to create an item to the server.
+     */
     handleCreate = async data => {
         try {
             const res = await axios({
@@ -142,7 +152,10 @@ class AddItemForm extends Component {
         }
     };
 
-    // handles image uploads for a specific item
+    /**
+     * Sends an image to the server to be stored and linked with the item
+     * being created.
+     */
     handleUpload = async (fd, itemId) => {
         try {
             await axios({
@@ -160,7 +173,9 @@ class AddItemForm extends Component {
         }
     }
 
-    // prepares and sends the data to the server to create a new item
+    /**
+     * Prepares the data to be sent to the server to create a new item.
+     */
     handleSubmit = event => {
 
 		event.preventDefault();
@@ -217,6 +232,9 @@ class AddItemForm extends Component {
         this.submitData(itemData);
 	}
 
+    /**
+     * Sends the data to the server to create a new item.
+     */
     submitData = async itemData => {
         try {
             // create a new item using the data
@@ -240,34 +258,44 @@ class AddItemForm extends Component {
         this.props.handleClose();
     }
 
-    // handles state updates to uploaded files
+    /**
+     * Handles state updates to uploaded files.
+     */
     handleFileSelect = async event => {
         await this.setState({ uploadedFiles : Array.from(event.target.files) });
     }
 
-    // handles state updates to visibility toggler
+    /**
+     * Handles state updates to visibility toggler.
+     */
     handleVisibilityOptionChange = () => {
 
         if (this.state.selectingWatchers){
-            this.setState({selectingWatchers : false});
+            this.setState({ selectingWatchers : false });
         } else {
-            this.setState({selectingWatchers : true});
+            this.setState({ selectingWatchers : true });
         }
         this.setState({ selectedUsers : [] });
         this.visDropdown.setState({ value : [] });
     }
 
-    // handles state updates to item assignee
+    /**
+     * Handles state updates to item assignee.
+     */
     handleAssignment = (event, { value }) => {
         this.setState({ assignedTo: value });
     }
 
-    // handles state updates to cover image selection
+    /**
+     * Handles state updates to cover image selection.
+     */
     handleImgSelect = (index) => {
         this.setState({ coverImgIndex : index });
     }
 
-    // handles state updates to form navigation
+    /**
+     * Handles state updates to form navigation.
+     */
     handleReturn = () => {
         this.setState({
                         stage: 0,
@@ -305,7 +333,7 @@ class AddItemForm extends Component {
                     validated={this.state.validated}
                     onSubmit={this.handleValidation}>
 
-                    {/* Item name input field */}
+                    {/* item name input field */}
                     <Form.Group
                         as={Row}
                         className={this.state.stage ===  0 ? "" : "hidden-field"}>
@@ -327,7 +355,7 @@ class AddItemForm extends Component {
                         </Col>
                     </Form.Group>
 
-                    {/* Item description field */}
+                    {/* item description field */}
                     <Form.Group
                         as={Row}
                         className={this.state.stage ===  0 ? "" : "hidden-field"}>
@@ -350,7 +378,7 @@ class AddItemForm extends Component {
                         </Col>
                     </Form.Group>
 
-                    {/* Item visibility field */}
+                    {/* item visibility field */}
                     <Form.Group
                         as={Row}
                         className={this.state.stage ===  0 ? "" : "hidden-field"}>
@@ -388,7 +416,7 @@ class AddItemForm extends Component {
 
                     </Form.Group>
 
-                    {/* Item assignment field */}
+                    {/* item assignment field */}
                     <Form.Group
                         as={Row}
                         className={this.state.stage ===  0 ? "" : "hidden-field"}>
@@ -422,7 +450,7 @@ class AddItemForm extends Component {
 
                     </Form.Group>
 
-                    {/* Item photo field */}
+                    {/* item photo upload field */}
                     <Form.Group
                         as={Row}
                         className={this.state.stage ===  0 ? "" : "hidden-field"}>
@@ -455,6 +483,7 @@ class AddItemForm extends Component {
                         </Col>
                     </Form.Group>
 
+                    {/* `next` button */}
                     <Button
                         variant="light"
                         type="submit"
@@ -463,7 +492,7 @@ class AddItemForm extends Component {
                     </Button>
                 </Form>
 
-                {/* Uploaded image preview */}
+                {/* uploaded image previews */}
                 <Row
                     className={this.state.stage ===  1 ? "d-flex justify-content-center" : "hidden-field"}>
                     <span>
@@ -482,12 +511,13 @@ class AddItemForm extends Component {
                             <img
                                 src={ URL.createObjectURL(file) }
                                 className="uploaded-img img-fluid"
-                                alt={"img-" + index}
-                            ></img>
+                                alt={"img-" + index}>
+                            </img>
                         </Col>
                     ))}
                 </Row>
 
+                {/* `back` button */}
                 <Button
                     type="button"
                     variant="light"
@@ -496,6 +526,7 @@ class AddItemForm extends Component {
                     Back
                 </Button>
 
+                {/* `submit` button */}
                 <Button
                     variant="light"
                     onClick={this.handleSubmit}

@@ -15,8 +15,8 @@ import UserTag from '../users/UserTag';
 import '../../stylesheets/view-interested.css';
 
 /**
- * Represents a modal that displays a list of users who are interested in
- * the catalogued item.
+ * Represents a modal that will allow a Primary User to view a list of users who
+ * are interested in the catalogued item.
  */
 class ViewInterestedModal extends Component {
 

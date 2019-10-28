@@ -29,7 +29,7 @@ class LikeButton extends Component {
 
 	/**
 	 * Handles a user's EOI by sending a request to the server to make the
-	 * relevant updates to the item's 'intUsers' list.
+	 * relevant updates to the item's `intUsers` field.
 	 */
 	handleClick = () => {
 

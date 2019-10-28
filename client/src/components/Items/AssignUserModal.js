@@ -13,7 +13,11 @@ import { Dropdown } from 'semantic-ui-react';
 // custom css
 import '../../stylesheets/assign-user-modal.css';
 
-export class AssignUserModal extends Component {
+/**
+ * Represents a modal that will allow a Primary User to assign or re-assign
+ * an item to a user.
+ */
+class AssignUserModal extends Component {
 
     state = {
         show       : false,
@@ -26,21 +30,13 @@ export class AssignUserModal extends Component {
         idsToNames : {}
     }
 
-    handleClose = () => this.setState({ show : false });
-
-    handleShow = () => this.setState({ show : true });
-
-     // handles state updates to item assignee
-    handleAssignment = (event, { value }) => {
-        this.setState({ assignedTo : value });
-    }
-
     async componentDidMount(){
 
         let { visibleTo, assignedTo } = this.props.item;
 
         await this.setState({ current : assignedTo });
 
+        // retrieve the list of users who the item is visible to
         await axios({
                         method : 'get',
                         url    : '/users'
@@ -90,6 +86,27 @@ export class AssignUserModal extends Component {
                     });
     }
 
+    /**
+     * Handles the closing of the modal.
+     */
+    handleClose = () => this.setState({ show : false });
+
+    /**
+     * Handles the opening of the modal.
+     */
+    handleShow = () => this.setState({ show : true });
+
+    /**
+     * Handles state updates to item assignee.
+     */
+    handleAssignment = (event, { value }) => {
+        this.setState({ assignedTo : value });
+    }
+
+    /**
+	 * Handles a new assignment by sending a request to the server to make the
+	 * relevant updates to the item's `assignedTo` field.
+	 */
     handleSubmit = event => {
 
         event.preventDefault();
@@ -130,6 +147,7 @@ export class AssignUserModal extends Component {
 
         const { show, loading, validated, errors, current, idsToNames } = this.state;
 
+        // backdrop for the modal
         let backdrop = null;
         if (show){
             backdrop = (
@@ -145,19 +163,16 @@ export class AssignUserModal extends Component {
 			btnContent = (<Spinner animation="border" size="sm"/>);
         }
 
+        // create label for the currently assigned user
         let labelContent = (<Spinner animation="border" size="sm"/>);
         if (current){
-            console.log("Current: ");
-            console.log(current);
             labelContent = (idsToNames[current]);
         } else if (current === ''){
-            console.log("No one");
             labelContent = ("No One");
         }
 
-        // error feedback
+        // -- check for errors
         let assignmentFeedback = null;
-
         if (validated){
             if (errors){
                 assignmentFeedback = (
@@ -173,7 +188,7 @@ export class AssignUserModal extends Component {
 
             <div>
 
-                {/* Assign button */}
+                {/* trigger button */}
                 <Button
                     className="btn m-1"
                     variant="light"
@@ -194,10 +209,12 @@ export class AssignUserModal extends Component {
 
 					<Modal.Header
 						closeButton>
+
 						<Modal.Title
                             className="sub-modal-title">
 							Assign Successor
 						</Modal.Title>
+
 					</Modal.Header>
 
 					<Modal.Body
@@ -208,17 +225,21 @@ export class AssignUserModal extends Component {
                             Currently assigned to:
                         </p>
 
+                        {/* label with current successor's name */}
                         <p
                             className="assignee text-center">
                             { labelContent }
                         </p>
 
                         <Form>
+
+                            {/* label for the dropdown */}
                             <Form.Label
                                 className="text-center mr-1">
                                 {this.props.assignedTo ? "Re-Assign to:" : "Assign to:"}
                             </Form.Label>
 
+                            {/* dropdown to select new successor */}
                             <Dropdown
                                 name="assignedto"
                                 placeholder={ this.state.loadingUsers ? 'Loading...' : 'Select User' }
@@ -228,17 +249,22 @@ export class AssignUserModal extends Component {
                                 disabled={this.state.loadingUsers}
                                 options={this.state.userOpts}
                                 onChange={this.handleAssignment}/>
-                            { assignmentFeedback }
+                                { assignmentFeedback }
+
                         </Form>
+
 					</Modal.Body>
 
                     <Modal.Footer>
+
+                        {/* submit button */}
                         <Button
                             className="assign-btn btn text-center"
                             variant="light"
                             onClick={this.handleSubmit}>
                             { btnContent }
                         </Button>
+
                     </Modal.Footer>
 
 				</Modal>
