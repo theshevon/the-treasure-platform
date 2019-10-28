@@ -142,39 +142,37 @@ describe("Item View Tests", () => {
         cy
             .get('.like-btn')
             .eq(0)
-            .get('img[src="/static/media/unliked.b235d92b.svg"]')
-            .eq(0)
-            .should('exist');
+            .find('img')
+            .should('have.attr', 'src')
+            .should('include', '/unliked');
 
         // ensure that the expression of interest button becomes full
         cy
             .get('.like-btn')
             .eq(0)
-            .get('img[src="/static/media/unliked.b235d92b.svg"]')
-            .eq(0)
+            .find('img')
             .click();
 
         cy
             .get('.like-btn')
             .eq(0)
-            .get('img[src="/static/media/liked.9b24a825.svg"]')
-            .eq(0)
-            .should('exist');
+            .find('img')
+            .should('have.attr', 'src')
+            .should('include', '/liked');
 
         // ensure that the expression of interest button becomes empty
         cy
             .get('.like-btn')
             .eq(0)
-            .get('img[src="/static/media/liked.9b24a825.svg"]')
-            .eq(0)
+            .find('img')
             .click();
 
         cy
             .get('.like-btn')
             .eq(0)
-            .get('img[src="/static/media/unliked.b235d92b.svg"]')
-            .eq(0)
-            .should('exist');
+            .find('img')
+            .should('have.attr', 'src')
+            .should('include', '/unliked');
 
         });
 
