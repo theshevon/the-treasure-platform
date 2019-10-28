@@ -20,7 +20,7 @@ router.delete("/items/:id", isLoggedIn, isAuthorised, itemController.deleteItem)
 
 /*================================PUT ROUTES==================================*/
 
-router.put("/items/:iid/intUsers", isLoggedIn, isAuthorised, itemController.toggleEOI);
+router.put("/items/:iid/intUsers", isLoggedIn, itemController.toggleEOI);
 
 router.put("/items/:iid/assign/:uid", isLoggedIn, isAuthorised, itemController.assignItem);
 

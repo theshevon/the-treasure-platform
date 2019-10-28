@@ -16,44 +16,45 @@ export const loginUser = (userData, history) => (dispatch) => {
     dispatch({ type : LOADING_UI });
 
     axios({
-        method : 'post',
-        url    : '/login',
-        data   : userData
-    })
-    .then(res => {
+                method : 'post',
+                url    : '/login',
+                data   : userData
+            })
+            .then(res => {
 
-        // extract token
-        const token = `Bearer ${res.data.token}`;
+                // extract token
+                const token = `Bearer ${res.data.token}`;
 
-        // store auth token in browser
-        localStorage.setItem('TreasureIDToken', token);
+                // store auth token in browser
+                localStorage.setItem('TreasureIDToken', token);
 
-        // store utype in browser to manage private routes
-        localStorage.setItem('TreasureUType', res.data.type);
+                // store utype in browser to manage private routes
+                localStorage.setItem('TreasureUType', res.data.type);
 
-        // data to store between navigating routes
-        localStorage.setItem('TreasureUName', res.data.name);
-        localStorage.setItem('TreasureUImg', res.data.imgSrc);
+                // data to store between navigating routes
+                localStorage.setItem('TreasureUName', res.data.name);
+                localStorage.setItem('TreasureUImg', res.data.imgSrc);
 
-        // set auth token in all request headers
-        axios.defaults.headers.common['Authorization'] = token;
+                // set auth token in all request headers
+                axios.defaults.headers.common['Authorization'] = token;
 
-        dispatch({ type : SET_AUTHENTICATED });
-        dispatch({
-                    type    : SET_USER,
-                    payload : res.data
+                dispatch({ type : SET_AUTHENTICATED });
+                dispatch({
+                            type    : SET_USER,
+                            payload : res.data
+                        });
+                dispatch({ type : CLEAR_ERRORS });
+
+                // stop loading and redirect to catalogue
+                history.push('/items');
+            })
+            .catch(err => {
+                console.log(err);
+                dispatch({
+                    type    : SET_ERRORS,
+                    payload : err.response.data
                 });
-        dispatch({ type : CLEAR_ERRORS });
-
-        // stop loading and redirect to catalogue
-        history.push('/items');
-    })
-    .catch(err => {
-        dispatch({
-            type    : SET_ERRORS,
-            payload : err.response.data
-        })
-    })
+            });
 }
 
 /**
