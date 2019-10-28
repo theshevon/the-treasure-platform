@@ -31,19 +31,27 @@ import { logoutUser, setUserData } from './redux/actions/userActions';
 // global server URL
 axios.defaults.baseURL = 'https://us-central1-comp30022app.cloudfunctions.net/api';
 
+// extract the auth token from the browser
 const token = localStorage.TreasureIDToken;
 if (token) {
 	const decodedToken = jwtDecode(token);
+
+	// if the token has expired, redirect the user to the login page
 	if (decodedToken.exp * 1000 < Date.now()) {
 		store.dispatch(logoutUser());
 		window.location.href = '/login';
-	} else {
+	}
+	// else, update the global auth info
+	else {
 		store.dispatch({ type: SET_AUTHENTICATED });
 		store.dispatch(setUserData());
 		axios.defaults.headers.common['Authorization'] = token;
 	}
 }
 
+/**
+ * Represents the entry point for the Application.
+ */
 class App extends Component{
 
 	render() {
