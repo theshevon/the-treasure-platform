@@ -27,10 +27,16 @@ describe("Delete test item (Primary User)", () => {
         cy
             .contains(deleteButtonText).click();
 
-        cy.wait(3000)
-
         // click on the delete confirm button
         cy
             .contains(deleteConfirmText).click();
+
+        // wait for item to delete
+        cy.wait(3000)
+
+        // ensure that item deleted does not exist
+        cy
+            .contains(deleteItem).parent('div')
+            .should('not.exist');
     })
 });
