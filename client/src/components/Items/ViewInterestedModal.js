@@ -14,6 +14,10 @@ import UserTag from '../users/UserTag';
 // custom css
 import '../../stylesheets/view-interested.css';
 
+/**
+ * Represents a modal that displays a list of users who are interested in
+ * the catalogued item.
+ */
 class ViewInterestedModal extends Component {
 
     state = {
@@ -26,6 +30,7 @@ class ViewInterestedModal extends Component {
 
         let { intUserIDs } = this.props;
 
+        //  retrieve all the data relevant to the interested users.
         await axios({
                         method : 'get',
                         url    : '/users'
@@ -42,7 +47,7 @@ class ViewInterestedModal extends Component {
                         // map all the interested user ids to their data
                         let intUsers=[];
                         for (let i=0; i<intUserIDs.length; i++){
-                            if (idsToData.hasOwnProperty([intUserIDs[i]])){  // TODO: remove this clause after seeding db
+                            if (idsToData.hasOwnProperty([intUserIDs[i]])){
                                 intUsers.push(idsToData[intUserIDs[i]]);
                             }
                         }
@@ -57,8 +62,14 @@ class ViewInterestedModal extends Component {
                     });
     }
 
+    /**
+     * Handles the closing of the modal.
+     */
     handleClose = () => this.setState({ show : false });
 
+    /**
+     * Handles the opening of the modal.
+     */
     handleShow = () => this.setState({ show : true });
 
     render() {
@@ -73,6 +84,8 @@ class ViewInterestedModal extends Component {
 
             userList = ("No one has expressed interest in this item yet.");
 
+            // if users have expressed interest in this item, then generate
+            // name tags for them
             if (intUsers.length > 0){
                 userList = (
                         <Col
@@ -90,6 +103,7 @@ class ViewInterestedModal extends Component {
             }
         }
 
+        // backdrop for the modal
         let backdrop = null;
         if (this.state.show){
             backdrop = (
@@ -103,7 +117,7 @@ class ViewInterestedModal extends Component {
 
             <div>
 
-                {/* View Interested Button */}
+                {/* trigger button */}
                 <Button
                     className="btn m-1"
                     variant="light"
@@ -130,6 +144,7 @@ class ViewInterestedModal extends Component {
 						</Modal.Title>
 					</Modal.Header>
 
+                    {/* user list */}
 					<Modal.Body
 						className="px-5 pb-5 pt-0">
                         <Row
@@ -141,7 +156,7 @@ class ViewInterestedModal extends Component {
 				</Modal>
 
             </div>
-        )
+        );
     }
 }
 

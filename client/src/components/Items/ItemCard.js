@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes            from 'prop-types';
 
-
 // bootstrap imports
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Carousel       from 'react-bootstrap/Carousel';
