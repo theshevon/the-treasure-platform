@@ -7,6 +7,12 @@ describe("Stage 1", () => {
 
     it("All fields blank", () => {
 
+        // click on the add item button
+        cy
+            .get('.btn')
+            .eq(1)
+            .click();
+
         // click 'Next'
         cy
             .contains('Next')
@@ -33,6 +39,12 @@ describe("Stage 1", () => {
     });
 
     it("Toggle visibility", () => {
+
+        // click on the add item button
+        cy
+            .get('.btn')
+            .eq(1)
+            .click();
 
         // select a user from the visibility dropdown
         cy

@@ -76,16 +76,13 @@ Cypress.Commands.add('go_to_dashboard', () => {
         .eq(0)
         .click();
 
+    cy
+        .wait(2000);
+
     // ensure that the current page is the dashboard
     cy
         .url()
         .should('eq', 'http://localhost:3000/dashboard');
-
-    // click on the add item button
-    cy
-        .get('.btn')
-        .eq(1)
-        .click();
 });
 
 Cypress.Commands.add('do_stage_1', (validInviteeEmail) => {
