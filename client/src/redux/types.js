@@ -1,4 +1,4 @@
-// auth reducer types
+// user reducer types
 export const SET_AUTHENTICATED   = "SET_AUTHENTICATED";
 export const SET_UNAUTHENTICATED = "SET_UNATHENTICATED";
 export const SET_USER            = "SET_USER"

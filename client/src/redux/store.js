@@ -5,16 +5,17 @@ import {
     compose
 } from 'redux';
 import thunk       from 'redux-thunk';
-
 import userReducer from './reducers/userReducer';
 import uiReducer   from './reducers/uiReducer';
 
 const initialState = {};
-const middleware = [thunk];
+const middleware   = [thunk];
 
 const reducers = combineReducers({
-    user : userReducer, // everything that comes from the `userReducer` will be
-                        // stored inside `user` object inside the state.
+
+    // everything that comes from the `userReducer` will be stored inside `user`
+    // object inside the state, and similarly for the UI
+    user : userReducer,
     UI   : uiReducer
 });
 
