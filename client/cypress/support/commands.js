@@ -35,7 +35,6 @@ Cypress.Commands.add('login_primary_user', () => {
 
 });
 
-
 Cypress.Commands.add('login_secondary_user', () => {
 
     // visit the log in page
@@ -113,3 +112,41 @@ Cypress.Commands.add('do_stage_1', (validInviteeEmail) => {
     cy
         .wait(5000);
 });
+
+// custom Cypress login command
+Cypress.Commands.add('login', (username, pw) => {
+    cy
+        .get('input[name="email"]')
+        .type(username);
+
+    // type in an invalid password
+    cy
+        .get('input[name="password"]')
+        .type(pw);
+
+    // click on the log in button
+    cy
+        .contains('Log In')
+        .click();
+
+    // wait for the next page to load
+    cy
+        .wait(3000);
+
+    // ensure that the page is now the items page
+    cy
+        .url()
+        .should('eq', 'http://localhost:3000/items');
+
+})
+
+// custom Cypress logout from item page command
+Cypress.Commands.add('logout', () => {
+    // logs out of primary user account
+    cy
+        .get('.dropdown-toggle')
+        .click();
+    cy
+        .get('.dropdown-menu > [href="#"]')
+        .click();
+})

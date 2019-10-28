@@ -26,44 +26,6 @@ const assignedIndex = 1
 // button texts
 const assignButtonText = "Assign"
 
-// login custom cypress command
-Cypress.Commands.add('login', (username, pw) => {
-    cy
-        .get('input[name="email"]')
-        .type(username);
-
-    // type in an invalid password
-    cy
-        .get('input[name="password"]')
-        .type(pw);
-
-    // click on the log in button
-    cy
-        .contains('Log In')
-        .click();
-
-    // wait for the next page to load
-    cy
-        .wait(3000);
-
-    // ensure that the page is now the items page
-    cy
-        .url()
-        .should('eq', 'http://localhost:3000/items');
-
-})
-
-// logout custom cypress command
-Cypress.Commands.add('logout', () => {
-    // logs out of primary user account
-    cy
-        .get('.dropdown-toggle')
-        .click();
-    cy
-        .get('.dropdown-menu > [href="#"]')
-        .click();
-})
-
 // openAssignToModal custom cypress command
 Cypress.Commands.add('openAssignToModal', () => {
 
@@ -80,8 +42,8 @@ Cypress.Commands.add('openAssignToModal', () => {
 })
 
 ////// 1) PU assign item then check that star is on SU's item card
-describe('Get to the Items Page', function () {
-  it('logs into primary user account using the UI', function () {
+describe('Get to the Items Page', () => {
+  it('logs into primary user account using the UI', () => {
 
     // visit the log in page
     cy.visit("http://localhost:3000/login");
@@ -92,8 +54,8 @@ describe('Get to the Items Page', function () {
 })
 
 // assign item to secondary user
-describe('Assign', function () {
-    it('selects user to assign item to and reflect changes', function () {
+describe('Assign', () => {
+    it('selects user to assign item to and reflect changes', () => {
 
         // open up assign dialog
         cy
@@ -113,7 +75,7 @@ describe('Assign', function () {
             .click();
     })
 
-    it('reflect changes in "assigned to" label', function () {
+    it('reflect changes in "assigned to" label', () => {
 
         // check that the assignee label reflects the change
         cy
@@ -121,9 +83,9 @@ describe('Assign', function () {
     })
 })
 
-describe('Log out of PU and sign into SU', function () {
+describe('Log out of PU and sign into SU', () => {
 
-    it('exit modals and logout', function () {
+    it('exit modals and logout', () => {
 
         // exits "assign" modal
         cy
@@ -142,16 +104,16 @@ describe('Log out of PU and sign into SU', function () {
         cy.logout()
         })
 
-    it('logs into secondary user account using the UI', function () {
+    it('logs into secondary user account using the UI', () => {
 
       cy.login(testSecondaryUsername, testPassword)
     })
 
 })
 
-describe('Assigned To icon is present on assigned object', function () {
+describe('Assigned To icon is present on assigned object', () => {
 
-    it('checks if star exist on the assigned object', function () {
+    it('checks if star exist on the assigned object', () => {
 
         // check: first icon is star icon
 
@@ -164,13 +126,13 @@ describe('Assigned To icon is present on assigned object', function () {
 })
 
 
-describe('Log out of SU and log into PU', function () {
+describe('Log out of SU and log into PU', () => {
 
-    it('logout', function () {
+    it('logout', () => {
         cy.logout()
     })
 
-    it('logs into primary user account', function () {
+    it('logs into primary user account', () => {
       cy.login(testPrimaryUsername, testPassword)
     })
 
@@ -179,8 +141,8 @@ describe('Log out of SU and log into PU', function () {
 ////// 2) PU unassign item then check that star is NOT on SU's item card
 
 // assign the same item to "No One"
-describe('Assign', function () {
-    it('selects user to assign item to and reflect changes', function () {
+describe('Assign', () => {
+    it('selects user to assign item to and reflect changes', () => {
         // open up assign dialog
         cy
             .openAssignToModal()
@@ -199,7 +161,7 @@ describe('Assign', function () {
             .click();
     })
 
-    it('reflect changes in "assigned to" label', function () {
+    it('reflect changes in "assigned to" label', () => {
         // check that the assignee label reflects the change
         cy
             .get('.assignee').should('contain', noOne)
@@ -207,9 +169,9 @@ describe('Assign', function () {
 })
 
 // log out of PU and login to SU
-describe('Log out of PU and sign into SU', function () {
+describe('Log out of PU and sign into SU', () => {
 
-    it('exit modals and logout', function () {
+    it('exit modals and logout', () => {
 
         // exits "assign" modal
         cy
@@ -228,7 +190,7 @@ describe('Log out of PU and sign into SU', function () {
         cy.logout()
         })
 
-    it('logs into secondary user account using the UI', function () {
+    it('logs into secondary user account using the UI', () => {
 
       cy.login(testSecondaryUsername, testPassword)
 
@@ -236,9 +198,9 @@ describe('Log out of PU and sign into SU', function () {
 })
 
 // check to see if changes are reflected in the secondary user account
-describe('Assigned To icon is NOT present on un-assigned object', function () {
+describe('Assigned To icon is NOT present on un-assigned object', () => {
 
-    it('checks if star exist on the assigned object', function () {
+    it('checks if star exist on the assigned object', () => {
 
         // check : first icon is not star icon
         cy.contains(assignObject).parent().within(()=> {

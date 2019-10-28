@@ -21,48 +21,10 @@ const testSecondaryUser2 = "Uncle Benjamin"
 // test object of interest
 const likeObject = "Dash, the Cat"
 
-// custom Cypress login command
-Cypress.Commands.add('login', (username, pw) => {
-    cy
-        .get('input[name="email"]')
-        .type(username);
-
-    // type in an invalid password
-    cy
-        .get('input[name="password"]')
-        .type(pw);
-
-    // click on the log in button
-    cy
-        .contains('Log In')
-        .click();
-
-    // wait for the next page to load
-    cy
-        .wait(3000);
-
-    // ensure that the page is now the items page
-    cy
-        .url()
-        .should('eq', 'http://localhost:3000/items');
-
-})
-
-// custom Cypress logout from item page command
-Cypress.Commands.add('logout', () => {
-    // logs out of primary user account
-    cy
-        .get('.dropdown-toggle')
-        .click();
-    cy
-        .get('.dropdown-menu > [href="#"]')
-        .click();
-})
-
 
 ////// 1. Check single SU liking an item is reflected in the PU View Int Modal
-describe('Go to the Items Page', function () {
-  it('logs into Secondary User 1 account using the UI', function () {
+describe('Go to the Items Page', () => {
+  it('logs into Secondary User 1 account using the UI', () => {
 
     // visit the log in page
     cy.visit("http://localhost:3000/login");
@@ -73,8 +35,8 @@ describe('Go to the Items Page', function () {
 })
 
 
-describe('Secondary User 1  expresses interest', function () {
-    it('expresses interest in an item', function () {
+describe('Secondary User 1  expresses interest', () => {
+    it('expresses interest in an item', () => {
 
         // click on the 'like' button for the item to be assigned
         cy
@@ -86,8 +48,8 @@ describe('Secondary User 1  expresses interest', function () {
 })
 
 
-describe('Secondary User 1 log out', function () {
-    it('logs out', function () {
+describe('Secondary User 1 log out', () => {
+    it('logs out', () => {
 
         //logs out of secondary user account
         cy.logout()
@@ -95,8 +57,8 @@ describe('Secondary User 1 log out', function () {
 })
 
 
-describe('Primary User logs in', function () {
-    it('logs in', function () {
+describe('Primary User logs in', () => {
+    it('logs in', () => {
 
         // PU login
         cy.login(testPrimaryUsername, testPassword)
@@ -104,8 +66,8 @@ describe('Primary User logs in', function () {
 })
 
 
-describe('Check view interested has been updated', function () {
-    it('navigates to the item modal', function () {
+describe('Check view interested has been updated', () => {
+    it('navigates to the item modal', () => {
 
         // open item modal
         cy
@@ -114,7 +76,7 @@ describe('Check view interested has been updated', function () {
                 cy.contains('more info').click()
             })
     })
-    it('confirms that Secondary User 1 shows up', function () {
+    it('confirms that Secondary User 1 shows up', () => {
 
         // open 'interested users' modal
         cy
@@ -136,9 +98,9 @@ describe('Check view interested has been updated', function () {
 
 
 /////// 2. Check single user un-liking the same item is reflected in the PU View Int Modal
-describe('Log out of Primary User and sign into second Secondary User 1', function () {
+describe('Log out of Primary User and sign into second Secondary User 1', () => {
 
-    it('exit modals and logout', function () {
+    it('exit modals and logout', () => {
 
         // exits "view-interested" modal
         cy
@@ -158,7 +120,7 @@ describe('Log out of Primary User and sign into second Secondary User 1', functi
 
         })
 
-    it('logs into Secondary User 1 account using the UI', function () {
+    it('logs into Secondary User 1 account using the UI', () => {
 
       // SU1 login
       cy.login(testSecondaryUsername1, testPassword)
@@ -167,8 +129,8 @@ describe('Log out of Primary User and sign into second Secondary User 1', functi
 })
 
 
-describe('Secondary User 1 unlikes the same object', function () {
-    it('unlikes the same item', function () {
+describe('Secondary User 1 unlikes the same object', () => {
+    it('unlikes the same item', () => {
 
         // click on the 'unlike' button for the item to be un-assigned
         cy
@@ -183,8 +145,8 @@ describe('Secondary User 1 unlikes the same object', function () {
 
 
 
-describe('Secondary User 1 logs out', function () {
-    it('logs out', function () {
+describe('Secondary User 1 logs out', () => {
+    it('logs out', () => {
 
         // SU1 logout
         cy.logout()
@@ -192,8 +154,8 @@ describe('Secondary User 1 logs out', function () {
 })
 
 
-describe('Primary User signs in', function () {
-    it('logs in', function () {
+describe('Primary User signs in', () => {
+    it('logs in', () => {
 
         // PU login
         cy.login(testPrimaryUsername, testPassword)
@@ -201,8 +163,8 @@ describe('Primary User signs in', function () {
 })
 
 
-describe('Check view interested has been updated', function () {
-    it('navigates to the item modal', function () {
+describe('Check view interested has been updated', () => {
+    it('navigates to the item modal', () => {
 
         // open item modal
         cy
@@ -211,7 +173,7 @@ describe('Check view interested has been updated', function () {
                 cy.contains('more info').click()
             })
     })
-    it('confirms that interested user modal has been updated', function () {
+    it('confirms that interested user modal has been updated', () => {
 
         // open 'interested users' modal
         cy
@@ -233,9 +195,9 @@ describe('Check view interested has been updated', function () {
 
 
 ///////  3. Check if more than one SU liking the same item is reflected in the PU View Int Modal
-describe('Log out of PU and sign into SU2', function () {
+describe('Log out of PU and sign into SU2', () => {
 
-    it('exit modals and logout', function () {
+    it('exit modals and logout', () => {
 
         // exits "view-interested" modal
         cy
@@ -254,7 +216,7 @@ describe('Log out of PU and sign into SU2', function () {
         cy.logout()
         })
 
-    it('logs into Secondary User 2 account using the UI', function () {
+    it('logs into Secondary User 2 account using the UI', () => {
 
       // SU2 login
       cy.login(testSecondaryUsername2, testPassword);
@@ -263,8 +225,8 @@ describe('Log out of PU and sign into SU2', function () {
 })
 
 
-describe('Second User expresses interest in the same object', function () {
-    it('expresses interest in an item', function () {
+describe('Second User expresses interest in the same object', () => {
+    it('expresses interest in an item', () => {
 
         // click on the 'like' button for the item to be assigned
         cy
@@ -276,8 +238,8 @@ describe('Second User expresses interest in the same object', function () {
 })
 
 
-describe('Secondary User 2 logs out', function () {
-    it('logs out', function () {
+describe('Secondary User 2 logs out', () => {
+    it('logs out', () => {
         // SU2 logout
         cy.logout()
     })
@@ -285,13 +247,13 @@ describe('Secondary User 2 logs out', function () {
 
 
 describe('Log into other Secondary User 1 account', function() {
-    it('logs into Secondary User account 1 using the UI', function () {
+    it('logs into Secondary User account 1 using the UI', () => {
 
         // SU1 login
         cy.login(testSecondaryUsername1, testPassword)
     })
 
-    it('expresses interest in an item', function () {
+    it('expresses interest in an item', () => {
 
         // click on the 'like' button for the item to be assigned
         cy
@@ -304,8 +266,8 @@ describe('Log into other Secondary User 1 account', function() {
 })
 
 
-describe('Secondary User 1 logs out', function () {
-    it('logs out', function () {
+describe('Secondary User 1 logs out', () => {
+    it('logs out', () => {
 
         //logs out of Secondary User 1 account
         cy.logout()
@@ -314,8 +276,8 @@ describe('Secondary User 1 logs out', function () {
 })
 
 
-describe('Primary User sign in', function () {
-    it('logs in', function () {
+describe('Primary User sign in', () => {
+    it('logs in', () => {
 
         // PU login
         cy.login(testPrimaryUsername, testPassword)
@@ -323,8 +285,8 @@ describe('Primary User sign in', function () {
 })
 
 
-describe('Check view interested has been updated', function () {
-    it('navigates to the item modal', function () {
+describe('Check view interested has been updated', () => {
+    it('navigates to the item modal', () => {
 
         // open item modal
         cy
@@ -333,7 +295,7 @@ describe('Check view interested has been updated', function () {
                 cy.contains('more info').click()
             })
     })
-    it('confirms that both new interested user shows up', function () {
+    it('confirms that both new interested user shows up', () => {
 
         // open 'interested users' modal
         cy
