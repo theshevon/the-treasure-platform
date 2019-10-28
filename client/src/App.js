@@ -25,10 +25,10 @@ import { SET_AUTHENTICATED }       from './redux/types';
 import { logoutUser, setUserData } from './redux/actions/userActions';
 
 // local server URL (for dev)
-axios.defaults.baseURL = 'http://localhost:5000/comp30022app/us-central1/api';
+// axios.defaults.baseURL = 'http://localhost:5000/comp30022app/us-central1/api';
 
 // global server URL
-// axios.defaults.baseURL = 'https://us-central1-comp30022app.cloudfunctions.net/api';
+axios.defaults.baseURL = 'https://us-central1-comp30022app.cloudfunctions.net/api';
 
 // extract the auth token from the browser
 const token = localStorage.TreasureIDToken;

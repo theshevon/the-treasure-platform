@@ -48,6 +48,13 @@
     margin-top: 10vh;
 }
 
+/* .new-item-alert{
+    position: absolute !important;
+    left: 50%;
+    top: 18.5%;
+    transform: translateX(-50%);
+} */
+
 a.ui.label{
     color: black !important;
     font-weight: bold;

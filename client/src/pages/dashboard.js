@@ -52,9 +52,15 @@ class Dashboard extends Component {
 
     render() {
 
+        // dashboard options container
+        let dashboardOptsClass = "mt-6 d-flex justify-content-center";
+
         // create an alert, if needed
         let alert = null;
         if (this.state.showAlert){
+
+            dashboardOptsClass = "mt-4 d-flex justify-content-center";
+
             alert = (
                 <Alert
                     className="mt-1"
@@ -89,7 +95,7 @@ class Dashboard extends Component {
                     { alert }
 
                     <Row
-                        className="mt-6 d-flex justify-content-center ">
+                        className={dashboardOptsClass}>
 
                         {/* invite user option */}
                         <Col

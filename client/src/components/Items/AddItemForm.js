@@ -254,7 +254,7 @@ class AddItemForm extends Component {
             // an appropriate response to the user.
         }
 
-        this.props.handleAlert("Successfully created new item!");
+        this.props.handleAlert("Successfully created a new item!");
         this.props.handleClose();
     }
 
