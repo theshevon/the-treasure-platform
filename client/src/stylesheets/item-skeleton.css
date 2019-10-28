@@ -1,20 +1,10 @@
 .empty-img, .empty-line, .empty-btn{
-    /* background: #E2E2E2; */
     background: linear-gradient(-90deg, #F0F0F0 0%, #F8F8F8 50%, #F0F0F0 100%);
     animation: pulse 1.2s ease-in-out infinite;
     background-size: 400% 400%;
     margin-top: 5px;
     margin-bottom: 5px;
     border-radius: 2px;
-}
-
-@keyframes pulse {
-    0% {
-      background-position: 0% 0%;
-    }
-    100% {
-      background-position: -135% 0%;
-    }
 }
 
 .empty-img{
@@ -66,4 +56,13 @@
     margin-right: none !important;
     margin-left: none !important;
     margin-bottom: 8em
+}
+
+@keyframes pulse {
+    0% {
+      background-position: 0% 0%;
+    }
+    100% {
+      background-position: -135% 0%;
+    }
 }

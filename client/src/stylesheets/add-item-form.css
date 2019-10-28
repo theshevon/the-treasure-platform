@@ -1,3 +1,11 @@
+#visibility-toggler, .optional-field {
+    border-color: #CED4DA !important;
+}
+
+#visibility-toggler{
+    margin-right: 100px !important
+}
+
 .add-item-btn{
     align-self: right;
 }
@@ -6,15 +14,9 @@
     color: black !important;
 }
 
-img.uploaded-img{
-    height: 250px;
-    object-fit: contain !important;
-}
-
 .selected-img, .non-selected-img{
     border-radius: 4px;
     transition: 200ms;
-    /* margin: 2px; */
 }
 
 .selected-img:hover, .non-selected-img:hover{
@@ -33,25 +35,21 @@ img.uploaded-img{
     display: none !important;
 }
 
-#visibility-toggler, .optional-field {
-    border-color: #CED4DA !important;
-}
-
 .add-item-modal .modal-body{
     overflow-x: hidden !important;
 }
 
 .ui.label{
-    /* background: rgb(218, 255, 243); */
     border-radius: 12px;
     color: black !important;
     font-weight: 400;
 }
 
-#visibility-toggler{
-    margin-right: 100px !important
-}
-
 .selector{
     padding-right: 100px !important;
+}
+
+img.uploaded-img{
+    height: 250px;
+    object-fit: contain !important;
 }
