@@ -1,0 +1,68 @@
+.empty-img, .empty-line, .empty-btn{
+    background: linear-gradient(-90deg, #F0F0F0 0%, #F8F8F8 50%, #F0F0F0 100%);
+    animation: pulse 1.2s ease-in-out infinite;
+    background-size: 400% 400%;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    border-radius: 2px;
+}
+
+.empty-img{
+    width: 100%;
+    height: 195px;
+}
+
+.empty-btn{
+    height: 1.25rem;
+}
+
+.empty-btn-1{
+    width: 25%;
+    margin-left: 50%;
+    transform: translateX(-50%);
+}
+
+.empty-btn-2{
+    width: 1.25rem;
+    right: 0%;
+}
+
+.empty-line{
+    height: 1rem;
+}
+
+.empty-title{
+    height: 1.2rem;
+    width: 60%;
+}
+
+.empty-line-1{
+    width: 90%;
+}
+
+.empty-line-2{
+    width: 100%;
+}
+
+.empty-line-3{
+    width: 70%;
+}
+
+.all-skeletons-container{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: none !important;
+    margin-right: none !important;
+    margin-left: none !important;
+    margin-bottom: 8em
+}
+
+@keyframes pulse {
+    0% {
+      background-position: 0% 0%;
+    }
+    100% {
+      background-position: -135% 0%;
+    }
+}

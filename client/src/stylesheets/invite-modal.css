@@ -1,0 +1,24 @@
+.invite-user-modal .modal-body{
+  overflow-x: hidden !important;
+}
+
+.del-row-btn{
+  background: none !important;
+  border: none !important;
+  color: gray !important;
+  font-size: 1.25rem !important;
+}
+
+.del-row-btn:hover{
+  color: #3F3F3F !important;
+}
+
+.add-row-btn{
+  color: gray !important;
+  transition: 300ms !important;
+}
+
+.add-row-btn:hover{
+  cursor: pointer;
+  color: #3F3F3F !important;
+}

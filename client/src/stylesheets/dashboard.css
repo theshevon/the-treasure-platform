@@ -1,0 +1,80 @@
+.dashboard-option-container{
+    height: 60vh !important;
+}
+
+.dashboard-option {
+    padding: 30% 50%;
+    transition: 500ms;
+    background: white;
+    margin-bottom: 20px;
+    box-shadow: 0 6px 15px rgba(36,37,38,0.08);
+    border-radius: 5px;
+    height: 100%;
+}
+
+.dashboard-option:hover{
+    box-shadow:5px 12px 20px rgba(36,37,38,0.13);
+    transform: scale(1.025) perspective(1px);
+    border: none !important;
+}
+
+.dashboard-option:hover .icon.invite-icon{
+    content: url('../icons/invite-col.svg') !important;
+}
+
+.dashboard-option:hover .icon.item-icon{
+    content: url('../icons/item-col.svg') !important;
+}
+
+.dashboard-option-content{
+    margin-top: 50%;
+    transform: translateY(-50%);
+}
+
+.icon{
+    height: 198px;
+    width : 192px;
+    color: linear-gradient( 91.9deg,  rgba(75,207,250,1) 6.3%, rgba(25,159,249,1) 98.9% );
+    margin-left: 50%;
+    transform: translateX(-50%);
+}
+
+.dashboard{
+    overflow-y: hidden;
+    max-width: 100vw !important;
+}
+
+.mt-6{
+    margin-top: 10vh;
+}
+
+/* .new-item-alert{
+    position: absolute !important;
+    left: 50%;
+    top: 18.5%;
+    transform: translateX(-50%);
+} */
+
+a.ui.label{
+    color: black !important;
+    font-weight: bold;
+    background-color: #FFEAB6 !important;
+    border: none !important;
+    padding-right: 2.5px !important;
+}
+
+i.delete.icon::before{
+    padding-left: 5px;
+}
+
+@media(max-width: 576px){
+
+    .dashboard{
+        margin-bottom: 4em;
+        overflow-x: hidden !important;
+    }
+
+    .mt-6{
+        margin-top: 7.5vh;
+    }
+}

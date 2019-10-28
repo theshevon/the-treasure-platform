@@ -1,61 +1,112 @@
-import React, { Component } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import "./App.css"
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
-
-// components
-import Navbar from "./components/Navbar";
+import React, { Component } from 'react';
+import { BrowserRouter as Router,
+		 Switch,
+		 Route }
+from 'react-router-dom';
+import axios     from 'axios';
+import jwtDecode from 'jwt-decode';
 
 // pages
-import home from "./pages/home";
-import dashboard from "./pages/dashboard";
-import login from "./pages/login";
-import register from "./pages/register";
-import items from "./pages/items";
-import loginscreen from "./pages/loginscreen";
+import dashboard from './pages/dashboard';
+import register  from './pages/register';
+import support   from './pages/support';
+import error     from './pages/error';
+import items     from './pages/items';
+import login     from './pages/login';
 
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      light: '#757ce8',
-      main: '#3f50b5',
-      dark: '#002884',
-      contrastText: '#fff',
-    },
-    secondary: {
-      light: '#ff7961',
-      main: '#f44336',
-      dark: '#ba000d',
-      contrastText: '#000',
-    },
-  },
-  typography: {
-    useNextVariants: true,
-  }
-});
+// custom components
+import AuthenticatedRoute from './components/util/AuthenticatedRoute';
+import PrivateRoute       from './components/util/PrivateRoute';
 
-class App extends Component {
-  render() {
-    return (
-      <MuiThemeProvider theme={ theme }>
-        <div className="App">
-          <Router>
-            <Navbar />
-            <div className="container">
-              <Switch>
-                <Route exact path="/" component={ home }/>
-                <Route exact path="/dashboard" component={ dashboard }/>
-                <Route exact path="/items" component={ items }/>
-                <Route exact path="/login" component={ login }/>
-                <Route exact path="/register" component={ register }/>
-              </Switch>
-            </div>
-          </Router>
-        </div>
-      </MuiThemeProvider>
-    );
-  }
+// redux stuff
+import { Provider }                from 'react-redux';
+import store                       from './redux/store';
+import { SET_AUTHENTICATED }       from './redux/types';
+import { logoutUser, setUserData } from './redux/actions/userActions';
+
+// local server URL (for dev)
+// axios.defaults.baseURL = 'http://localhost:5000/comp30022app/us-central1/api';
+
+// global server URL
+axios.defaults.baseURL = 'https://us-central1-comp30022app.cloudfunctions.net/api';
+
+// extract the auth token from the browser
+const token = localStorage.TreasureIDToken;
+if (token) {
+	const decodedToken = jwtDecode(token);
+
+	// if the token has expired, redirect the user to the login page
+	if (decodedToken.exp * 1000 < Date.now()) {
+		store.dispatch(logoutUser());
+		window.location.href = '/login';
+	}
+	// else, update the global auth info
+	else {
+		store.dispatch({ type: SET_AUTHENTICATED });
+		store.dispatch(setUserData());
+		axios.defaults.headers.common['Authorization'] = token;
+	}
+}
+
+/**
+ * Represents the entry point for the Application.
+ */
+class App extends Component{
+
+	render() {
+
+		return (
+			<Provider
+				store={ store }>
+
+				<Router>
+					<Switch>
+
+						{/* landing page- items */}
+						<AuthenticatedRoute
+							exact
+							path="/"
+							component={ items }/>
+
+						{/* login page */}
+						<Route
+							exact
+							path="/login"
+							component={ login }/>
+
+						{/* registration page */}
+						<Route
+							exact
+							path="/register"
+							component={ register }/>
+
+						{/* dashboard */}
+						<PrivateRoute
+							exact
+							path="/dashboard"
+							component={ dashboard }/>
+
+						{/* item catalogue */}
+						<AuthenticatedRoute
+							exact
+							path="/items"
+							component={ items }/>
+
+						{/* support page */}
+						<AuthenticatedRoute
+							exact
+							path="/support"
+							component={ support }/>
+
+						{/* error page */}
+						<Route
+							component={ error }/>
+
+					</Switch>
+				</Router>
+			</Provider>
+		);
+	}
 }
 
 export default App;

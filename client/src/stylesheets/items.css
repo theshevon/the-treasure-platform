@@ -1,0 +1,25 @@
+.item-col{
+    padding: 0px !important;
+}
+
+.info-modal-body::-webkit-scrollbar {
+    width: 0 !important;
+    background: red !important;
+}
+
+.scrolled{
+    opacity: 0;
+}
+
+.all-items-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 4em;
+}
+
+.no-items-msg{
+    color: white;
+    font-family: 'Roboto';
+    padding-top: 25vh;
+}

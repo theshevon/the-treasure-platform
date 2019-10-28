@@ -1,0 +1,55 @@
+#visibility-toggler, .optional-field {
+    border-color: #CED4DA !important;
+}
+
+#visibility-toggler{
+    margin-right: 100px !important
+}
+
+.add-item-btn{
+    align-self: right;
+}
+
+.visibility-select{
+    color: black !important;
+}
+
+.selected-img, .non-selected-img{
+    border-radius: 4px;
+    transition: 200ms;
+}
+
+.selected-img:hover, .non-selected-img:hover{
+    cursor: pointer;
+}
+
+.selected-img{
+    border: 3px solid #fed766;
+}
+
+.non-selected-img{
+    border: 3px solid #E2E2E2;
+}
+
+.hidden-field{
+    display: none !important;
+}
+
+.add-item-modal .modal-body{
+    overflow-x: hidden !important;
+}
+
+.ui.label{
+    border-radius: 12px;
+    color: black !important;
+    font-weight: 400;
+}
+
+.selector{
+    padding-right: 100px !important;
+}
+
+img.uploaded-img{
+    height: 250px;
+    object-fit: contain !important;
+}

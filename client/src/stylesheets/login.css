@@ -1,0 +1,41 @@
+.main-container{
+    width: "100vw";
+    height: "100vh";
+}
+
+.login-form-container{
+    padding-top: 50vh !important;
+    transform: translateY(-25%);
+}
+
+.form-title{
+    font-family: 'Roboto', sans-serif;
+    text-align: center;
+}
+
+.login-field{
+    text-align: center;
+}
+
+.login-btn{
+    margin-left: 50%;
+    transform: translateX(-50%);
+    transition: 250ms !important;
+}
+
+.login-form-body{
+    background: white;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+}
+
+.was-validated .form-control:valid {
+    background-image: none !important;
+}
+
+.alert-window{
+    padding-top: 50vh !important;
+}
+.login-alert{
+    z-index: 100;
+}

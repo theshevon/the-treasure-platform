@@ -1,0 +1,8 @@
+.add-row-btn{
+    margin-left: 50%;
+    transform: translateX(-50%);
+}
+
+input.invite-email-field{
+    text-align: center !important;
+}

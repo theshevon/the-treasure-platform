@@ -1,0 +1,100 @@
+@import url('https://fonts.googleapis.com/css?family=Playfair+Display&display=swap');
+
+#content{
+    margin-top: 10vh;
+    min-height: 90vh;
+}
+
+.page-title {
+    color: white;
+    font-size: 3em;
+    font-weight: 100;
+    text-align: center;
+    letter-spacing: 3px;
+    position: relative;
+}
+
+.page-title::after{
+    content: '';
+    width: 60px;
+    height: 2px;
+    background: #fed766;
+    position: absolute;
+    left: 50%;
+    margin-left: -30px;
+    bottom: -12.5px;
+}
+
+.page-title {
+    font-family: 'Playfair Display', serif;
+}
+
+.modal-dialog-scrollable .modal-body{
+    overflow-x: hidden !important;
+}
+
+.modal-content{
+    border-radius: 5px !important;
+    border: none !important;
+    padding: 2%;
+}
+
+.modal-title.h4{
+    margin-left: 50% !important;
+    transform: translateX(-50%) !important;
+}
+
+.modal-header{
+    border-bottom: none !important;
+}
+
+.centered-btn{
+    margin-left: 50%;
+    transform: translateX(-50%);
+}
+
+.btn{
+    white-space: nowrap !important;
+    transition: 250ms !important;
+}
+
+.btn:not(.del-btn, .btn-danger):enabled:hover{
+    color: white !important;
+    border-color:  #fed766 !important;
+    background:  #fed766 !important;
+}
+
+.cover-div{
+    width: 100vw;
+    height: 100vh;
+}
+
+.fade.modal.show{
+    padding-right: 0px !important;
+}
+
+input.invalid-field, textarea.invalid-field{
+    border: 1px solid #DC3545 !important;
+}
+
+input.valid-field, textarea.valid-field{
+    border: 1px solid #29A645 !important;
+}
+
+p.invalid-feedback-msg{
+    color: #DC3545;
+    font-size: 0.9em;
+    font-weight: 500;
+    text-align: center !important;
+}
+
+p.valid-feedback-msg{
+    color: #29A645;
+    font-size: 0.9em;
+    font-weight: 500;
+    text-align: center !important;
+}
+
+body{
+    background: #a7bfe8 !important;
+}
