@@ -1,8 +1,8 @@
 const express        = require("express");
 const router         = express.Router();
 
-const userController = require("../controllers/users")
-const { isLoggedIn } = require("../util/middleware")
+const userController               = require("../controllers/users")
+const { isLoggedIn, isAuthorised } = require("../util/middleware")
 
 /*=================================GET ROUTES=================================*/
 
@@ -18,7 +18,7 @@ router.post("/register", userController.registerNewUser);
 
 router.post("/login", userController.logInUser);
 
-router.post("/invite", isLoggedIn, userController.inviteNewUsers);
+router.post("/invite", isLoggedIn, isAuthorised, userController.inviteNewUsers);
 
 router.post("/support", isLoggedIn, userController.sendSupportMessage);
 
