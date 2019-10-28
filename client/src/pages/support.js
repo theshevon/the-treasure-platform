@@ -12,7 +12,11 @@ import Col     from 'react-bootstrap/Col';
 // custom components
 import Navbar  from '../components/util/Navbar';
 
-class support extends Component {
+/**
+ * Represents the `Support` page that the users can visit to request technical
+ * support from the development team.
+ */
+class Support extends Component {
 
     state = {
         loading   : false,
@@ -24,11 +28,18 @@ class support extends Component {
         validated : false
     }
 
+    /**
+     * Handles changes made to input fields.
+     * When the value of an input field changes, its corresponding entry in the
+     * state changes too.
+     */
     handleChange = event => {
-		    this.setState({ [event.target.name] : event.target.value });
+		this.setState({ [event.target.name] : event.target.value });
     }
 
-    // clears an alert message
+    /**
+     * Clears an alert.
+     */
     clearAlert = () => {
         this.setState({
                         showAlert : false,
@@ -36,6 +47,9 @@ class support extends Component {
         });
     }
 
+    /**
+     * Sends the form data to the server.
+     */
     handleSubmit = event => {
 
         event.preventDefault();
@@ -50,6 +64,7 @@ class support extends Component {
             message        : this.state.message
         }
 
+        // send the data to the server
         axios({
                 method : 'post',
                 url    : '/support',
@@ -76,17 +91,18 @@ class support extends Component {
             });
     }
 
-
     render() {
 
         let errors    = this.state.errors;
         let validated = this.state.validated;
 
+        // if loading, replace button text with a spinner
         let btnContent = ("Send");
         if (this.state.loading){
             btnContent = (<Spinner animation="border" size="sm"/>);
         }
 
+        // create an alert, if needed
         let alert = null;
         if (this.state.showAlert){
             alert = (
@@ -102,6 +118,8 @@ class support extends Component {
                 </Alert>
             )
         }
+
+        // -- check for errors and error feedback
 
         let subjectClass    = "";
         let messageClass    = "";
@@ -165,9 +183,10 @@ class support extends Component {
                             md="6"
                             lg="4">
 
+                            {/* alert */}
                             { alert }
 
-                            {/* Form header */}
+                            {/* form header */}
                             <h1
                                 className="form-title mb-2">
                                 Tell Us What's Wrong
@@ -177,9 +196,9 @@ class support extends Component {
                                 Experiencing issues when trying to do something?<br/>Let us know and we'll work on fixing it right away!
                             </p>
 
-                            {/* Support form */}
-                            <Form
-                                onSubmit={this.handleSubmit}>
+                            {/* support form */}
+                            <Form>
+
                                 <Row
                                     className="my-1">
                                     <Form.Control
@@ -191,6 +210,7 @@ class support extends Component {
                                         required/>
                                     { subjectFeedback }
                                 </Row>
+
                                 <Row
                                     className="my-1">
                                     <Form.Control
@@ -204,6 +224,8 @@ class support extends Component {
                                         onChange={this.handleChange}/>
                                     { messageFeedback }
                                 </Row>
+
+                                {/* submit button */}
                                 <Button
                                     className="btn centered-btn mt-3"
                                     variant="light"
@@ -212,6 +234,7 @@ class support extends Component {
                                     disabled={this.state.loading}>
                                     {btnContent}
                                 </Button>
+
                             </Form>
                         </Col>
                     </Row>
@@ -221,4 +244,4 @@ class support extends Component {
     }
 }
 
-export default support
+export default Support;

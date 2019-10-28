@@ -6,7 +6,11 @@ import '../stylesheets/error.css';
 // icons
 import errorIcon from '../icons/error.svg';
 
-export class error extends Component {
+/**
+ * Represents an `error` page for when a user tries to either access a private
+ * route, or a route that doesn't exist.
+ */
+class Error extends Component {
     render() {
         return (
             <div
@@ -27,4 +31,4 @@ export class error extends Component {
     }
 }
 
-export default error
+export default Error;
