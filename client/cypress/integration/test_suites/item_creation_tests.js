@@ -32,7 +32,7 @@ describe("Stage 1", () => {
 
     });
 
-    it.only("Toggle visibility", () => {
+    it("Toggle visibility", () => {
 
         // select a user from the visibility dropdown
         cy

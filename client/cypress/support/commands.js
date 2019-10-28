@@ -26,7 +26,7 @@ Cypress.Commands.add('login_primary_user', () => {
 
     // wait for the next page to load
     cy
-        .wait(3000);
+        .wait(3500);
 
     // ensure that the page is now the items page
     cy
@@ -102,7 +102,7 @@ Cypress.Commands.add('do_stage_1', (validInviteeEmail) => {
     // type in a code
     cy
         .get('input[name="code"]')
-        .type('1bg2vxa4');
+        .type('y0kmghs2');
 
     // click on the next button
     cy
