@@ -1,3 +1,7 @@
+/**
+ * Validates a list of email addresses corresponding to potential users of the
+ * platform.
+ */
 exports.validateInvitationData =
 
     (emails) => {
@@ -6,6 +10,7 @@ exports.validateInvitationData =
         let uniqueEmails = new Set();
 
         emails.forEach((email, index) => {
+
             if (!isEmpty(email)){
 
                 // check for duplicate emails
@@ -30,7 +35,10 @@ exports.validateInvitationData =
         }
     }
 
-
+/**
+ * Validates invitee data to ensure that both the email address and code that
+ * they entered are valid.
+ */
 exports.validateInviteeData =
 
     (invitee) => {
@@ -53,6 +61,10 @@ exports.validateInviteeData =
                 }
     }
 
+/**
+ * Validates user registration data to ensure that all the fields contain
+ * valid data.
+ */
 exports.validateRegistrationData =
 
     (newUser) => {
@@ -80,12 +92,19 @@ exports.validateRegistrationData =
 
     }
 
+/**
+ * Validates user login data to ensure that all the fields contain valid data.
+ */
 exports.validateLoginData =
 
     (user) => {
 
         let errors = {};
+
+        // validate email address
         if (isEmpty(user.email) || !isEmail(user.email)) errors.email = "Please enter a valid email address.";
+
+        // validate password
         if (isEmpty(user.password)) errors.password = "Please enter a password.";
 
         return  {
@@ -94,9 +113,13 @@ exports.validateLoginData =
         }
     }
 
+/**
+ * Validates item data to ensure that all the fields contain valid data.
+ */
 exports.validateItemData =
 
     (item, secondaryUserIDs) => {
+
         let errors = {};
 
         // check if name and desc are valid
@@ -124,13 +147,16 @@ exports.validateItemData =
         }
     }
 
+/**
+ * Validates the support request data to ensure all the fields are valid.
+ */
 exports.validateSupportData =
 
     (supportData) => {
 
         let errors = {};
 
-        // check if subject and body are valid
+        // check if subject and message are valid
         if (isEmpty(supportData.subject)) errors.subject = "Please enter a subject!";
         if (isEmpty(supportData.message)) errors.message = "Please enter a message!";
 
@@ -139,12 +165,19 @@ exports.validateSupportData =
             valid : Object.keys(errors).length === 0
         }
     }
+
 /*=============================HELPER FUNCTIONS===============================*/
 
+/**
+ * Checks if a given string is empty.
+ */
 const isEmpty = (string) => {
     return (!string || string.trim() === "");
 }
 
+/**
+ * Checks if a given string corresponds to an email address.
+ */
 const isEmail = (email) => {
     const regEx = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return email.match(regEx);
