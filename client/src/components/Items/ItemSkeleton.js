@@ -12,31 +12,43 @@ import { connect } from 'react-redux';
 // custom CSS
 import '../../stylesheets/item-skeleton.css';
 
-class ItemSkeleton extends Component {
 
+/**
+ * Represents the loading skeletons on the items page.
+ */
+class ItemSkeleton extends Component {
 
     render() {
 
         const { user } = this.props;
-        let EOIOpt = 	(
+
+        /* placeholders to represent the 'like' button and the 'assigned' icon */
+        let buttonsPlaceholder = 	(
                             <div
                                 className="d-flex justify-content-between">
+
+                                {/* assign button placeholder */}
                                 <div
                                     className="empty-btn empty-btn-2 mb-2">
                                 </div>
+
+                                {/* like button placeholder */}
                                 <div
                                     className="empty-btn empty-btn-2 mb-2">
                                 </div>
+
                             </div>
                         );
 
+        /* determine whether user is a primary user or a secondary user */
         let type   = localStorage.TreasureUType || user.type;
         if (typeof type === "string"){
             type = parseInt(type);
         }
 
+        /* primary users don't need 'like' button or 'assigned' icon */
         if (type === 0){
-            EOIOpt = null;
+            buttonsPlaceholder = null;
         }
 
         const skeletons = Array.from({ length : 8 }).map((item, index) => (
@@ -44,13 +56,14 @@ class ItemSkeleton extends Component {
             <Card
                 key={index}
                 className="item-card">
+
                 <Row>
 
                     <Col
                         sm={12}
                         className="pb-0">
 
-                        {/* Card Title */}
+                        {/* card title placeholder */}
                         <Card.Title
                             className="item-card-title d-flex justify-content-center">
                             <div
@@ -58,8 +71,9 @@ class ItemSkeleton extends Component {
                             </div>
                         </Card.Title>
 
-                        {/* Card Image */}
+                        {/* card image placehodler*/}
                         <div className="empty-img"></div>
+
                     </Col>
 
                     <Col
@@ -68,10 +82,10 @@ class ItemSkeleton extends Component {
                         <Card.Body
                             className="item-card-body py-2">
 
-                            {/* EOI button */}
-                            { EOIOpt }
+                            {/* 'like' button and 'assigned' icon placeholders */}
+                            { buttonsPlaceholder }
 
-                            {/* Desc lines */}
+                            {/* description placeholders */}
                             <div
                                 className="empty-line empty-line-2 mb-2">
                             </div>
@@ -82,14 +96,17 @@ class ItemSkeleton extends Component {
                                 className="empty-line empty-line-2 my-2">
                             </div>
 
-                            {/* More Info button */}
+                            {/* 'more info' button placeholder */}
                             <div
                                 className="empty-btn empty-btn-1">
                             </div>
+
                         </Card.Body>
 
                     </Col>
+
                 </Row>
+
             </Card>
         ));
 
