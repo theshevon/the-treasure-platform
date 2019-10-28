@@ -14,6 +14,10 @@ import { connect }    from 'react-redux';
 import '../stylesheets/items.css';
 import '../stylesheets/item.css';
 
+/**
+ * Represents the `items` page, that users can go to in order to view the
+ * catalogued items.
+ */
 class Items extends Component {
 
     state = {
@@ -24,11 +28,14 @@ class Items extends Component {
         alertMsg         : ''
     }
 
-    // fetch item data from database
     async componentDidMount(){
+        // fetch item data from database
         await this.fetchItemsData();
     }
 
+    /**
+     * Retrieves all the item data from the server.
+     */
     fetchItemsData = async () => {
         await axios({
                         method: 'get',
@@ -41,28 +48,34 @@ class Items extends Component {
                             loading: false
                         })
                     })
-                    .catch(
-                        err => console.log(err)
+                    .catch(err =>
+                        console.log(err)
                     );
     }
 
-
-    // handle modal close
+    /**
+     * Handles the closing of the modal.
+     */
     handleClose = () => {
 		this.setState({ showAddItemModal : false })
-	};
+	}
 
-    // handle modal show
+    /**
+     * Handles the opening of the modal.
+     */
 	handleShow = () => {
 		this.setState({ showAddItemModal : true })
-	};
+	}
 
     render() {
 
+        // by default, render the item skeletons
         let itemListContent = (<ItemSkeleton/>);
 
         if (!this.state.loading){
+
             if (this.state.items.length > 0){
+                // create appropriates cards to represent each item
                 itemListContent = (
                     <div
                         className='all-items-container'>
@@ -76,6 +89,8 @@ class Items extends Component {
                     </div>
                 )
             } else {
+                // fallback for when no items have been catalogued, or if
+                // none of them have been shared with the current user
                 itemListContent = (
                     <div
                         className='all-items-container'>
@@ -96,15 +111,19 @@ class Items extends Component {
                 <div
                     id="content"
                     className="container">
+
+                    {/* page title */}
                     <h1
                         className="page-title mb-5">
                         ITEMS
                     </h1>
 
+                    {/* list of catalogued items */}
                     { itemListContent }
                 </div>
+
             </div>
-        )
+        );
     }
 }
 

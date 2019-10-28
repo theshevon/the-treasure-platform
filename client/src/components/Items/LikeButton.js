@@ -13,7 +13,10 @@ import '../../stylesheets/item.css';
 import likedBtn   from '../../icons/liked.svg';
 import unlikedBtn from '../../icons/unliked.svg';
 
-// A heart button that toggles between filled heart and outlined heart
+/**
+ * A heart-shaped button that toggles between a filled heart and outlined heart
+ * to represent a user's interest in a catalogued item.
+ */
 class LikeButton extends Component {
 
 	state = {
@@ -24,6 +27,10 @@ class LikeButton extends Component {
 		this.setState({ liked : this.props.liked });
 	}
 
+	/**
+	 * Handles a user's EOI by sending a request to the server to make the
+	 * relevant updates to the item's `intUsers` field.
+	 */
 	handleClick = () => {
 
 		this.setState({
@@ -43,7 +50,7 @@ class LikeButton extends Component {
 					this.setState({
 						liked: !this.state.liked
 					});
-				})
+				});
 	}
 
 	render() {
@@ -52,15 +59,19 @@ class LikeButton extends Component {
 
 		return (
 			<div className="customContainer">
+
+				{/* `like` button */}
 				<button className="like-btn">
-				<img
-					alt="item"
-					src= { label === "liked" ? likedBtn : unlikedBtn }
-					onClick={ this.handleClick }
-					width={this.props.size === "sm" ? "25" : "35"}
-					height={this.props.size === "sm" ? "25" : "35"}
-				/>
+
+					{/* heart-shaped image */}
+					<img
+						alt="item"
+						src= { label === "liked" ? likedBtn : unlikedBtn }
+						onClick={ this.handleClick }
+						width={this.props.size === "sm" ? "25" : "35"}
+						height={this.props.size === "sm" ? "25" : "35"}/>
 				</button>
+
 			</div>
 		);
 	}

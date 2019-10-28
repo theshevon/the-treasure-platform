@@ -19,14 +19,20 @@ import '../stylesheets/dashboard.css';
 import inviteIcon from '../icons/invite.svg';
 import itemIcon   from '../icons/item.svg';
 
-export class Dashboard extends Component {
+/**
+ * Represents the `Dashboard` page that a Primary User can use to perform
+ * admin actions.
+ */
+class Dashboard extends Component {
 
     state = {
         showAlert: false,
         alertMsg : null
     }
 
-    // displays alerts on the page upon completion of a task
+    /**
+     * Displays alerts on the page upon completion of a task.
+     */
     handleAlert = (msg) => {
         this.setState({
                         showAlert : true,
@@ -34,7 +40,9 @@ export class Dashboard extends Component {
                        });
     }
 
-    // clears an alert message
+    /**
+     * Clears an alert message.
+     */
     clearAlert = () => {
         this.setState({
                         showAlert : false,
@@ -44,20 +52,21 @@ export class Dashboard extends Component {
 
     render() {
 
+        // create an alert, if needed
         let alert = null;
         if (this.state.showAlert){
             alert = (
                 <Alert
                     className="mt-1"
                     variant="success"
-                    style={{textAlign : "center"}}
+                    style={{ textAlign : "center" }}
                     onClose={ this.clearAlert }
                     dismissible>
                     <p>
-                    { this.state.alertMsg }
+                        { this.state.alertMsg }
                     </p>
                 </Alert>
-            )
+            );
         }
 
         return (
@@ -70,6 +79,8 @@ export class Dashboard extends Component {
                 <div
                     id="content"
                     className="container">
+
+                    {/* page title */}
                     <h1
                         className="page-title">
                         DASHBOARD
@@ -79,39 +90,50 @@ export class Dashboard extends Component {
 
                     <Row
                         className="mt-6 d-flex justify-content-center ">
+
+                        {/* invite user option */}
                         <Col
                             xs="12"
                             sm="8"
                             md="6"
                             lg="4"
                             className="dashboard-option-container mb-4">
+
                             <Col
                                 xs="12"
                                 className="dashboard-option">
+
                                 <img
                                     className="icon invite-icon mb-3"
                                     alt="invite-icon"
                                     src={ inviteIcon }/>
+
                                 <FormModal
                                     modalSize="md"
                                     triggerBtnText="Invite New Users"
                                     title="Invite Users"
                                     form={ < InviteForm /> }/>
                             </Col>
+
                         </Col>
+
+                        {/* add item option */}
                         <Col
                             xs="12"
                             sm="8"
                             md="6"
                             lg="4"
                             className="dashboard-option-container">
+
                             <Col
                                 xs="12"
                                 className="dashboard-option">
+
                                 <img
                                     className="icon item-icon mb-3"
                                     alt="item-icon"
                                     src={ itemIcon }/>
+
                                 <FormModal
                                     modalSize="lg"
                                     triggerBtnText="Add A New Item"
@@ -121,11 +143,13 @@ export class Dashboard extends Component {
                                             handleAlert={ this.handleAlert }
                                         /> } />
                             </Col>
+
                         </Col>
+
                     </Row>
                 </div>
             </div>
-        )
+        );
     }
 }
 

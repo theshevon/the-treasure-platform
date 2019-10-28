@@ -11,6 +11,9 @@ import Col     from 'react-bootstrap/Col';
 // custom css
 import '../../stylesheets/invite-form.css';
 
+/**
+ * Represents the form that is needed to invite users to the platform
+ */
 class InviteForm extends Component {
 
     minRows = 5;
@@ -24,9 +27,11 @@ class InviteForm extends Component {
 		validated: false
     }
 
-    // adds rows to the form
+    /**
+     * Adds rows to the form.
+     */
     addRows = () => {
-        // only allow row addition if its below the threshold
+        // only allow row addition if it's below the threshold
         if (this.state.noRows < this.maxRows){
             let emails = [...this.state.emails];
             emails.push('');
@@ -37,9 +42,11 @@ class InviteForm extends Component {
         }
     }
 
-    // handles changes made to input fields
-    // when the value of an input field changes, its corresponding entry in the
-    // state changes too
+    /**
+     * Handles changes made to input fields.
+     * When the value of an input field changes, its corresponding entry in the
+     * state changes too.
+     */
     handleChange = event => {
 
         let dash_index  = event.target.name.indexOf("-");
@@ -54,7 +61,9 @@ class InviteForm extends Component {
                     });
     }
 
-    // sends the form data to the server
+    /**
+     * Sends the form data to the server.
+     */
     handleSubmit = event => {
 
         event.preventDefault();
@@ -80,19 +89,22 @@ class InviteForm extends Component {
                     errors    : err.response.data,
                     loading   : false,
                     validated : true
-                })
-            })
+                });
+            });
     }
 
     render() {
 
         let formContent = [];
-        for (var i=0; i< this.state.noRows; i++ ){
+
+        // create the rows to be displayed in the form
+        for (var i=0; i<this.state.noRows; i++){
 
 			let fieldName = i + "-email";
 			let feedback  = null;
 			let classes   = "invite-email-field mb-1";
 
+            // check for error or success feeedback
 			if (this.state.validated){
 
 				if (this.state.errors && this.state.errors[i]){
@@ -103,7 +115,8 @@ class InviteForm extends Component {
 						</p>
 					);
 					classes += " invalid-field"
-				} else if (this.state.emails[i] !== ''){
+                }
+                else if (this.state.emails[i] !== ''){
                     feedback = (
 						<p
 							className="valid-feedback-msg">
@@ -114,6 +127,7 @@ class InviteForm extends Component {
 				}
 			}
 
+            // create the row with it's feedback
             formContent.push((
                                 <Row
                                     key={"row-" + i}
@@ -140,13 +154,17 @@ class InviteForm extends Component {
         if (this.state.loading){
             btnContent = (<Spinner animation="border" size="sm"/>);
         } else {
-            btnContent = ("Send Invitations");
+            btnContent = ("Send Invites");
         }
 
         return (
-                <Form
-                    onSubmit={this.handleSubmit}>
+
+                <Form>
+
+                    {/* form rows */}
                     {formContent}
+
+                    {/* 'Add Row' button */}
                     <Button
                         className="add-row-btn mt-2"
                         variant="light"
@@ -155,18 +173,21 @@ class InviteForm extends Component {
                         + Add Row
                     </Button>
 
+                    {/* separator */}
                     <hr
                         className="mt-3"/>
 
+                    {/* 'Send Invitations' button */}
                     <Button
                         className="float-right"
                         variant="light"
                         type="submit"
-                        disabled={this.state.loading}>
+                        disabled={this.state.loading}
+                        onClick={this.handleSubmit}>
                         { btnContent }
                     </Button>
                 </Form>
-        )
+        );
     }
 }
 

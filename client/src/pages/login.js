@@ -15,6 +15,9 @@ import '../stylesheets/login.css';
 import { connect }               from 'react-redux';
 import { loginUser, logoutUser } from '../redux/actions/userActions';
 
+/**
+ * Represents the 'Login` page that users will use to log in to the platform.
+ */
 class Login extends Component {
 
 	state = {
@@ -34,6 +37,8 @@ class Login extends Component {
 	}
 
 	componentWillReceiveProps(nextProps){
+
+		// update errors, provided that they are received from the server
 		if (nextProps.UI.errors){
 			this.setState({
 							errors   : nextProps.UI.errors,
@@ -42,10 +47,18 @@ class Login extends Component {
 		}
 	}
 
+	/**
+     * Handles changes made to input fields.
+     * When the value of an input field changes, its corresponding entry in the
+     * state changes too.
+     */
 	handleChange = event => {
 		this.setState({ [event.target.name] : event.target.value });
 	}
 
+	/**
+     * Sends the form data to the server.
+     */
 	handleSubmit = event => {
 
 		event.preventDefault();
@@ -64,6 +77,9 @@ class Login extends Component {
 		const { UI: { loading, errors }} = this.props;
 
 		let btnContent;
+
+		// -- check for errors
+
 		let emailClass    = "login-field";
 		let pwClass       = "login-field";
 		let emailFeedback = "";
@@ -129,13 +145,13 @@ class Login extends Component {
 							md="6"
 							lg="3">
 
-							{/* Page title */}
+							{/* page title */}
 							<h1
 								className="form-title mb-4">
 								Welcome
 							</h1>
 
-							{/* Login form */}
+							{/* login form */}
 							<Form>
 
 								<Row
@@ -164,6 +180,7 @@ class Login extends Component {
 									{ pwFeedback }
 								</Row>
 
+								{/* login button */}
 								<Button
 									className="centered-btn btn mt-3"
 									variant="light"

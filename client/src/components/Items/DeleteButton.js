@@ -12,6 +12,11 @@ import SweetAlert from 'react-bootstrap-sweetalert';
 // custom css
 import '../../stylesheets/item.css';
 
+/**
+ * A 'Delete' button that triggers an 'Are You Sure?' warning alert.
+ * If delete request is confirmed and successfully executed,
+ * a 'Success' alert is displayed.
+ */
 class DeleteButton extends Component {
 
 	state = {
@@ -20,16 +25,24 @@ class DeleteButton extends Component {
 		loading           : false,
 	}
 
+	/**
+	 * Closes the warning alert
+	 */
     handleClose = () => {
         this.setState({ show: false });
     }
 
+	/**
+	 * Sends a delete request to the backend and displays loading animation
+	 */
     handleDelete = async itemId => {
+
 		// start the spinner animation
 		this.setState({
 			loading: true
 		});
 
+		// sends delete request
 		try {
 			const url = `/items/${itemId}`;
 			const res = await axios
@@ -44,19 +57,31 @@ class DeleteButton extends Component {
 		}
 	}
 
+	/**
+	 * closes the warning alert without deleting the item
+	 */
     cancelDelete = () => {
 		this.setState({ showWarning: false });
 	}
 
+	/**
+	 * asks user for confirmation to delete
+	 */
 	handleDeleteRequest = () => {
 		this.setState({ showWarning: true });
 	}
 
+	/**
+	 * displays 'success alert' upon successful deletion
+	 */
 	handleDeleteSuccess = () => {
 		this.setState({ showWarning: false });
 		this.setState({ showDeleteSuccess: true });
 	}
 
+	/**
+	 * closes the 'confirmation alert'
+	 */
 	hideConrfimationAlert = () => {
 		this.handleClose();
 		window.location.reload();
@@ -66,7 +91,7 @@ class DeleteButton extends Component {
 
         const { itemID } = this.props;
 
-        /* determine onConfirm button content */
+        /* determine onConfirm button content, either words or loading spinner */
         let btnContent;
         if (this.state.loading){
             btnContent = (<Spinner className="spinner" animation="border" size="md"/>);
@@ -74,8 +99,9 @@ class DeleteButton extends Component {
             btnContent = ("Yes, I'm sure");
         }
 
-        let sweetalerts = (
+        let alerts = (
                 <div>
+
                     {/* ask user to confirm item deletion */}
                     <SweetAlert
                         warning
@@ -103,6 +129,8 @@ class DeleteButton extends Component {
 
 		return (
             <div>
+
+				{/* delete button */}
                 <Button
                     variant="danger"
                     onClick={this.handleDeleteRequest}
@@ -111,7 +139,10 @@ class DeleteButton extends Component {
                     disabled={this.state.loading}>
                     Delete
                 </Button>
-                {sweetalerts}
+
+				{/* alerts triggered according to user choices */}
+                {alerts}
+
             </div>
 		);
 	}

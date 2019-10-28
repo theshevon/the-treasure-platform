@@ -8,6 +8,10 @@ import Form    from 'react-bootstrap/Form';
 import Row     from 'react-bootstrap/Row';
 import Col     from 'react-bootstrap/Col';
 
+/**
+ * Represents the `register` page that new user's can visit to register
+ * themselves on the platform.
+ */
 class Register extends Component {
 
     state = {
@@ -23,16 +27,18 @@ class Register extends Component {
         validated : false
     }
 
-    // handles changes made to input fields
-    // when the value of an input field changes, its corresponding entry
-    // in the state changes too
+    /**
+     * Handles changes made to input fields.
+     * When the value of an input field changes, its corresponding entry in the
+     * state changes too.
+     */
     handleChange = event => {
 		this.setState({ [event.target.name] : event.target.value });
-	}
+    }
 
-    // handles the validation of the stage 0 data, which ensures that the
-    // email address corresponds to an invited user and that the code entered
-    // is the same as that linked to their record on the database
+    /**
+     * Handles the validation of the stage 0 form data.
+     */
     handleValidation = event => {
 
         event.preventDefault();
@@ -41,7 +47,7 @@ class Register extends Component {
 
         const inviteeData = {
             email: this.state.email,
-            code: this.state.code
+            code : this.state.code
         }
 
         axios({
@@ -50,6 +56,7 @@ class Register extends Component {
                 data: inviteeData
             })
             .then(res => {
+                // if validation is successful, advance to stage 1
                 this.setState({
                                 loading  : false,
                                 stage    : 1,
@@ -65,8 +72,10 @@ class Register extends Component {
             })
     }
 
-    // handles the registration of a new user by sending the user's data
-    // to the server
+    /**
+     * Handles the registration of a new user by preparing the user's data to be
+     * sent to the server.
+     */
     handleRegistration = event => {
 
         event.preventDefault();
@@ -82,6 +91,8 @@ class Register extends Component {
         }
 
         if (this.state.pic){
+            // if the user has uploaded a picture, then add it to a new form
+            // data object before sending it to the server.
             let fd   = new FormData();
             let file = this.state.pic;
             fd.append("file", file, file.name);
@@ -93,6 +104,10 @@ class Register extends Component {
         return;
     }
 
+    /**
+     * Handles the registration of a new user by actually sending the user's
+     * data to the server.
+     */
     handleDataTransfer = async (registrationData, fd) => {
 
         // send all the textual data
@@ -102,6 +117,8 @@ class Register extends Component {
                                 data: registrationData
                             })
                             .then(res => {
+                                // if the user hadn't uploaded a picture,
+                                // advance to the login page
                                 if (!fd){
                                     this.setState({ loading : false });
                                     this.props.history.push('/login');
@@ -118,6 +135,7 @@ class Register extends Component {
                                 });
                             });
 
+        // break out if any errors have been detected
         if (this.state.errors) return;
 
         // send the image, if one has been uploaded
@@ -147,6 +165,9 @@ class Register extends Component {
 
     }
 
+    /**
+     * Stores an image when a user uploads one.
+     */
     handleUpload = async event => {
         await this.setState({ pic : event.target.files[0] });
     }
@@ -467,16 +488,20 @@ class Register extends Component {
         return (
                 <Row
 					className="login-form-container d-flex justify-content-center">
+
                     <Col
                         className="login-form-body p-5"
                         xs="10"
                         sm="8"
                         md="6"
                         lg="3">
+
                         { formContent }
+
                     </Col>
+
 				</Row>
-        )
+        );
     }
 }
 
