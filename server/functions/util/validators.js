@@ -83,7 +83,7 @@ exports.validateRegistrationData =
 
         // validate entered passwords
         if (isEmpty(newUser.pw)) errors.pw = "Please enter a password!";
-        if (newUser.pw !== newUser.pw_c) errors.pw = "Passwords must match";
+        if (newUser.pw !== newUser.pw_c) errors.pw = "Passwords must match!";
 
         return  {
                     errors,

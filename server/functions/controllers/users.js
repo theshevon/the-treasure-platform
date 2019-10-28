@@ -192,15 +192,16 @@ exports.logInUser =
                 .then(async token => {
 
                     let returnData = await getAuthenticatedUser(uid);
+                    returnData.id = uid;
                     returnData.token = token;
 
                     return res.status(200).json(returnData);
                 })
                 .catch(err => {
-                    console.log(err);
+                    console.log("Error: " + err);
                     return res.status(400).json({ general: "Sorry, the email address or password you entered is incorrect." });
                 });
-    }
+    } 
 
 /**
  * Retrieves the uid, name and image src of all the secondary users registered

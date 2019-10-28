@@ -359,6 +359,7 @@ class AddItemForm extends Component {
                             sm="3"
                             className="px-md-1 px-sm-3">
                             <Dropdown
+                                id="visibility_toggler"
                                 selection
                                 disabled={this.state.loadingUsers}
                                 defaultValue="Visible to"
@@ -369,6 +370,7 @@ class AddItemForm extends Component {
                         <Col
                             sm="9">
                             <Dropdown
+                                id="visibility_selector"
                                 onChange={this.handleMultiSelect}
                                 placeholder={ this.state.loadingUsers ? 'Loading...' : 'Select User(s)' }
                                 fluid
@@ -404,6 +406,7 @@ class AddItemForm extends Component {
                         <Col
                             sm="9">
                             <Dropdown
+                                id="assignment_selector"
                                 name="assignedTo"
                                 placeholder={ this.state.loadingUsers ? 'Loading...' : 'Select User' }
                                 search
@@ -411,6 +414,10 @@ class AddItemForm extends Component {
                                 disabled={this.state.loadingUsers}
                                 options={this.state.userOptions2}
                                 onChange={this.handleAssignment}/>
+                            <Form.Text
+                                className="text-muted">
+                                Select 'No One' to remove an assignment.
+                            </Form.Text>
                         </Col>
 
                     </Form.Group>
