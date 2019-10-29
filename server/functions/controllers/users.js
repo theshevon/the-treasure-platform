@@ -201,7 +201,7 @@ exports.logInUser =
                     console.log("Error: " + err);
                     return res.status(400).json({ general: "Sorry, the email address or password you entered is incorrect." });
                 });
-    } 
+    }
 
 /**
  * Retrieves the uid, name and image src of all the secondary users registered
@@ -352,21 +352,23 @@ exports.inviteNewUsers =
         const { allInvalid, errors } = validateInvitationData(emails);
         if (allInvalid) return res.status(400).json(errors);
 
+        let registeredEmails;
+
         // retrieve all the email addresses of registered users
         try{
-            const registeredEmails = await db
-                                            .collection('users')
-                                            .get()
-                                            .then(data => {
-                                                let emails = [];
-                                                data.forEach((doc) => {
-                                                    emails.push(doc.data()['email']);
-                                                });
-                                                return emails;
-                                            })
-                                            .catch(err => {
-                                                throw new Error(err);
+            registeredEmails = await db
+                                        .collection('users')
+                                        .get()
+                                        .then(data => {
+                                            let emails = [];
+                                            data.forEach((doc) => {
+                                                emails.push(doc.data()['email']);
                                             });
+                                            return emails;
+                                        })
+                                        .catch(err => {
+                                            throw new Error(err);
+                                        });
         } catch (err) {
             console.log(err);
             return res.status(400).json({ "general" : "Sorry something went wrong!"});

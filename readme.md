@@ -57,13 +57,9 @@ In order to run the test suites:
 - Run `npm run cypress:open` on your terminal. This will fire up the Cypress app.
 - Open the `test_suites` directory and select the suit you wait to run.
 
-### Production
+## Build Status - *Complete*
 
 A production version of the website has been deployed at https://comp30022app.firebaseapp.com/ .
-
-## Build Status - *Incomplete*
-
-The application is currently in its final stages of development and is being tested.
 
 ## Development Team
 
